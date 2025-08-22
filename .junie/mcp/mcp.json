@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/opt/homebrew/Cellar/php/8.4.8/bin/php",
+            "args": [
+                "/Users/jeremy/Library/Application Support/Herd/config/valet/Sites/healthjobs/artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}

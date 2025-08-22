@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\HealthJob;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+
 
 class HealthJobController extends Controller
 {
     public function index(Request $request): \Inertia\Response
     {
+//        Gate::authorize('viewAny', HealthJob::class);
         $jobs = HealthJob::query()
             ->when($request->search, function ($query, $search) {
                 $query->where('title', 'like', "%{$search}%")
@@ -27,7 +30,6 @@ class HealthJobController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        //        dd($jobs);
 
         return Inertia::render('HealthJobs/Index', [
             'jobs' => $jobs,
