@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HealthJobController;
+use App\Http\Controllers\RolesAndPermissionsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DashboardController;
@@ -17,12 +18,10 @@ Route::middleware(['auth', 'permission:access-dashboard'])->group(function () {
     });
 });
 
+Route::middleware(['auth', 'role:super-admin'])->group(function () {
 
+});
 
-
-
-
-// Protect routes with permissions
 Route::middleware(['auth', 'permission:view-job-postings'])->group(function () {
     // Health Jobs routes (protected)
     Route::controller(HealthJobController::class)
@@ -30,10 +29,23 @@ Route::middleware(['auth', 'permission:view-job-postings'])->group(function () {
         ->name('health-jobs.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('create', 'create')->name('create')->middleware('permission:create-job-postings');
+            Route::post('jobs', 'store')->name('store');
             Route::get('{healthJob}', 'show')->name('show');
         });
 });
 
+Route::middleware(['auth', 'role:super-admin'])->group(function () {
+    Route::controller(RolesAndPermissionsController::class)
+        ->prefix('iam')
+        ->name('iam.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('create', 'create')->name('create');
+            Route::post('store', 'store')->name('store');
+            Route::get('roles', 'roles')->name('roles');
+        });
+});
 
 
 

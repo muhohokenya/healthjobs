@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
+import { User } from 'lucide-vue-next';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -17,6 +18,11 @@ const sidebarNavItems: NavItem[] = [
     {
         title: 'Appearance',
         href: '/settings/appearance',
+    },
+    {
+        title: 'Role',
+        href: '/settings/role',
+        icon: User
     },
 ];
 

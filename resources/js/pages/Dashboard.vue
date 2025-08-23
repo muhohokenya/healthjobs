@@ -6,7 +6,7 @@ import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard Page',
+        title: 'Dashboard Pages',
         href: '/dashboard',
     },
 ];

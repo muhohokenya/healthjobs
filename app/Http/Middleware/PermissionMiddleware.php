@@ -27,19 +27,12 @@ class PermissionMiddleware
             : explode('|', $permission);
 
         foreach ($permissions as $permission) {
-
-            Log::info($permission);
             if ($authGuard->user()->can($permission)) {
                 return $next($request);
             }
         }
 
         // For Inertia.js applications, return proper response
-        if ($request->expectsJson() || $request->header('X-Inertia')) {
-//            return Inertia::render('Error/403');
-        }
-
-
 
 
         throw UnauthorizedException::forPermissions($permissions);

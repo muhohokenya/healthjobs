@@ -13,12 +13,48 @@ defineProps<Props>();
 </script>
 
 <template>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 42" :class="className" v-bind="$attrs">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 42" class="className" v-bind="$attrs">
+        <!-- Background briefcase/folder -->
         <path
             fill="currentColor"
             fill-rule="evenodd"
             clip-rule="evenodd"
-            d="M17.2 5.633 8.6.855 0 5.633v26.51l16.2 9 16.2-9v-8.442l7.6-4.223V9.856l-8.6-4.777-8.6 4.777V18.3l-5.6 3.111V5.633ZM38 18.301l-5.6 3.11v-6.157l5.6-3.11V18.3Zm-1.06-7.856-5.54 3.078-5.54-3.079 5.54-3.078 5.54 3.079ZM24.8 18.3v-6.157l5.6 3.111v6.158L24.8 18.3Zm-1 1.732 5.54 3.078-13.14 7.302-5.54-3.078 13.14-7.3v-.002Zm-16.2 7.89 7.6 4.222V38.3L2 30.966V7.92l5.6 3.111v16.892ZM8.6 9.3 3.06 6.222 8.6 3.143l5.54 3.08L8.6 9.3Zm21.8 15.51-13.2 7.334V38.3l13.2-7.334v-6.156ZM9.6 11.034l5.6-3.11v14.6l-5.6 3.11v-14.6Z"
+            d="M8 12h24c1.1 0 2 .9 2 2v20c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2V14c0-1.1.9-2 2-2zm2 4v16h20V16H10z"
         />
+
+        <!-- Handle -->
+        <path
+            fill="currentColor"
+            d="M14 8h12c1.1 0 2 .9 2 2v2H12V10c0-1.1.9-2 2-2z"
+        />
+
+        <!-- Medical cross -->
+        <path
+            fill="currentColor"
+            d="M18 20h4v3h3v4h-3v3h-4v-3h-3v-4h3v-3z"
+        />
+
+        <!-- Stethoscope accent -->
+        <circle
+            fill="currentColor"
+            cx="32"
+            cy="8"
+            r="3"
+            opacity="0.7"
+        />
+        <path
+            fill="currentColor"
+            d="M32 11c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0-6c-2.2 0-4 1.8-4 4 0 1.5.8 2.8 2 3.5v2.5c0 1.1-.9 2-2 2s-2-.9-2-2v-1"
+            stroke="currentColor"
+            stroke-width="1"
+            opacity="0.7"
+        />
+
+        <!-- Small medical plus indicators -->
+        <circle fill="currentColor" cx="4" cy="6" r="1" opacity="0.5"/>
+        <path fill="currentColor" d="M3.5 6h1M4 5.5v1" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
+
+        <circle fill="currentColor" cx="36" cy="36" r="1" opacity="0.5"/>
+        <path fill="currentColor" d="M35.5 36h1M36 35.5v1" stroke="currentColor" stroke-width="0.5" opacity="0.5"/>
     </svg>
 </template>
