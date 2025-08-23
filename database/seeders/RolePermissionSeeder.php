@@ -276,13 +276,13 @@ class RolePermissionSeeder extends Seeder
                 }
             }
 
-            // Assign super-admin role to the first user (if exists)
+            // Assign super-admin roles to the first user (if exists)
             $user = User::first();
             if ($user) {
                 $user->assignRole('super-admin');
             }
 
-            $this->command->info('Roles and permissions have been seeded successfully!');
+            $this->command->info('roles and permissions have been seeded successfully!');
 
         } catch (\Exception $e) {
             $this->command->error('Error seeding roles and permissions: ' . $e->getMessage());

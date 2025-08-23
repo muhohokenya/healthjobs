@@ -28,7 +28,7 @@ class RoleMiddleware
             // For Inertia.js applications, return proper response
             if ($request->expectsJson() || $request->header('X-Inertia')) {
                 return response()->json([
-                    'message' => 'You do not have the required role to access this resource.'
+                    'message' => 'You do not have the required roles to access this resource.'
                 ], 403);
             }
 

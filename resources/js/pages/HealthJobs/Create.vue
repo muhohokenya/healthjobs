@@ -4,11 +4,28 @@ import { useAuth } from '@/utils/auth';
 import { Head, useForm } from '@inertiajs/vue3';
 const user = useAuth();
 
+// Vacancy: Pharmaceutical Technologist
+// Location: Futuremed Hospital, Baraka Towers, Pangani – Nairobi
+//
+// Futuremed Hospital is seeking a qualified Pharmaceutical Technologist to join our team.
+//
+//     Requirements:
+// •⁠  ⁠Qualification in Pharmaceutical studies
+// •⁠  ⁠Valid license from the Pharmacy and Poisons Board
+// •⁠  ⁠At least 3 years’ experience in a hospital or retail pharmacy
+// •⁠  ⁠Strong communication and customer service skills
+//
+// Responsibilities:
+//     •⁠  ⁠Dispense medication accurately
+// •⁠  ⁠Advise patients on proper drug use
+// •⁠  ⁠Manage inventory and ensure drug safety compliance
+
 const form = useForm({
-    title: '',
-    company: '',
-    description: '',
-    location: '',
+    avatar:'',
+    title: 'Pharmaceutical Technologist',
+    company: 'Futuremed Hospital',
+    description: 'Qualification in Pharmaceutical studies,Valid license from the Pharmacy and Poisons Board,At least 3 years’ experience in a hospital or retail pharmacy,Strong communication and customer service skills',
+    location: 'Baraka Towers, Pangani – Nairobi',
     job_type: '',
     salary_min: '',
     salary_max: '',
@@ -24,7 +41,7 @@ const form = useForm({
         <div class="min-h-screen bg-gray-50 py-8 dark:bg-gray-900">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <!-- Job Creation Form -->
-                <div v-if="user.hasRole('super-admin')" ref="jobForm" class="mt-12">
+                <div  ref="jobForm" class="mt-12">
                     <div class="mb-6 border-b border-gray-200 pb-4 dark:border-gray-700">
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Create New Job Posting</h2>
                         <p class="text-gray-600 dark:text-gray-300">Fill out the form below to create a new job listing</p>
@@ -125,6 +142,14 @@ const form = useForm({
                                 </select>
                             </div>
                         </div>
+
+
+                        <input type="file" @input="form.avatar = $event.target.files[0]" />
+                        <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+                            {{ form.progress.percentage }}%
+                        </progress>
+
+
 
                         <!-- Active Checkbox -->
                         <div class="flex items-center space-x-3 pt-2">

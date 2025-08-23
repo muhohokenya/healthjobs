@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('settings/Appearance');
     })->name('appearance');
 
-    Route::get('settings/role', function () {
+    Route::get('settings/roles', function () {
         return Inertia::render('settings/Role');
-    })->name('role');
+    })->name('roles');
 });

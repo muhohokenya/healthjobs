@@ -18,7 +18,7 @@ Route::middleware(['auth', 'permission:access-dashboard'])->group(function () {
     });
 });
 
-Route::middleware(['auth', 'role:super-admin'])->group(function () {
+Route::middleware(['auth', 'roles:super-admin'])->group(function () {
 
 });
 
@@ -29,13 +29,13 @@ Route::middleware(['auth', 'permission:view-job-postings'])->group(function () {
         ->name('health-jobs.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('create', 'create')->name('create')->middleware('permission:create-job-postings');
+            Route::get('create', 'create')->name('create');
             Route::post('jobs', 'store')->name('store');
             Route::get('{healthJob}', 'show')->name('show');
         });
 });
 
-Route::middleware(['auth', 'role:super-admin'])->group(function () {
+Route::middleware(['auth', 'roles:super-admin'])->group(function () {
     Route::controller(RolesAndPermissionsController::class)
         ->prefix('iam')
         ->name('iam.')
@@ -44,6 +44,7 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
             Route::get('create', 'create')->name('create');
             Route::post('store', 'store')->name('store');
             Route::get('roles', 'roles')->name('roles');
+            Route::get('roles/create', 'createRole')->name('roles.create');
         });
 });
 

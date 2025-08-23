@@ -23,7 +23,7 @@ const allNavItems = [
         title: 'Jobs',
         href: '/health-jobs',
         icon: Users,
-        requiredPermissions: ['view-job-postings'],
+        requiredPermissions: ['view-job-postings','create-job-postings'],
     },
 
     {
@@ -33,7 +33,7 @@ const allNavItems = [
         requiredRoles: ['super-admin'],
     },
     {
-        title: 'Roles',
+        title: 'roles',
         href: '/iam/roles',
         icon: User,
         requiredRoles: ['super-admin'],

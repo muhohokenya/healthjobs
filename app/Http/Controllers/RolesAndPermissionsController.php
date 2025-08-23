@@ -28,6 +28,12 @@ class RolesAndPermissionsController extends Controller
 
     }
 
+    public function createRole()
+    {
+//        return Inertia::render('iam/roles/Create');
+
+    }
+
     public function create(){
         return Inertia::render('iam/CreateUser',[
             'roles'=> Role::query()->orderBy('name')->with('permissions')->get(),

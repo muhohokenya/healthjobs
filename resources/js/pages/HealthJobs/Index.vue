@@ -62,7 +62,7 @@ const formatSalary = (salary) => {
                 </div>
 
                 <!-- Create Job Button (Conditional) -->
-                <div v-if="user.hasRole('super-admin')" class="mb-6 flex justify-end">
+                <div v-if="user.hasPermission('create-job-postings')" class="mb-6 flex justify-end">
 
                     <Link class="flex items-center rounded-md bg-blue-600 px-4 py-2.5
                          font-medium text-white transition hover:bg-blue-700 focus:ring-2
@@ -112,10 +112,17 @@ const formatSalary = (salary) => {
                         <div class="flex items-end">
                             <button
                                 @click="search"
-                                class="w-full rounded-md bg-blue-600 px-4 py-2.5 text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-offset-gray-800"
+                                class="w-full mr-3 rounded-md bg-blue-600 px-4 py-2.5 text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-offset-gray-800"
                             >
                                 Apply Filters
                             </button>
+
+                            <Link
+                                class="w-full rounded-md bg-red-400
+                                px-4 py-2.5 text-white transition-colors
+                                hover:bg-red-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-offset-gray-800"
+
+                                :href="route('health-jobs.index')">Clear Filters</Link>
                         </div>
                     </div>
                 </div>

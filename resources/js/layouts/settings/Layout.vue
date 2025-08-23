@@ -21,7 +21,7 @@ const sidebarNavItems: NavItem[] = [
     },
     {
         title: 'Role',
-        href: '/settings/role',
+        href: '/settings/roles',
         icon: User
     },
 ];

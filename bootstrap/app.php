@@ -29,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Register middleware aliases
         $middleware->alias([
-            'role' => RoleMiddleware::class,
+            'roles' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
         ]);
     })

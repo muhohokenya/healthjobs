@@ -22,7 +22,7 @@ const formatDate = (dateString: string) => {
     });
 };
 
-// Helper function to get role badge color
+// Helper function to get roles badge color
 const getRoleBadgeColor = (roleName: string) => {
     const colors = {
         'super-admin': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
@@ -35,7 +35,7 @@ const getRoleBadgeColor = (roleName: string) => {
     return colors[roleName] || 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300';
 };
 
-// Helper function to format role name for display
+// Helper function to format roles name for display
 const formatRoleName = (roleName: string) => {
     return roleName.split('-').map(word =>
         word.charAt(0).toUpperCase() + word.slice(1)
@@ -154,7 +154,7 @@ const formatRoleName = (roleName: string) => {
                                     </div>
                                 </td>
 
-                                <!-- Roles -->
+                                <!-- roles -->
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="space-y-1">
                                             <span

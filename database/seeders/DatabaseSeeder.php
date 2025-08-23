@@ -34,37 +34,37 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Super Admin',
                 'email' => 'superadmin@medicaljs.com',
                 'password' => bcrypt('password'),
-                'role' => 'super-admin'
+                'roles' => 'super-admin'
             ],
             [
                 'name' => 'Hospital Admin',
                 'email' => 'hospitaladmin@medicaljs.com',
                 'password' => bcrypt('password'),
-                'role' => 'medical-institution-admin'
+                'roles' => 'medical-institution-admin'
             ],
             [
                 'name' => 'HR Manager',
                 'email' => 'hrmanager@medicaljs.com',
                 'password' => bcrypt('password'),
-                'role' => 'hr-manager'
+                'roles' => 'hr-manager'
             ],
             [
                 'name' => 'Recruiter',
                 'email' => 'recruiter@medicaljs.com',
                 'password' => bcrypt('password'),
-                'role' => 'recruiter'
+                'roles' => 'recruiter'
             ],
             [
                 'name' => 'Dr. John Doe',
                 'email' => 'doctor@medicaljs.com',
                 'password' => bcrypt('password'),
-                'role' => 'medical-professional'
+                'roles' => 'medical-professional'
             ],
             [
                 'name' => 'Nurse Jane',
                 'email' => 'nurse@medicaljs.com',
                 'password' => bcrypt('password'),
-                'role' => 'job-seeker'
+                'roles' => 'job-seeker'
             ],
         ];
 
@@ -78,8 +78,8 @@ class DatabaseSeeder extends Seeder
                 ]
             );
 
-            if (!$user->hasRole($userData['role'])) {
-                $user->assignRole($userData['role']);
+            if (!$user->hasRole($userData['roles'])) {
+                $user->assignRole($userData['roles']);
             }
         }
 

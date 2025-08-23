@@ -4,7 +4,7 @@ export const useAuth = () => {
     const page = usePage()
     const user = page.props.auth.user
 
-    // Check if user has a specific role
+    // Check if user has a specific roles
     const hasRole = (role:string) => {
         if (!user?.roles || !Array.isArray(user.roles)) return false
 

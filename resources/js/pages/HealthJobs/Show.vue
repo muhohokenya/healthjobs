@@ -1,6 +1,6 @@
 <template>
     <Head :title="job.title" />
-
+    <AppLayout>
     <div class="min-h-screen bg-gray-50 py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -83,10 +83,12 @@
             </div>
         </div>
     </div>
+    </AppLayout>
 </template>
 
 <script setup>
 import { Head, Link } from '@inertiajs/vue3'
+import AppLayout from '@/layouts/AppLayout.vue';
 
 const props = defineProps({
     job: Object
