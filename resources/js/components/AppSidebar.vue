@@ -33,10 +33,17 @@ const allNavItems = [
         requiredRoles: ['super-admin'],
     },
     {
-        title: 'roles',
+        title: 'Roles',
         href: '/iam/roles',
         icon: User,
         requiredRoles: ['super-admin'],
+    },
+    {
+        title: 'Manage Facility',
+        href: '/facilities',
+        icon: User,
+        requiredPermissions: ['manage-facilities'],
+        requireAnyPermission:true
     },
     {
         title: 'Reports',

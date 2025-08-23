@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\HealthJobController;
 use App\Http\Controllers\RolesAndPermissionsController;
 use Illuminate\Support\Facades\Route;
@@ -18,8 +19,15 @@ Route::middleware(['auth', 'permission:access-dashboard'])->group(function () {
     });
 });
 
-Route::middleware(['auth', 'roles:super-admin'])->group(function () {
-
+Route::middleware(['auth', 'permission:view-facilities'])->group(function () {
+    Route::controller(FacilityController::class)
+        ->prefix('facilities')
+        ->name('facilities.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('create', 'create')->name('create')->middleware('permission:create-facility');
+            Route::post('store', 'store')->name('store');
+        });
 });
 
 Route::middleware(['auth', 'permission:view-job-postings'])->group(function () {

@@ -52,7 +52,7 @@ class RolesAndPermissionsController extends Controller
         $password = Hash::make($plain_password);
         $validated = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:users,email|max:255',
+            'email' => 'required|email|unique:facilities,email|max:255',
             'roles' => 'required',
         ]);
 
