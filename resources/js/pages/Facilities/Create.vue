@@ -1,18 +1,29 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
-import { onMounted } from 'vue';
-import { Form } from '@inertiajs/vue3'
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import { onMounted, ref } from 'vue';
+import { Form } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3';
 
 const page = usePage();
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-defineProps({
-    verification: Object,
-    errors: Object,
-});
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const props = defineProps({
+    flash: Object,
+});
+// const verification = computed(() => page.props.verification);
+const verificationSuccess = ref(null);
+const verificationMessage = ref(null);
 onMounted(() => {
+    const url = new URL(page.url, window.location.origin);
     console.log(page.props);
+    const params = new URLSearchParams(url.search);
+
+    verificationSuccess.value = params.get('verification[success]');
+    verificationMessage.value = params.get('verification[message]');
+
+    console.log('Verification success:', verificationSuccess.value);
+    console.log('Verification message:', verificationMessage.value);
 });
 
 const form = useForm({
@@ -33,6 +44,7 @@ const form = useForm({
 <template>
     <Head title="Index" />
     <AppLayout>
+
         <div class="min-h-screen bg-gray-50 py-8 dark:bg-gray-900">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <!-- Header -->
@@ -40,6 +52,37 @@ const form = useForm({
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Create New Facility</h1>
                     <p class="mt-2 text-gray-600 dark:text-gray-300">View and manage facilities</p>
                 </div>
+
+                <!-- Error Banner -->
+                <div v-if="$page.props.flash.myVariable" class="mb-6">
+                    <div
+                        class="rounded-md border border-red-300 bg-red-50 p-4 text-red-800 shadow-sm dark:border-red-700 dark:bg-red-900 dark:text-red-200"
+                    >
+                        <div class="flex items-center">
+                            <!-- Error Icon -->
+                            <svg
+                                class="h-5 w-5 text-red-500 dark:text-red-300"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.662 1.732-3L13.732 4c-.77-1.338-2.694-1.338-3.464 0L3.34 16c-.77 1.338.192 3 1.732 3z"
+                                />
+                            </svg>
+
+                            <!-- Message -->
+                            <span class="ml-2 font-medium">
+                {{ $page.props.flash.myVariable }}
+            </span>
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- Create Job Button (Conditional) -->
                 <div class="mb-6 flex justify-end">
@@ -51,11 +94,10 @@ const form = useForm({
                     </Link>
                 </div>
 
-
-
-                <Form action="/facilities/store"
-                      method="post"
-                      #default="{
+                <Form
+                    action="/facilities/store"
+                    method="post"
+                    #default="{
                         errors,
                         hasErrors,
                         processing,
@@ -69,8 +111,10 @@ const form = useForm({
                         isDirty,
                         reset,
                         submit,
-                      }"
-                      resetOnSuccess class="space-y-6 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800">
+                    }"
+                    resetOnSuccess
+                    class="space-y-6 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800"
+                >
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <!-- Name -->
                         <div>
@@ -108,7 +152,7 @@ const form = useForm({
                                 >Licence Number *</label
                             >
                             <input
-                                value="BU202502358"
+                                value="BU202502351"
                                 type="text"
                                 name="licence_number"
                                 id="licence_number"
@@ -122,7 +166,6 @@ const form = useForm({
                         <div>
                             <label for="location" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Location *</label>
                             <input
-
                                 value="Trans Nzoia"
                                 type="text"
                                 name="location"

@@ -40,6 +40,9 @@ class HandleInertiaRequests extends Middleware
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
         return [
+            'flash' => [
+                'myVariable' => fn () => $request->session()->get('myVariable'),
+            ],
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
