@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Collection;
@@ -10,7 +11,7 @@ class PharmacyBoardVerificationService
 {
     private const BASE_URL = 'https://practice.pharmacyboardkenya.org/ajax/public';
     private const FACILITY_CADRE = 'Facilities';
-    private const PRACTITIONER_CADRE = 4;
+    private const PRACTITIONER_CADRE = 2;
 
     /**
      * Verify a facility against the pharmacy board registry
@@ -44,13 +45,30 @@ class PharmacyBoardVerificationService
         return $this->processFacilityMatch($candidate, $facilityData);
     }
 
+    function isNameMatch($givenName, $verifiedName, $threshold = 80) {
+        $givenParts = array_filter(explode(' ', strtolower(trim($givenName))));
+        $verifiedParts = array_filter(explode(' ', strtolower(trim($verifiedName))));
+
+        $maxSimilarity = 0;
+
+        foreach ($givenParts as $givenPart) {
+            foreach ($verifiedParts as $verifiedPart) {
+                $similarity = 0;
+                similar_text($givenPart, $verifiedPart, $similarity);
+                $maxSimilarity = max($maxSimilarity, $similarity);
+            }
+        }
+
+        return $maxSimilarity >= $threshold;
+    }
+
     /**
      * Verify a practitioner against the pharmacy board registry
      *
      * @param string $licenceNumber
      * @return array
      */
-    public function verifyPractitioner(string $licenceNumber): array
+    public function verifyPractitioner(string $licenceNumber,Request $request,$strict = false): array
     {
         $response = $this->makeRequest([
             'search_register' => 1,
@@ -72,6 +90,7 @@ class PharmacyBoardVerificationService
             ];
         }
 
+        //We can decide later if we want to reject expired licences
         if ($practitioner['status'] !== 'Active') {
             return [
                 'success' => false,
@@ -80,11 +99,23 @@ class PharmacyBoardVerificationService
             ];
         }
 
-        return [
-            'success' => true,
-            'message' => 'Practitioner verified successfully',
-            'data' => $practitioner
-        ];
+
+        $given_name = strtolower($request->get('name'));
+        $verified_name = strtolower($practitioner['name']);
+
+        if ($this->isNameMatch($given_name, $verified_name)) {
+            return [
+                'success' => true,
+                'message' => 'Practitioner verified successfully',
+                'data' => $practitioner
+            ];
+        } else {
+            return [
+                'success' => false,
+                'message' => "License number is valid but the name provided doesn't match the registered license holder. Please verify your details and try again.",
+                'data' => $practitioner
+            ];
+        }
     }
 
     /**

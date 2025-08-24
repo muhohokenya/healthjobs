@@ -61,7 +61,6 @@ const checkLicence = () => {
 
                                         id="licence_number"
                                         type="text"
-                                        required
                                         autofocus
                                         :tabindex="1"
                                         autocomplete="off"
@@ -145,7 +144,10 @@ const checkLicence = () => {
                                         autocomplete="email"
                                         name="email"
                                         placeholder="doctor@example.com"
-                                        class="h-12 w-full rounded-lg border-2 border-gray-200 bg-white/50 px-4 py-3 backdrop-blur-sm transition-all duration-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                                        class="h-12 w-full rounded-lg border-2
+                                        border-gray-200 bg-white/50 px-4 py-3 backdrop-blur-sm
+                                        outline-none
+                                         focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                                     />
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

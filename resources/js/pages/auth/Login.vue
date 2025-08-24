@@ -53,7 +53,7 @@ defineProps<{
                                     :tabindex="1"
                                     autocomplete="email"
                                     placeholder="doctor@example.com"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                                    class="w-full h-13 px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white/50 backdrop-blur-sm"
                                 />
                                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                     <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,7 +81,7 @@ defineProps<{
                                     :tabindex="2"
                                     autocomplete="current-password"
                                     placeholder="Enter your password"
-                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                                    class="w-full h-13 px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white/50 backdrop-blur-sm"
                                 />
                                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                     <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +103,13 @@ defineProps<{
                         <!-- Login Button -->
                         <Button
                             type="submit"
-                            class="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                            class="w-full py-3 bg-gradient-to-r from-blue-600
+                            to-purple-600 hover:from-blue-700
+                            hover:to-purple-700
+                             text-white font-semibold
+                             rounded-lg shadow-lg hover:shadow-xl
+                              disabled:opacity-50 disabled:cursor-not-allowed
+                              disabled:transform-none"
                             :tabindex="4"
                             :disabled="processing"
                         >

@@ -13,10 +13,12 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $user_id = 2;
-        $user = User::query()->find($user_id);
+        $user =  User::query()->create([
+            'name' => 'Administrator',
+            'email'=>'superadmin@gmail.com',
+            'password'=> bcrypt('w8?i1-3[GJ1('),
+        ]);
 
-//        $user->givePermissionTo('view-job-postings');
         $user->assignRole('super-admin');
 
 
