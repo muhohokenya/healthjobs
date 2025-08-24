@@ -1,30 +1,32 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
+import { Form } from '@inertiajs/vue3'
 
+const page = usePage();
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const props = defineProps({
+defineProps({
+    verification: Object,
     errors: Object,
 });
 
-
 onMounted(() => {
-    console.log(props);
-})
+    console.log(page.props);
+});
 
 const form = useForm({
-    name: '',
-    email: '',
-    licence_number: '',
-    contact_number: '',
-    location: '',
+    // name: '',
+    // email: '',
+    // licence_number: '',
+    // contact_number: '',
+    // location: '',
 
-    // name: 'TOSHA PHARMACY',
-    // email: 'tosha@gmail.com',
-    // licence_number: 'BU202502358',
-    // contact_number: '0711898122',
-    // location: 'Trans Nzoia',
+    name: 'TOSHA PHARMACY',
+    email: 'tosha@gmail.com',
+    licence_number: 'BU202502358',
+    contact_number: '0711898122',
+    location: 'Trans Nzoia',
 });
 </script>
 
@@ -49,13 +51,32 @@ const form = useForm({
                     </Link>
                 </div>
 
-                <form @submit.prevent="form.post(route('facilities.store'))" class="space-y-6 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800">
+
+
+                <Form action="/facilities/store"
+                      method="post"
+                      #default="{
+                        errors,
+                        hasErrors,
+                        processing,
+                        progress,
+                        wasSuccessful,
+                        recentlySuccessful,
+                        setError,
+                        clearErrors,
+                        resetAndClearErrors,
+                        defaults,
+                        isDirty,
+                        reset,
+                        submit,
+                      }"
+                      resetOnSuccess class="space-y-6 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800">
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <!-- Name -->
                         <div>
                             <label for="name" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Facility Name *</label>
                             <input
-                                v-model="form.name"
+                                value="TOSHA PHARMACY"
                                 type="text"
                                 name="name"
                                 id="name"
@@ -69,7 +90,7 @@ const form = useForm({
                         <div>
                             <label for="email" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Email *</label>
                             <input
-                                v-model="form.email"
+                                value="tosha@gmail.com"
                                 type="text"
                                 name="email"
                                 id="email"
@@ -80,16 +101,17 @@ const form = useForm({
                         </div>
                     </div>
 
-
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <!-- Licence -->
                         <div>
-                            <label for="licence_number" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Licence Number *</label>
+                            <label for="licence_number" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                >Licence Number *</label
+                            >
                             <input
-                                v-model="form.licence_number"
+                                value="BU202502358"
                                 type="text"
-                                name="name"
-                                id="name"
+                                name="licence_number"
+                                id="licence_number"
                                 placeholder="e.g. Name"
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             />
@@ -98,12 +120,13 @@ const form = useForm({
 
                         <!-- Licence -->
                         <div>
-                            <label for="licence_number" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Location *</label>
+                            <label for="location" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Location *</label>
                             <input
-                                v-model="form.location"
+
+                                value="Trans Nzoia"
                                 type="text"
-                                name="name"
-                                id="name"
+                                name="location"
+                                id="location"
                                 placeholder="e.g. Name"
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             />
@@ -112,12 +135,14 @@ const form = useForm({
 
                         <!-- email -->
                         <div>
-                            <label for="email" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Number *</label>
+                            <label for="contact_number" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                >Contact Number *</label
+                            >
                             <input
-                                v-model="form.contact_number"
+                                value="07124446767"
                                 type="text"
-                                name="email"
-                                id="email"
+                                name="contact_number"
+                                id="contact_number"
                                 placeholder="e.g. john@gmail.com."
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             />
@@ -128,7 +153,7 @@ const form = useForm({
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                         <button
                             type="submit"
-                            :disabled="form.processing"
+                            :disabled="processing"
                             class="flex w-full items-center justify-center rounded-lg bg-blue-600 px-6 py-2 text-lg font-semibold text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:opacity-50 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-400 dark:focus:ring-offset-gray-800"
                         >
                             <svg
@@ -148,7 +173,7 @@ const form = useForm({
                             {{ form.processing ? 'Creating Job...' : 'Create Facility' }}
                         </button>
                     </div>
-                </form>
+                </Form>
             </div>
         </div>
     </AppLayout>

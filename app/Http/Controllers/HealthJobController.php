@@ -5,11 +5,97 @@ namespace App\Http\Controllers;
 use App\Models\HealthJob;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use Symfony\Component\DomCrawler\Crawler;
 
 
 class HealthJobController extends Controller
 {
+
+    public function checkLicence(Request $request)
+    {
+        $validated = $request->validate([
+            'licence_number' => [
+                'required',
+                'size:12',
+                'regex:/^PT\d{4}[A-Z]\d{5}$/',
+                'unique:facilities,licence_number'
+            ],
+        ]);
+//        dd($validated);
+
+        $response = Http::asForm()->post('https://practice.pharmacyboardkenya.org/ajax/public', [
+            'search_register' => 1,
+            'cadre_id' => 4,
+            'search_text' => $validated['licence_number'],
+        ]);
+
+//        if (!$response->ok()) {
+//            return back()->withErrors([
+//                'licence_number' => 'License verification service is currently unavailable. Please try again later.'
+//            ]);
+//        }
+
+        $crawler = new Crawler($response->body());
+        $practitioner = null;
+
+        // Extract data from the first matching row
+        $crawler->filter('#datatable2 tbody tr')->each(function (Crawler $row) use (&$practitioner,$validated) {
+            if ($practitioner) return; // Skip if we already found a match
+
+            $name = trim($row->filter('td')->eq(0)->text());
+            $license = trim($row->filter('td')->eq(1)->text());
+            $statusValidity = trim($row->filter('td')->eq(2)->text());
+
+            // Parse status and expiry date
+            $words = explode(" ", $statusValidity);
+            $expiryDate = end($words);
+            $status = isset($words[1]) ? $words[1] : 'Unknown';
+
+
+            // Verify this is the correct license
+            if ($license === $validated['licence_number']) {
+                $practitioner = [
+                    'name' => $name,
+                    'licence_number' => $license,
+                    'expiry_date' => $expiryDate,
+                    'status' => $status,
+                ];
+            }
+        });
+
+        if (!$practitioner) {
+            return back()->withErrors([
+                'licence_number' => 'License number not found or invalid. Please check and try again.'
+            ]);
+        }
+
+        // Check if license is valid/active
+        if ($practitioner['status'] !== 'Active') {
+            return back()->withErrors([
+                'licence_number' => "License is {$practitioner['status']}. Only valid licenses can be used for registration."
+            ]);
+        }
+
+        dd($practitioner);
+
+        return to_route('register',[
+            'practitioner' => $practitioner,
+            'licence_verified' => true
+        ]);
+
+        // Return success with practitioner data
+        return Inertia::render('auth/Register',[
+            'practitioner' => $practitioner,
+            'licence_verified' => true
+        ]);
+
+
+    }
+
+
     public function index(Request $request): \Inertia\Response
     {
 //        Gate::authorize('viewAny', HealthJob::class);

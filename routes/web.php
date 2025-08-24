@@ -31,6 +31,8 @@ Route::middleware(['auth', 'permission:view-facilities'])->group(function () {
         });
 });
 
+Route::post('check-licence', [HealthJobController::class, 'checkLicence'])->name('check-licence');
+
 Route::middleware(['auth', 'permission:view-job-postings'])->group(function () {
     // Health Jobs routes (protected)
     Route::controller(HealthJobController::class)
