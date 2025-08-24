@@ -12,6 +12,58 @@ const page = usePage();
 const props = defineProps({
     flash: Object,
 });
+
+// Counties data
+const counties = [
+    { "name": "Baringo", "capital": "Kabarnet", "code": 30 },
+    { "name": "Bomet", "capital": "Bomet", "code": 36 },
+    { "name": "Bungoma", "capital": "Bungoma", "code": 39 },
+    { "name": "Busia", "capital": "Busia", "code": 40 },
+    { "name": "Elgeyo-Marakwet", "capital": "Iten", "code": 28 },
+    { "name": "Embu", "capital": "Embu", "code": 14 },
+    { "name": "Garissa", "capital": "Garissa", "code": 7 },
+    { "name": "Homa Bay", "capital": "Homa Bay", "code": 43 },
+    { "name": "Isiolo", "capital": "Isiolo", "code": 11 },
+    { "name": "Kajiado", "code": 34 },
+    { "name": "Kakamega", "capital": "Kakamega", "code": 37 },
+    { "name": "Kericho", "capital": "Kericho", "code": 35 },
+    { "name": "Kiambu", "capital": "Kiambu", "code": 22 },
+    { "name": "Kilifi", "capital": "Kilifi", "code": 3 },
+    { "name": "Kirinyaga", "capital": "Kerugoya/Kutus", "code": 20 },
+    { "name": "Kisii", "capital": "Kisii", "code": 45 },
+    { "name": "Kisumu", "capital": "Kisumu", "code": 42 },
+    { "name": "Kitui", "capital": "Kitui", "code": 15 },
+    { "name": "Kwale", "capital": "Kwale", "code": 2 },
+    { "name": "Laikipia", "capital": "Rumuruti", "code": 31 },
+    { "name": "Lamu", "capital": "Lamu", "code": 5 },
+    { "name": "Machakos", "capital": "Machakos", "code": 16 },
+    { "name": "Makueni", "capital": "Wote", "code": 17 },
+    { "name": "Mandera", "capital": "Mandera", "code": 9 },
+    { "name": "Marsabit", "capital": "Marsabit", "code": 10 },
+    { "name": "Meru", "capital": "Meru", "code": 12 },
+    { "name": "Migori", "capital": "Migori", "code": 44 },
+    { "name": "Mombasa", "capital": "Mombasa City", "code": 1 },
+    { "name": "Murang'a", "capital": "Murang'a", "code": 21 },
+    { "name": "Nairobi", "capital": "Nairobi City", "code": 47 },
+    { "name": "Nakuru", "capital": "Nakuru", "code": 32 },
+    { "name": "Nandi", "capital": "Kapsabet", "code": 29 },
+    { "name": "Narok", "capital": "Narok", "code": 33 },
+    { "name": "Nyamira", "capital": "Nyamira", "code": 46 },
+    { "name": "Nyandarua", "capital": "Ol Kalou", "code": 18 },
+    { "name": "Nyeri", "capital": "Nyeri", "code": 19 },
+    { "name": "Samburu", "capital": "Maralal", "code": 25 },
+    { "name": "Siaya", "capital": "Siaya", "code": 41 },
+    { "name": "Taita-Taveta", "capital": "Voi", "code": 6 },
+    { "name": "Tana River", "capital": "Hola", "code": 4 },
+    { "name": "Tharaka-Nithi", "capital": "Chuka", "code": 13 },
+    { "name": "Trans-Nzoia", "capital": "Kitale", "code": 26 },
+    { "name": "Turkana", "capital": "Lodwar", "code": 23 },
+    { "name": "Uasin Gishu", "capital": "Eldoret", "code": 27 },
+    { "name": "Vihiga", "capital": "Vihiga", "code": 38 },
+    { "name": "Wajir", "capital": "Wajir", "code": 8 },
+    { "name": "West Pokot", "capital": "Kapenguria", "code": 24 }
+];
+
 // const verification = computed(() => page.props.verification);
 const verificationSuccess = ref(null);
 const verificationMessage = ref(null);
@@ -38,7 +90,7 @@ const form = useForm({
     email: 'tosha@gmail.com',
     licence_number: 'BU202502358',
     contact_number: '0711898122',
-    location: 'Trans Nzoia',
+    location: 'TRANS-NZOIA',
 });
 </script>
 
@@ -130,7 +182,7 @@ const form = useForm({
                                 <span class="text-sm">Enter the facilitie's Licence exactly as registered under <b>PHARMACY AND POISONS BOARD</b> </span>
                             </div>
                             <input
-                                value="BU202502351"
+
                                 type="text"
                                 name="licence_number"
                                 id="licence_number"
@@ -146,7 +198,7 @@ const form = useForm({
                         <div class="mt-10">
                             <label for="email" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Email *</label>
                             <input
-                                value="tosha@gmail.com"
+
                                 type="text"
                                 name="email"
                                 id="email"
@@ -162,7 +214,7 @@ const form = useForm({
                         <div>
                             <label for="name" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Facility Name *</label>
                             <input
-                                value="TOSHA PHARMACY"
+
                                 type="text"
                                 name="name"
                                 id="name"
@@ -175,31 +227,37 @@ const form = useForm({
                         <!-- location -->
                         <div>
                             <label for="location" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Location *</label>
-                            <input
-                                value="Trans Nzoia"
-                                type="text"
+                            <select
                                 name="location"
                                 id="location"
-                                placeholder="e.g. Name"
-                                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
-                            />
+                                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                            >
+                                <option value="">Select County</option>
+                                <option
+                                    v-for="county in counties"
+                                    :key="county.code"
+                                    :value="county.name.toUpperCase()"
+                                >
+                                    {{ county.name.toUpperCase() }}
+                                </option>
+                            </select>
                             <div v-if="errors.location" class="mt-1 text-sm text-red-500">{{ errors.location }}</div>
                         </div>
 
-                        <!-- email -->
+                        <!-- contact number -->
                         <div>
                             <label for="contact_number" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                                >Contact Number *</label
+                            >Contact Number *</label
                             >
                             <input
-                                value="07124446767"
+
                                 type="text"
                                 name="contact_number"
                                 id="contact_number"
-                                placeholder="e.g. john@gmail.com."
+                                placeholder="e.g. 0711898122"
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             />
-                            <div v-if="errors.email" class="mt-1 text-sm text-red-500">{{ errors.email }}</div>
+                            <div v-if="errors.contact_number" class="mt-1 text-sm text-red-500">{{ errors.contact_number }}</div>
                         </div>
                     </div>
 

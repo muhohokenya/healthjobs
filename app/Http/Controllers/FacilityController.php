@@ -4,19 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Facility;
 use App\Services\PharmacyBoardVerificationService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Symfony\Component\DomCrawler\Crawler;
 
 
 class FacilityController extends Controller
 {
     public function __construct(
-        private PharmacyBoardVerificationService $verificationService
+        private readonly PharmacyBoardVerificationService $verificationService
     ) {
 
     }
@@ -36,17 +31,36 @@ class FacilityController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = \Validator::make($request->all(), [
             'licence_number' => [
                 'required',
                 'size:11',
                 'unique:facilities,licence_number'
             ],
-            'location'=>'required',
-            'name'=>'required',
-            'contact_number'=>['required','size:11','unique:facilities,contact_number'],
-            'email'=>['required','email','unique:facilities,email'],
+            'location' => 'required',
+            'name' => 'required',
+            'contact_number' => ['required','size:10','unique:facilities,contact_number'],
+            'email' => ['required','email','unique:facilities,email'],
         ]);
+
+        $validator->after(function ($validator) use ($request) {
+            $facilityData = $request->only(['licence_number','name','location','contact_number','email']);
+            $verification = $this->verificationService->verifyFacility($facilityData);
+
+
+
+            if ($verification['success'] === false) {
+                $validator->errors()->add(
+                    'licence_number',
+                    'No matching facility found in the registry with the Licence Number '.$request->licence_number
+                );
+            }
+        });
+
+
+
+        $validated = $validator->validate();
+
 
 
         $facilityData = [
@@ -60,8 +74,11 @@ class FacilityController extends Controller
 
 
 
+
+
         // Use the verification service
         $verification = $this->verificationService->verifyFacility($facilityData);
+
 
 
         $verification['message'] = 'No matching facility found in the registry with the Licence Number '.$validated['licence_number'];
@@ -70,7 +87,7 @@ class FacilityController extends Controller
                 'myVariable' => $verification['message'] ,
             ]);
         }else if ($verification['success']===true){
-//            Facility::query()->create($verification['data']);
+            Facility::query()->create($verification['data']);
             return to_route('facilities.index','',303);
         }
 
