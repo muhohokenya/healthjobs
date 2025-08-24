@@ -4,6 +4,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import { onMounted, ref } from 'vue';
 import { Form } from '@inertiajs/vue3';
 import { usePage } from '@inertiajs/vue3';
+import { Label } from '@/components/ui/label';
 
 const page = usePage();
 
@@ -116,22 +117,33 @@ const form = useForm({
                     class="space-y-6 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800"
                 >
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <!-- Name -->
+
+                        <!-- Licence -->
                         <div>
-                            <label for="name" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Facility Name *</label>
+                            <Label for="name" class="text-sm font-semibold text-gray-700">PBB License</Label>
+                            <!-- Medium - 32x32px -->
+                            <div class="flex items-center gap-3">
+                                <img
+                                    src="https://practice.pharmacyboardkenya.org/assets/img/gok_logo.png"
+                                    class="h-8 w-8 rounded-full object-cover"
+                                />
+                                <span class="text-sm">Enter the facilitie's Licence exactly as registered under <b>PHARMACY AND POISONS BOARD</b> </span>
+                            </div>
                             <input
-                                value="TOSHA PHARMACY"
+                                value="BU202502351"
                                 type="text"
-                                name="name"
-                                id="name"
+                                name="licence_number"
+                                id="licence_number"
                                 placeholder="e.g. Name"
-                                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                class="w-full mt-3 rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             />
-                            <div v-if="errors.name" class="mt-1 text-sm text-red-500">{{ errors.name }}</div>
+                            <div v-if="errors.licence_number" class="mt-1 text-sm text-red-500">{{ errors.licence_number }}</div>
                         </div>
 
+
+
                         <!-- email -->
-                        <div>
+                        <div class="mt-10">
                             <label for="email" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Contact Email *</label>
                             <input
                                 value="tosha@gmail.com"
@@ -146,23 +158,21 @@ const form = useForm({
                     </div>
 
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <!-- Licence -->
+                        <!-- Name -->
                         <div>
-                            <label for="licence_number" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                                >Licence Number *</label
-                            >
+                            <label for="name" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Facility Name *</label>
                             <input
-                                value="BU202502351"
+                                value="TOSHA PHARMACY"
                                 type="text"
-                                name="licence_number"
-                                id="licence_number"
+                                name="name"
+                                id="name"
                                 placeholder="e.g. Name"
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             />
-                            <div v-if="errors.licence_number" class="mt-1 text-sm text-red-500">{{ errors.licence_number }}</div>
+                            <div v-if="errors.name" class="mt-1 text-sm text-red-500">{{ errors.name }}</div>
                         </div>
 
-                        <!-- Licence -->
+                        <!-- location -->
                         <div>
                             <label for="location" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Location *</label>
                             <input

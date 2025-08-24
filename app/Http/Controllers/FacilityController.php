@@ -64,9 +64,10 @@ class FacilityController extends Controller
         $verification = $this->verificationService->verifyFacility($facilityData);
 
 
+        $verification['message'] = 'No matching facility found in the registry with the Licence Number '.$validated['licence_number'];
         if($verification['success']===false){
             return redirect(route('facilities.create'),303)->with([
-                'myVariable' => $verification['message'],
+                'myVariable' => $verification['message'] ,
             ]);
         }else if ($verification['success']===true){
 //            Facility::query()->create($verification['data']);
