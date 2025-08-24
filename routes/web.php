@@ -6,6 +6,7 @@ use App\Http\Controllers\RolesAndPermissionsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DashboardController;
+
 // Public routes
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -26,7 +27,7 @@ Route::middleware(['auth', 'permission:view-facilities'])->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('create', 'create')->name('create')->middleware('permission:create-facility');
-            Route::post('store', 'store')->name('store');
+            Route::post('store', 'store')->name('store')->middleware('permission:create-facility');
         });
 });
 
@@ -55,6 +56,7 @@ Route::middleware(['auth', 'roles:super-admin'])->group(function () {
             Route::get('roles/create', 'createRole')->name('roles.create');
         });
 });
+
 
 
 

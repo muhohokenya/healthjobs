@@ -50,6 +50,9 @@ const props = defineProps({
                         <p class="mb-3 text-sm text-gray-500 dark:text-gray-400">📍 {{ facility.location }}</p>
                         <p class="mb-3 text-sm text-gray-500 dark:text-gray-400">📍 {{ facility.email }}</p>
                         <p class="mb-3 text-sm text-gray-500 dark:text-gray-400">📍 {{ facility.contact_number }}</p>
+                        <p class="mb-3 text-sm text-gray-500 dark:text-gray-400">📍 {{ facility.licence_number }}</p>
+                        <p class="mb-3 text-sm text-gray-500 dark:text-gray-400">📍 {{ facility.licence_number_validity }}</p>
+                        <p class="mb-3 text-sm text-gray-500 dark:text-gray-400">📍 {{ facility.licence_expiry_date }}</p>
 
 
                         <div class="flex items-center justify-between">

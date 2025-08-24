@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->nullable();
-            $table->string('licence_number');
+            $table->string('licence_number')->unique();
+            $table->enum('licence_number_validity', ['active', 'inactive'])->default('inactive');
+            $table->date('licence_expiry_date');
             $table->string('contact_number')->nullable();
             $table->string('location');
             $table->timestamps();

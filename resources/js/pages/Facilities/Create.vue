@@ -1,18 +1,30 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps({
     errors: Object,
 });
 
+
+onMounted(() => {
+    console.log(props);
+})
+
 const form = useForm({
-    name: 'Outspan Hospital',
-    email: 'muhohodev@gmail.com',
-    licence_number: 'BU202502224',
-    contact_number: '0712666716',
-    location: 'Nyeri, Opposite Outspan Plaza',
+    name: '',
+    email: '',
+    licence_number: '',
+    contact_number: '',
+    location: '',
+
+    // name: 'TOSHA PHARMACY',
+    // email: 'tosha@gmail.com',
+    // licence_number: 'BU202502358',
+    // contact_number: '0711898122',
+    // location: 'Trans Nzoia',
 });
 </script>
 
