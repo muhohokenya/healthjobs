@@ -10,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type User } from '@/types';
+import { CheckCircle as CheckCircleIcon,BadgeIcon,BadgeCheckIcon } from 'lucide-vue-next'
+
 
 interface Props {
     mustVerifyEmail: boolean;
@@ -38,7 +40,9 @@ const user = page.props.auth.user as User;
 
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
-                <HeadingSmall title="Profile information" description="Update your name and email address" />
+                <HeadingSmall title="Profile information"  description="Update your name and email address" >
+                    <CheckCircleIcon class="w-5 h-5 text-red-800" />text-gray-800
+                </HeadingSmall>
 
                 <Form method="patch" :action="route('profile.update')" class="space-y-6" v-slot="{ errors, processing, recentlySuccessful }">
                     <div class="grid gap-2">
@@ -50,30 +54,31 @@ const user = page.props.auth.user as User;
                             :default-value="user.name"
                             required
                             autocomplete="name"
-                            placeholder="Full name"
+                            placeholder="Full Name"
                         />
                         <InputError class="mt-2" :message="errors.name" />
                     </div>
 
                     <div class="grid gap-2">
-<!--                        <img-->
-<!--                            src="https://practice.pharmacyboardkenya.org/assets/img/gok_logo.png"-->
-<!--                            class="h-8 w-8 rounded-full object-cover"-->
-<!--                        />-->
                         <Label for="licence">Licence</Label>
 
-                        <Input
-                            id="licence"
-                            class="mt-1 block w-full"
-                            name="licence"
-                            :default-value="user.licence"
-                            required
-                            autocomplete="licence"
-                            :placeholder="license_pattern"
-                        />
+                        <div class="relative">
+                            <Input
+                                :disabled="user.licence_number!=''"
+                                id="licence"
+                                class="mt-1 block w-full pr-10"
+                                name="licence"
+                                :default-value="user.licence_number"
+                                autocomplete="licence"
+                                :placeholder="license_pattern"
+                            />
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <BadgeCheckIcon v-if="user.licence_number" class="w-4 h-4 text-green-500" />
+                                <BadgeIcon v-else class="w-4 h-4 text-red-500" />
+                            </div>
+                        </div>
                         <small>This will increase your trust with the employers</small>
                     </div>
-
                     <div class="grid gap-2">
                         <Label for="email">Email address</Label>
                         <Input

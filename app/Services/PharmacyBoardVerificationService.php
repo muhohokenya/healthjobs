@@ -11,7 +11,7 @@ class PharmacyBoardVerificationService
 {
     private const BASE_URL = 'https://practice.pharmacyboardkenya.org/ajax/public';
     private const FACILITY_CADRE = 'Facilities';
-    private const PRACTITIONER_CADRE = 2;
+    private const PRACTITIONER_CADRE = 4;
 
     /**
      * Verify a facility against the pharmacy board registry
@@ -81,6 +81,9 @@ class PharmacyBoardVerificationService
         }
 
         $practitioner = $this->parsePractitionerResponse($response['data'], $licenceNumber);
+
+
+
 
         if (!$practitioner) {
             return [

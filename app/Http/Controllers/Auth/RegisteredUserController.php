@@ -17,12 +17,6 @@ use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
-
-    public function __construct(
-        private readonly PharmacyBoardVerificationService $verificationService
-    ) {
-
-    }
     /**
      * Show the registration page.
      */

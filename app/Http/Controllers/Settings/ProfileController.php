@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Services\PharmacyBoardVerificationService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +14,11 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+    public function __construct(
+        private readonly PharmacyBoardVerificationService $verificationService
+    ) {
+
+    }
     /**
      * Show the user's profile settings page.
      */
@@ -33,6 +39,21 @@ class ProfileController extends Controller
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+        }
+
+        $licence_number = $request->get('licence');
+
+
+        $verification = $this->verificationService->verifyPractitioner($licence_number,$request,false);
+
+
+        if($verification['success']){
+            $user = $request->user();
+            $user->licence_number = $verification['data']['licence_number'];
+            $user->licence_number_expiry = $verification['data']['expiry_date'];
+            $user->name = $verification['data']['name'];
+            $user->licence_status = $verification['data']['status'];
+            // Note: save() is called outside this block, so these changes will be persisted
         }
 
         $request->user()->save();

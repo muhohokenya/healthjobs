@@ -103,13 +103,12 @@ defineProps<{
                         <!-- Login Button -->
                         <Button
                             type="submit"
-                            class="w-full py-3 bg-gradient-to-r from-blue-600
-                            to-purple-600 hover:from-blue-700
-                            hover:to-purple-700
+                            class="w-full h-13 py-3 bg-gradient-to-r from-blue-600
+
                              text-white font-semibold
-                             rounded-lg shadow-lg hover:shadow-xl
+                             rounded-lg shadow-lg
                               disabled:opacity-50 disabled:cursor-not-allowed
-                              disabled:transform-none"
+                              "
                             :tabindex="4"
                             :disabled="processing"
                         >

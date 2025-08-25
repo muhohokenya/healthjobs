@@ -4,12 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { User } from 'lucide-vue-next';
+import { BadgeIcon, User } from 'lucide-vue-next';
 
 const sidebarNavItems: NavItem[] = [
     {
         title: 'Profile',
         href: '/settings/profile',
+        icon: BadgeIcon,
     },
     {
         title: 'Password',
@@ -22,7 +23,7 @@ const sidebarNavItems: NavItem[] = [
     {
         title: 'Role',
         href: '/settings/roles',
-        icon: User
+        icon: User,
     },
 ];
 

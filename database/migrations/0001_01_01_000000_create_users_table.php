@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('licence_number')->nullable();
             $table->date('licence_number_expiry')->nullable();
+            $table->enum('licence_status', ['active', 'inactive'])->default('inactive');
             $table->rememberToken();
             $table->timestamps();
         });
