@@ -24,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'selected_role',
     ];
 
     /**
@@ -47,5 +48,35 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    public function isProfileComplete(): bool
+    {
+        // basic fields on users table
+        if (empty($this->name) || empty($this->email)) {
+            return false;
+        }
+
+        // if jobseeker, check profile details
+        if ($this->hasRole('jobseeker')) {
+            $profile = $this->profile;
+
+            if (!$profile) {
+                return false;
+            }
+
+            return !empty($profile->profession)
+                && !empty($profile->years_experience)
+                && !empty($profile->location);
+            // license is optional
+        }
+
+        // employers only need name + email for now
+        return true;
     }
 }

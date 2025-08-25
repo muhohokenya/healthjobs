@@ -47,90 +47,20 @@ const checkLicence = () => {
                         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                             <!-- Licence Field -->
                             <div class="space-y-2">
-                                <Label for="name" class="text-sm font-semibold text-gray-700">PBB License</Label>
-                                <!-- Medium - 32x32px -->
-                                <div class="flex items-center gap-3">
-                                    <img
-                                        src="https://practice.pharmacyboardkenya.org/assets/img/gok_logo.png"
-                                        class="h-8 w-8 rounded-full object-cover"
-                                    />
-                                    <span class="text-sm">Enter your <b>PHARMACY AND POISONS BOARD</b> Licence</span>
+                                <div class="">
+                                    <label for="role" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Role *</label>
+                                    <select
+                                        name="role"
+                                        id="role"
+                                        class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                    >
+                                        <option value="job-seeker">I am a Jobseeker (Medic)</option>
+                                        <option value="recruiter">I am an Employer (Facility/Recruiter)</option>
+                                    </select>
+<!--                                    <div v-if="errors.location" class="mt-1 text-sm text-red-500">{{ errors.location }}</div>-->
                                 </div>
-                                <div class="relative">
-                                    <Input
-
-                                        id="licence_number"
-                                        type="text"
-                                        autofocus
-                                        :tabindex="1"
-                                        autocomplete="off"
-                                        name="licence_number"
-                                        placeholder="PT20***** MUST BE 12 characters long"
-                                        class="h-12 w-full rounded-lg border-2 border-gray-200 bg-white/50 px-4 py-3 backdrop-blur-sm transition-all duration-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                                    />
-                                    <small class="ml-2 text-red-400">Please Note that this will be verified againsts the PPB Register</small>
-                                    <div v-if="errors.licence_number" class="mt-1 text-sm text-red-500">{{ errors.licence_number }}</div>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                        <svg class=" w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                            ></path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <InputError :message="errors.name" />
                             </div>
 
-<!--                            &lt;!&ndash; Email Field &ndash;&gt;-->
-<!--                            <div class="space-y-2">-->
-<!--                                <Button-->
-<!--                                    type="button"-->
-<!--                                    @click="checkLicence"-->
-<!--                                    class="mt-16 h-12 w-full rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-200 hover:from-blue-700 hover:to-purple-700 hover:shadow-xl disabled:transform-none disabled:cursor-not-allowed disabled:opacity-50"-->
-<!--                                    tabindex="5"-->
-<!--                                    :disabled="processing"-->
-<!--                                >-->
-<!--                                    <LoaderCircle v-if="processing" class="mr-2 h-5 w-5 animate-spin" />-->
-<!--                                    <span v-if="!processing">Check Licence</span>-->
-<!--                                    <span v-else>Check...</span>-->
-<!--                                </Button>-->
-<!--                            </div>-->
-                        </div>
-                    </div>
-                    <div class="space-y-6">
-                        <!-- First Row: Name and Email -->
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                            <!-- Name Field -->
-                            <div class="space-y-2">
-                                <Label for="name" class="text-sm font-semibold text-gray-700">Full Name</Label>
-                                <div class="relative">
-                                    <Input
-                                        id="name"
-                                        type="text"
-                                        required
-                                        autofocus
-                                        :tabindex="1"
-                                        autocomplete="off"
-                                        name="name"
-                                        placeholder="Dr. John Doe"
-                                        class="h-12 w-full rounded-lg border-2 border-gray-200 bg-white/50 px-4 py-3 backdrop-blur-sm transition-all duration-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                                    />
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                            ></path>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <InputError :message="errors.name" />
-                            </div>
 
                             <!-- Email Field -->
                             <div class="space-y-2">
@@ -162,6 +92,16 @@ const checkLicence = () => {
                                 </div>
                                 <InputError :message="errors.email" />
                             </div>
+
+
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <!-- First Row: Name and Email -->
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+
+
                         </div>
 
                         <!-- Second Row: Password and Confirm Password -->

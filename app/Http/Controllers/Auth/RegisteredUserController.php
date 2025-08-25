@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -38,44 +39,14 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
 
+
         $validator = \Validator::make($request->all(),[
-            'licence_number' => [
-                'nullable',
-                'size:11',
-                'unique:facilities,licence_number'
-            ],
-            'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $validator->after(function ($validator) use ($request) {
-            $practitionerLicence = $request->only(['licence_number']);
-
-            $licence_number = $request->only('licence_number')['licence_number'];
-
-            if ($licence_number!==null) {
-                $verification = $this->verificationService->verifyPractitioner($practitionerLicence['licence_number'],
-                $request,false
-                );
-
-
-                if ($verification['success'] === false) {
-                    $validator->errors()->add(
-                        'licence_number',
-                        'No matching facility found in the registry with the Licence Number '.$request->licence_number
-                    );
-                }
-            }
-
-
-
-        });
-        $validated = $validator->validate();
-
-        $licence_number = $validated['licence_number'];
-
         $payload = [
+            'selected_role'=>$request->get('role'),
             'licence_number'=>'',
             'name' => '',
             'expiry_date' => '',
@@ -83,38 +54,17 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ];
 
-        if ($licence_number!==null) {
-            $verification = $this->verificationService->verifyPractitioner($licence_number,$request,false);
-
-            $payload['licence_number'] = $verification['data']['licence_number'];
-            $payload['name'] = $verification['data']['name'];
-            $payload['expiry_date'] = $verification['data']['expiry_date'];
-
-
-            if ($verification['success'] === false) {
-                dd("I am just an intern I don't have a licence number ");
-                $name = $validated['name'];
-                $licence_number = '';// We assume you don't have a licence yet
-            }else{
-                $name = $validated['name'];
-                $licence_number = $verification['data']['licence_number'];
-            }
-        }else{
-
-            $payload['licence_number'] = '';
-            $payload['name'] = $validated['name'];
-            $payload['expiry_date'] = '';
-
-        }
 
         $user = User::create($payload);
 
-        $user->givePermissionTo('access-dashboard');
+        $role = $request->get('role');
+
+        $user->assignRole($role);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return to_route('dashboard');
+        return to_route('profile.update');
     }
 }

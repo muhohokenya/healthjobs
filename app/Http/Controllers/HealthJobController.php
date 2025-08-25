@@ -98,29 +98,33 @@ class HealthJobController extends Controller
 
     public function index(Request $request): \Inertia\Response
     {
-//        Gate::authorize('viewAny', HealthJob::class);
+        $user = auth()->user();
+
+        $isProfileComplete = $user?->isProfileComplete() ?? false;
+
         $jobs = HealthJob::query()
             ->when($request->search, function ($query, $search) {
                 $query->where('title', 'like', "%{$search}%")
                     ->orWhere('company', 'like', "%{$search}%")
                     ->orWhere('location', 'like', "%{$search}%");
             })
-            ->when($request->job_type, function ($query, $jobType) {
-                $query->where('job_type', $jobType);
-            })
-            ->when($request->experience_level, function ($query, $level) {
-                $query->where('experience_level', $level);
-            })
+            ->when($request->job_type, fn($query, $jobType) => $query->where('job_type', $jobType))
+            ->when($request->experience_level, fn($query, $level) => $query->where('experience_level', $level))
             ->where('is_active', true)
             ->orderBy('created_at', 'desc')
             ->paginate(12)
             ->withQueryString();
 
-
         return Inertia::render('HealthJobs/Index', [
             'jobs' => $jobs,
             'filters' => $request->only(['search', 'job_type', 'experience_level']),
+            'isProfileComplete' => $isProfileComplete,
         ]);
+    }
+
+    public function isProfileComplete()
+    {
+
     }
 
     public function create()
