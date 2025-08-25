@@ -3,11 +3,7 @@
 <Label for="name" class="text-sm font-semibold text-gray-700">PBB License</Label>
 <!-- Medium - 32x32px -->
 <div class="flex items-center gap-3">
-    <img
-        src="https://practice.pharmacyboardkenya.org/assets/img/gok_logo.png"
-        class="h-8 w-8 rounded-full object-cover"
-    />
-    <span class="text-sm">Enter your <b>PHARMACY AND POISONS BOARD</b> Licence</span>
+
 </div>
 <div class="relative">
     <Input

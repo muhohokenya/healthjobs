@@ -18,6 +18,9 @@ interface Props {
 
 defineProps<Props>();
 
+const year = new Date(Date.now()).getFullYear();
+const license_pattern:string = 'PT'+ year +'****'
+
 const breadcrumbItems: BreadcrumbItem[] = [
     {
         title: 'Profile settings',
@@ -50,6 +53,25 @@ const user = page.props.auth.user as User;
                             placeholder="Full name"
                         />
                         <InputError class="mt-2" :message="errors.name" />
+                    </div>
+
+                    <div class="grid gap-2">
+<!--                        <img-->
+<!--                            src="https://practice.pharmacyboardkenya.org/assets/img/gok_logo.png"-->
+<!--                            class="h-8 w-8 rounded-full object-cover"-->
+<!--                        />-->
+                        <Label for="licence">Licence</Label>
+
+                        <Input
+                            id="licence"
+                            class="mt-1 block w-full"
+                            name="licence"
+                            :default-value="user.licence"
+                            required
+                            autocomplete="licence"
+                            :placeholder="license_pattern"
+                        />
+                        <small>This will increase your trust with the employers</small>
                     </div>
 
                     <div class="grid gap-2">
