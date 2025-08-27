@@ -30,48 +30,75 @@ class ProfileController extends Controller
         ]);
     }
 
+
     /**
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $licence_number = $request->get('licence');
+        $licenceNumber = $request->get('licence');
 
-
-        if($licence_number!=null) {
-
-            $speciality = $request->get('speciality');
-            if ($speciality == 'nurse') {
-                $verification = $this->verificationService->verifyNurse($licence_number);
-
-                dd($verification);
+        if ($licenceNumber) {
+            $verificationResult = $this->handleLicenceVerification($request, $licenceNumber);
+            if (!$verificationResult['success']) {
+                return $this->redirectWithError($verificationResult['message']);
             }
-            // Verify the licence with Pharmacy Poisons Board
-            $verification = $this->verificationService->verifyPractitioner($licence_number,$request,false);
 
-            if($verification['success']){
-                $user = $request->user();
-                $user->licence_number = $verification['data']['licence_number'];
-                $user->licence_number_expiry = $verification['data']['expiry_date'];
-                $user->name = $verification['data']['name']; //FULL NAME AS REGISTERED BY PBB
-                $user->licence_status = $verification['data']['status'];
-            }else{
-                $request->session()->forget('flashMessage');
-                return redirect(route('profile.edit'),303)->with(
-                    'flashMessage', $verification['message']
-                );
-            }
+            $this->updateUserLicenceData($user, $verificationResult['data']);
         }
 
-        $request->user()->save();
+        $user->save();
 
         return to_route('profile.edit');
+    }
+
+    /**
+     * Handle licence verification based on speciality
+     */
+    private function handleLicenceVerification(ProfileUpdateRequest $request, string $licenceNumber): array
+    {
+        $speciality = $request->get('speciality');
+
+        if ($speciality === 'nurse') {
+            return $this->verificationService->verifyNurse($licenceNumber,$request);
+        } else if ($speciality === 'pharmacist') {
+            // Verify the licence with Pharmacy Poisons Board
+            return $this->verificationService->verifyPractitioner($licenceNumber, $request, false);
+        }
+
+        return [
+            'success' => false,
+            'message' => "There was an error verifying your licence number.",
+        ];
+
+    }
+
+    /**
+     * Update user with verified licence data
+     */
+    private function updateUserLicenceData($user, array $licenceData): void
+    {
+        $user->licence_number = $licenceData['licence_number'];
+        $user->licence_number_expiry = $licenceData['expiry_date'];
+        $user->name = $licenceData['name']; // FULL NAME AS REGISTERED BY PBB
+        $user->licence_status = $licenceData['status'];
+    }
+
+    /**
+     * Redirect with error message
+     */
+    private function redirectWithError(string $message): RedirectResponse
+    {
+        session()->forget('flashMessage');
+
+        return redirect(route('profile.edit'), 303)->with('flashMessage', $message);
     }
 
     /**

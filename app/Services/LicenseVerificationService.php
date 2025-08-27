@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 
 class LicenseVerificationService
 {
-    private const BASE_URL = 'https://practice.pharmacyboardkenya.org/ajax/public';
+    private const POISONS_BOARD_URL = 'https://practice.pharmacyboardkenya.org/ajax/public';
     private const NCK_URL = 'https://portal.clinicalofficerscouncil.org/ajax/public';
     private const FACILITY_CADRE = 'Facilities';
     private const PRACTITIONER_CADRE = 4;
@@ -119,12 +119,13 @@ class LicenseVerificationService
 
 
     /**
-     * Updated verifyNurse method with parsing
+     * Updated verifyNurse method with name matching
      *
      * @param string $licence
+     * @param Request $request
      * @return array
      */
-    public function verifyNurse(string $licence): array
+    public function verifyNurse(string $licence, Request $request): array
     {
         // Step 1: Get headers
         $headerData = $this->getNCKHeaders();
@@ -167,15 +168,37 @@ class LicenseVerificationService
             if (!$nurseData) {
                 return [
                     'success' => false,
-                    'message' => 'Nurse not found'
+                    'message' => 'License number not found or invalid',
+                    'data' => null
                 ];
             }
 
-            return [
-                'success' => true,
-                'message' => 'Nurse found',
-                'data' => $nurseData
-            ];
+            // Check if license is active
+            if ($nurseData['status'] !== 'Active') {
+                return [
+                    'success' => false,
+                    'message' => "License is {$nurseData['status']}. Only active licenses are valid",
+                    'data' => $nurseData
+                ];
+            }
+
+            // Step 4: Check name match
+            $givenName = strtolower($request->get('name'));
+            $verifiedName = strtolower($nurseData['name']);
+
+            if ($this->isNameMatch($givenName, $verifiedName)) {
+                return [
+                    'success' => true,
+                    'message' => 'Nurse verified successfully',
+                    'data' => $nurseData
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'message' => "License number valid, but name doesn't match registered holder. Verify details and try again.",
+                    'data' => $nurseData
+                ];
+            }
 
         } catch (\Exception $e) {
             return [
@@ -238,7 +261,7 @@ class LicenseVerificationService
 public
 function verifyPractitioner(string $licenceNumber, Request $request, $strict = false): array
 {
-    $response = $this->makeRequest(self::BASE_URL, [
+    $response = $this->makeRequest(self::POISONS_BOARD_URL, [
         'search_register' => 1,
         'cadre_id' => self::PRACTITIONER_CADRE,
         'search_text' => $licenceNumber,
