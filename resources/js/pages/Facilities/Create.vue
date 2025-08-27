@@ -107,7 +107,7 @@ const form = useForm({
                 </div>
 
                 <!-- Error Banner -->
-                <div v-if="$page.props.flash.myVariable" class="mb-6">
+                <div v-if="$page.props.flash.flashMessage" class="mb-6">
                     <div
                         class="rounded-md border border-red-300 bg-red-50 p-4 text-red-800 shadow-sm dark:border-red-700 dark:bg-red-900 dark:text-red-200"
                     >
@@ -130,7 +130,7 @@ const form = useForm({
 
                             <!-- Message -->
                             <span class="ml-2 font-medium">
-                {{ $page.props.flash.myVariable }}
+                {{ $page.props.flash.flashMessage }}
             </span>
                         </div>
                     </div>

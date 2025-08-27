@@ -39,9 +39,10 @@ class HandleInertiaRequests extends Middleware
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
+
         return [
             'flash' => [
-                'myVariable' => fn () => $request->session()->get('myVariable'),
+                'flashMessage' => fn () => $request->session()->get('flashMessage'),
             ],
             ...parent::share($request),
             'name' => config('app.name'),

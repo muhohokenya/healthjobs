@@ -4,22 +4,6 @@ import { useAuth } from '@/utils/auth';
 import { Head, useForm } from '@inertiajs/vue3';
 const user = useAuth();
 
-// Vacancy: Pharmaceutical Technologist
-// Location: Futuremed Hospital, Baraka Towers, Pangani – Nairobi
-//
-// Futuremed Hospital is seeking a qualified Pharmaceutical Technologist to join our team.
-//
-//     Requirements:
-// •⁠  ⁠Qualification in Pharmaceutical studies
-// •⁠  ⁠Valid license from the Pharmacy and Poisons Board
-// •⁠  ⁠At least 3 years’ experience in a hospital or retail pharmacy
-// •⁠  ⁠Strong communication and customer service skills
-//
-// Responsibilities:
-//     •⁠  ⁠Dispense medication accurately
-// •⁠  ⁠Advise patients on proper drug use
-// •⁠  ⁠Manage inventory and ensure drug safety compliance
-
 const form = useForm({
     avatar:'',
     title: 'Pharmaceutical Technologist',

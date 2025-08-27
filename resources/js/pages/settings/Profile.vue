@@ -10,18 +10,44 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type User } from '@/types';
-import { CheckCircle as CheckCircleIcon,BadgeIcon,BadgeCheckIcon } from 'lucide-vue-next'
+import { CheckCircle as CheckCircleIcon, BadgeIcon, BadgeCheckIcon } from 'lucide-vue-next';
+import { computed, onMounted, watch } from 'vue';
+import Swal from 'sweetalert2'; // Add this import
 
 
+const page = usePage();
 interface Props {
     mustVerifyEmail: boolean;
     status?: string;
+    flash: object;
 }
 
+const message = computed(() => page.props.flash.flashMessage);
+
 defineProps<Props>();
+// const message = "test"
+
+// Watch for changes in the message
+watch(
+    message,
+    (newMessage, oldMessage) => {
+        // Only show if there's a new message and it's different from the previous one
+        if (newMessage && newMessage !== oldMessage) {
+            Swal.fire({
+                text: newMessage, // Use the actual message text
+                icon: 'error',
+                toast: true,
+                showConfirmButton: false,
+                position: 'top-right',
+                timer: 3500,
+            });
+        }
+    },
+    { immediate: false },
+);
 
 const year = new Date(Date.now()).getFullYear();
-const license_pattern:string = 'PT'+ year +'****'
+const license_pattern: string = 'PT' + year + '****';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -30,7 +56,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
     },
 ];
 
-const page = usePage();
+
 const user = page.props.auth.user as User;
 </script>
 
@@ -38,10 +64,12 @@ const user = page.props.auth.user as User;
     <AppLayout :breadcrumbs="breadcrumbItems">
         <Head title="Profile settings" />
 
+
+
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
-                <HeadingSmall title="Profile information"  description="Update your name and email address" >
-                    <CheckCircleIcon class="w-5 h-5 text-red-800" />text-gray-800
+                <HeadingSmall title="Profile information" description="Update your name and email address">
+                    <CheckCircleIcon class="h-5 w-5 text-red-800" />text-gray-800
                 </HeadingSmall>
 
                 <Form method="patch" :action="route('profile.update')" class="space-y-6" v-slot="{ errors, processing, recentlySuccessful }">
@@ -58,27 +86,53 @@ const user = page.props.auth.user as User;
                         />
                         <InputError class="mt-2" :message="errors.name" />
                     </div>
-
-                    <div class="grid gap-2">
-                        <Label for="licence">Licence</Label>
-
-                        <div class="relative">
-                            <Input
-                                :disabled="user.licence_number!=''"
-                                id="licence"
-                                class="mt-1 block w-full pr-10"
-                                name="licence"
-                                :default-value="user.licence_number"
-                                autocomplete="licence"
-                                :placeholder="license_pattern"
-                            />
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <BadgeCheckIcon v-if="user.licence_number" class="w-4 h-4 text-green-500" />
-                                <BadgeIcon v-else class="w-4 h-4 text-red-500" />
-                            </div>
+                    <section v-if="user.roles[0].name === 'job-seeker'">
+                        <div class="">
+                            <label for="speciality" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Speciality *</label>
+                            <select
+                                name="speciality"
+                                id="speciality"
+                                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                required
+                            >
+                                <option value="">Select speciality</option>
+                                <option value="clinician">Clinician</option>
+                                <option value="pharmacist">Pharmacist</option>
+                                <option value="nurse">Nurse</option>
+                                <option value="doctor">Doctor</option>
+                                <option value="dentist">Dentist</option>
+                                <option value="med-lab-technician">Medical Lab technician</option>
+                            </select>
                         </div>
-                        <small>This will increase your trust with the employers</small>
-                    </div>
+
+                        <div class="mt-6 grid gap-2">
+                            <!--                                    :default-value="user.licence_number"-->
+                            <div class="relative">
+                                <Label for="licence">Licence</Label>
+                                <Input
+                                    :disabled="user.licence_number != ''"
+                                    id="licence"
+                                    class="mt-1 block w-full pr-10"
+                                    name="licence"
+                                    :default-value="514923"
+                                    autocomplete="licence"
+                                    :placeholder="license_pattern"
+                                />
+                                <span>{{ page.props.errors.licence }}</span>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                    <BadgeCheckIcon v-if="user.licence_number" class="h-4 w-4 text-green-500" />
+                                    <BadgeIcon v-else class="h-4 w-4 text-red-500" />
+                                </div>
+
+                                <small>This will increase your trust with the employers</small>
+                            </div>
+
+
+                            <small class="ml-2 font-medium text-red-300">
+                                {{ $page.props.flash.flashMessage }}
+                            </small>
+                        </div>
+                    </section>
                     <div class="grid gap-2">
                         <Label for="email">Email address</Label>
                         <Input

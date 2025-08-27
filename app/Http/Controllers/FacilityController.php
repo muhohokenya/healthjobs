@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Facility;
-use App\Services\PharmacyBoardVerificationService;
+use App\Services\LicenseVerificationService;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,10 +12,19 @@ use Inertia\Inertia;
 class FacilityController extends Controller
 {
     public function __construct(
-        private readonly PharmacyBoardVerificationService $verificationService
+        private readonly LicenseVerificationService $verificationService
     ) {
 
     }
+
+    /**
+     * @throws ConnectionException
+     */
+    function craw()
+    {
+        dd($this->verificationService->bookFlight());
+    }
+
     public function index()
     {
         return Inertia::render('Facilities/Index', [
@@ -84,7 +94,7 @@ class FacilityController extends Controller
         $verification['message'] = 'No matching facility found in the registry with the Licence Number '.$validated['licence_number'];
         if($verification['success']===false){
             return redirect(route('facilities.create'),303)->with([
-                'myVariable' => $verification['message'] ,
+                'flashMessage' => $verification['message'] ,
             ]);
         }else if ($verification['success']===true){
             Facility::query()->create($verification['data']);

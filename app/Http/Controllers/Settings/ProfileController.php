@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
-use App\Services\PharmacyBoardVerificationService;
+use App\Services\LicenseVerificationService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ use Inertia\Response;
 class ProfileController extends Controller
 {
     public function __construct(
-        private readonly PharmacyBoardVerificationService $verificationService
+        private readonly LicenseVerificationService $verificationService
     ) {
 
     }
@@ -44,16 +44,29 @@ class ProfileController extends Controller
         $licence_number = $request->get('licence');
 
 
-        $verification = $this->verificationService->verifyPractitioner($licence_number,$request,false);
+        if($licence_number!=null) {
 
+            $speciality = $request->get('speciality');
+            if ($speciality == 'nurse') {
+                $verification = $this->verificationService->verifyNurse($licence_number);
 
-        if($verification['success']){
-            $user = $request->user();
-            $user->licence_number = $verification['data']['licence_number'];
-            $user->licence_number_expiry = $verification['data']['expiry_date'];
-            $user->name = $verification['data']['name'];
-            $user->licence_status = $verification['data']['status'];
-            // Note: save() is called outside this block, so these changes will be persisted
+                dd($verification);
+            }
+            // Verify the licence with Pharmacy Poisons Board
+            $verification = $this->verificationService->verifyPractitioner($licence_number,$request,false);
+
+            if($verification['success']){
+                $user = $request->user();
+                $user->licence_number = $verification['data']['licence_number'];
+                $user->licence_number_expiry = $verification['data']['expiry_date'];
+                $user->name = $verification['data']['name']; //FULL NAME AS REGISTERED BY PBB
+                $user->licence_status = $verification['data']['status'];
+            }else{
+                $request->session()->forget('flashMessage');
+                return redirect(route('profile.edit'),303)->with(
+                    'flashMessage', $verification['message']
+                );
+            }
         }
 
         $request->user()->save();

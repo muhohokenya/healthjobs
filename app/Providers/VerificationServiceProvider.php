@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\PharmacyBoardVerificationService;
+use App\Services\LicenseVerificationService;
 use Illuminate\Support\ServiceProvider;
 
 class VerificationServiceProvider extends ServiceProvider
@@ -12,12 +12,12 @@ class VerificationServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(PharmacyBoardVerificationService::class, function ($app) {
-            return new PharmacyBoardVerificationService();
+        $this->app->singleton(LicenseVerificationService::class, function ($app) {
+            return new LicenseVerificationService();
         });
 
         // Optional: Create an alias for easier access
-        $this->app->alias(PharmacyBoardVerificationService::class, 'pharmacy.verification');
+        $this->app->alias(LicenseVerificationService::class, 'pharmacy.verification');
     }
 
     /**

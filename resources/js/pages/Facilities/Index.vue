@@ -2,8 +2,8 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { useAuth } from '@/utils/auth';
-import { Plus, MapPin, Mail, Phone, FileText, Calendar, Eye, Building2, Badge, BadgeMinus, AlertTriangle, BadgeCheck } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { Plus, MapPin, Mail, Phone, FileText, Calendar, Eye, Building2, BadgeMinus, AlertTriangle, BadgeCheck } from 'lucide-vue-next';
+
 
 const user = useAuth();
 

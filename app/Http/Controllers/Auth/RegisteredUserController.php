@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\PharmacyBoardVerificationService;
+use App\Services\LicenseVerificationService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -35,12 +35,15 @@ class RegisteredUserController extends Controller
 
 
         $validator = \Validator::make($request->all(),[
+            'role' => ['required', 'string'],
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $selected_role = $request->get('role');
+
         $payload = [
-            'selected_role'=>$request->get('role'),
+            'selected_role'=>$selected_role,
             'licence_number'=>'',
             'name' => '',
             'expiry_date' => '',
@@ -51,9 +54,7 @@ class RegisteredUserController extends Controller
 
         $user = User::create($payload);
 
-        $role = $request->get('role');
-
-        $user->assignRole($role);
+        $user->assignRole($selected_role);
 
         event(new Registered($user));
 
