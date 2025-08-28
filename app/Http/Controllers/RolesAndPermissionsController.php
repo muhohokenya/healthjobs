@@ -20,6 +20,14 @@ class RolesAndPermissionsController extends Controller
         ]);
     }
 
+    public function map(){
+        return Inertia::render('iam/Map', [
+            'permissions' => Permission::all(),
+            'roles' => Role::query()->with('permissions')->get(),
+            'user' =>User::with('roles.permissions')->get(),
+        ]);
+    }
+
     public function roles()
     {
         return Inertia::render('iam/Roles', [
@@ -70,5 +78,19 @@ class RolesAndPermissionsController extends Controller
 
         self::sendWelcomeEmail($user);
 
+    }
+
+    #[NoReturn]
+    public function update(Request $request){
+        $permission_ids = $request->permissions;
+        $role_id = $request->role_id;
+
+        $role = Role::query()->find($role_id);
+
+        $permissions = Permission::query()->whereIn('id', $permission_ids)->pluck('name')->toArray();
+
+
+        $role->syncPermissions($permissions);
+       return redirect()->route('iam.roles');
     }
 }

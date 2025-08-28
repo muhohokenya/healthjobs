@@ -55,7 +55,9 @@ Route::middleware(['auth', 'roles:super-admin'])->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('create', 'create')->name('create');
             Route::post('store', 'store')->name('store');
+            Route::post('update', 'update')->name('roles.update');
             Route::get('roles', 'roles')->name('roles');
+            Route::get('roles/map', 'map')->name('roles.map');
             Route::get('roles/create', 'createRole')->name('roles.create');
         });
 });
