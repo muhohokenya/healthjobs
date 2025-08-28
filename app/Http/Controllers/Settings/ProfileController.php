@@ -71,6 +71,8 @@ class ProfileController extends Controller
         } else if ($speciality === 'pharmacist') {
             // Verify the licence with Pharmacy Poisons Board
             return $this->verificationService->verifyPractitioner($licenceNumber, $request, false);
+        }else if ($speciality === 'labtechnician') {
+            return $this->verificationService->searchKMLTTB($licenceNumber,$request);
         }
 
         return [

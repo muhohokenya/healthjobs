@@ -7,14 +7,243 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Collection;
+use Carbon\Carbon;
 
 class LicenseVerificationService
 {
     private const POISONS_BOARD_URL = 'https://practice.pharmacyboardkenya.org/ajax/public';
-    private const NCK_URL = 'https://portal.clinicalofficerscouncil.org/ajax/public';
+    private const NCK_URL = 'https://osp.nckenya.com/ajax/public';
+    private const COC_URL = 'https://portal.clinicalofficerscouncil.org/ajax/public';
+    private const KMPDU_URL = 'https://kmpdc.go.ke/Registers/General_Practitioners.php';
     private const FACILITY_CADRE = 'Facilities';
     private const PRACTITIONER_CADRE = 4;
 
+    public function searchKMLTTB(string $licenceNumber, Request $request): array
+    {
+        try {
+            // Method 1: Try POST with search parameter
+            $response = Http::timeout(30)
+                ->withHeaders([
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                ])
+                ->asForm()
+                ->post('https://kmlttb.org/professionals/', [
+                    'search_term' => $licenceNumber,
+                    'search' => 'Search'
+                ]);
+
+            // If POST doesn't work, try GET with parameters
+            if (!$response->successful() || !$this->hasResults($response->body())) {
+                $response = Http::timeout(30)
+                    ->withHeaders(['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'])
+                    ->get('https://kmlttb.org/professionals/', [
+                        'search_term' => $licenceNumber,
+                        'search' => 'Search'
+                    ]);
+            }
+
+            if (!$response->successful()) {
+                return ['success' => false, 'message' => 'Failed to fetch data'];
+            }
+
+            // Check if we got results or just the form
+            if (!$this->hasResults($response->body())) {
+                return ['success' => false, 'message' => 'No search results found - license may not exist'];
+            }
+
+            // Parse results
+            $crawler = new Crawler($response->body());
+            $givenName = $request->name;
+            $found = null;
+
+            $crawler->filter('table.table tbody tr')->each(function (Crawler $row) use (&$found, $givenName, $licenceNumber) {
+                if ($found) return;
+
+                $cells = $row->filter('td');
+                if ($cells->count() >= 7) {
+                    $name = trim($cells->eq(1)->text());
+                    $regNo = trim($cells->eq(3)->text());
+                    $validYear = trim($cells->eq(4)->text());
+                    $status = trim($cells->eq(6)->text());
+
+                    if ($regNo === $licenceNumber) {
+                        // Check if name matches (if provided)
+                        if ($givenName && !$this->isNameMatch($givenName, $name)) {
+                            $found = ['name_mismatch' => true, 'registered_name' => $name];
+                            return;
+                        }
+
+                        $found = [
+                            'name' => $name,
+                            'licence_number' => $regNo,
+                            'expiry_date' => Carbon::create($validYear, 12, 31)->endOfDay(),
+                            'status' => $status,
+                        ];
+                    }
+                }
+            });
+
+            if (!$found) {
+                return ['success' => false, 'message' => 'License number not found'];
+            }
+
+            if (isset($found['name_mismatch'])) {
+                return [
+                    'success' => false,
+                    'message' => "License valid but name doesn't match. Registered: {$found['registered_name']}",
+                    'data' => $found
+                ];
+            }
+
+            // Check status and year
+            if (stripos($found['status'], 'active') === false) {
+                return ['success' => false, 'message' => "License is {$found['status']}", 'data' => $found];
+            }
+
+            if ($found['expiry_date'] < date('Y')) {
+                return ['success' => false, 'message' => "License expired. Valid year: {$found['expiry_date']}", 'data' => $found];
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Professional verified',
+                'data' => $found
+            ];
+
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    private function hasResults(string $html): bool
+    {
+        // Check if the response contains a results table
+        return strpos($html, '<table class="table table-striped') !== false &&
+            strpos($html, '<tbody>') !== false &&
+            !preg_match('/<tbody>\s*<\/tbody>/', $html); // Not empty tbody
+    }
+
+    private function calculateNameSimilarity(string $submittedName, string $registeredName): int
+    {
+        $submitted = strtoupper(trim($submittedName));
+        $registered = strtoupper(trim($registeredName));
+
+        // Exact match
+        if ($submitted === $registered) return 100;
+
+        // Use Levenshtein distance for similarity
+        $maxLen = max(strlen($submitted), strlen($registered));
+        if ($maxLen === 0) return 100;
+
+        $distance = levenshtein($submitted, $registered);
+        $similarity = (1 - ($distance / $maxLen)) * 100;
+
+        return (int) round($similarity);
+    }
+
+
+    public function searchKMPDC(string $searchValue, Request $request): array
+    {
+        try {
+            // Get the full page with all data
+            $response = Http::timeout(30)
+                ->withHeaders([
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                ])
+                ->get(self::KMPDU_URL);
+
+            if (!$response->successful()) {
+                return ['success' => false, 'message' => 'Failed to fetch page'];
+            }
+
+            // Parse the HTML and search in the table data
+            $crawler = new Crawler($response->body());
+
+            $givenName = $request->get('name');
+            $found = null;
+
+            // Step 1: Search by name first
+            $crawler->filter('table tbody tr')->each(function (Crawler $row) use (&$found, $givenName, $searchValue) {
+                if ($found) return;
+
+                $cells = $row->filter('td');
+                if ($cells->count() >= 3) {
+                    $registeredName = trim($cells->eq(0)->text());
+                    $licenceNumber = trim($cells->eq(1)->text());
+                    $status = trim($cells->eq(2)->text());
+
+                    // First check if name matches
+                    if ($this->isNameMatch($givenName, $registeredName)) {
+                        // Then check if licence matches
+                        if ($licenceNumber === $searchValue) {
+                            $found = [
+                                'name' => $registeredName,
+                                'licence_number' => $licenceNumber,
+                                'status' => $status,
+                            ];
+                        }
+                    }
+                }
+            });
+
+            if (!$found) {
+                // If not found by name+licence combo, check if licence exists but with different name
+                $licenceFound = null;
+                $crawler->filter('table tbody tr')->each(function (Crawler $row) use (&$licenceFound, $searchValue) {
+                    if ($licenceFound) return;
+
+                    $cells = $row->filter('td');
+                    if ($cells->count() >= 3) {
+                        $licenceNumber = trim($cells->eq(1)->text());
+
+                        if ($licenceNumber === $searchValue) {
+                            $licenceFound = [
+                                'name' => trim($cells->eq(0)->text()),
+                                'licence_number' => $licenceNumber,
+                                'status' => trim($cells->eq(2)->text()),
+                            ];
+                        }
+                    }
+                });
+
+                dd($licenceFound);
+
+                if ($licenceFound) {
+                    return [
+                        'success' => false,
+                        'message' => "License number valid, but name doesn't match registered holder. Verify details and try again.",
+                        'data' => $licenceFound
+                    ];
+                }
+
+                return [
+                    'success' => false,
+                    'message' => 'License number not found or invalid',
+                    'data' => null
+                ];
+            }
+
+            // Check if license is active (if status column exists)
+            if (isset($found['status']) && stripos($found['status'], 'active') === false) {
+                return [
+                    'success' => false,
+                    'message' => "License is {$found['status']}. Only active licenses are valid",
+                    'data' => $found
+                ];
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Practitioner verified successfully',
+                'data' => $found
+            ];
+
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
 
     /**
      * Verify a facility against the pharmacy board registry
@@ -68,7 +297,7 @@ class LicenseVerificationService
 
     public function verifyClinician($licence): array
     {
-        $response = $this->makeRequest(self::NCK_URL, [
+        $response = $this->makeRequest(self::COC_URL, [
             'search_register' => 1,
             'search_text' => $licence['name'],
         ]);
@@ -85,7 +314,7 @@ class LicenseVerificationService
     private function getNCKHeaders(): array
     {
         try {
-            $response = Http::get('https://osp.nckenya.com/LicenseStatus');
+            $response = Http::get(self::NCK_URL);
 
             if (!$response->successful()) {
                 return ['success' => false];
@@ -150,7 +379,7 @@ class LicenseVerificationService
             ])
                 ->withCookies($headerData['cookies'], 'osp.nckenya.com')
                 ->asForm()
-                ->post('https://osp.nckenya.com/ajax/public', [
+                ->post(self::NCK_URL, [
                     'search_register' => 1,
                     'search_text' => $licence
                 ]);

@@ -95,18 +95,19 @@ const user = page.props.auth.user as User;
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
                                 required
                             >
-                                <option value="">Select speciality</option>
-                                <option value="clinician">Clinician</option>
-                                <option value="pharmacist">Pharmacist</option>
-                                <option value="nurse">Nurse</option>
-                                <option value="doctor">Doctor</option>
-                                <option value="dentist">Dentist</option>
-                                <option value="med-lab-technician">Medical Lab technician</option>
+                                <option value="">I am a</option>
+                                <option value="clinician">Clinician <b>(COC)</b></option>
+                                <option value="pharmacist">Pharmacist <b>(PBB)</b></option>
+                                <option value="nurse">Nurse <b>(NCK)</b></option>
+<!--                                <option value="doctor">Doctor</option>-->
+<!--                                <option value="dentist">Dentist</option>-->
+                                <option value="labtechnician">Medical Lab technician</option>
                             </select>
+
+<!--                            B01389-->
                         </div>
 
                         <div class="mt-6 grid gap-2">
-                            <!--                                    :default-value="user.licence_number"-->
                             <div class="relative">
                                 <Label for="licence">Licence</Label>
                                 <Input
@@ -114,7 +115,7 @@ const user = page.props.auth.user as User;
                                     id="licence"
                                     class="mt-1 block w-full pr-10"
                                     name="licence"
-                                    :default-value="514923"
+                                    :default-value=user.licence_number
                                     autocomplete="licence"
                                     :placeholder="license_pattern"
                                 />
