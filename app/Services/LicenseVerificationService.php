@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
@@ -564,11 +565,11 @@ class LicenseVerificationService
  * @return array
  */
 public
-function verifyPractitioner(string $licenceNumber, Request $request, $strict = false): array
+function verifyPharmacy(string $licenceNumber, Request $request, $strict = false,$cadre = Integer::class): array
 {
     $response = $this->makeRequest(self::POISONS_BOARD_URL, [
         'search_register' => 1,
-        'cadre_id' => self::PRACTITIONER_CADRE,
+        'cadre_id' => $cadre,
         'search_text' => $licenceNumber,
     ]);
 

@@ -100,10 +100,11 @@ const user = page.props.auth.user as User;
                                 <option value="">I am a</option>
                                 <option value="clinician">Clinician <b>(COC)</b></option>
                                 <option value="pharmacist">Pharmacist <b>(PBB)</b></option>
+                                <option value="pharm_tech">Pharmtech <b>(PBB)</b></option>
                                 <option value="nurse">Nurse <b>(NCK)</b></option>
 <!--                                <option value="doctor">Doctor</option>-->
 <!--                                <option value="dentist">Dentist</option>-->
-                                <option value="labtechnician">Medical Lab technician</option>
+                                <option value="lab_technician">Medical Lab technician</option>
                             </select>
 
 <!--                            B01389-->
