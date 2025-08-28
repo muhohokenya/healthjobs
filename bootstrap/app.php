@@ -31,6 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'roles' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
+            'complete-profile' => \App\Http\Middleware\EnsureProfileComplete::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

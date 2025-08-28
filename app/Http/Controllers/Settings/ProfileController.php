@@ -24,9 +24,11 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $isProfileComplete = $request->user()->isProfileComplete() ?? false;
         return Inertia::render('settings/Profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
+            'isProfileComplete' => $isProfileComplete
         ]);
     }
 
@@ -36,6 +38,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+
         $user = $request->user();
         $user->fill($request->validated());
 
@@ -56,7 +59,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return to_route('profile.edit');
+        return redirect()->route('profile.edit');
     }
 
     /**
@@ -77,8 +80,6 @@ class ProfileController extends Controller
         }else if($speciality === 'clinician'){
             return $this->verificationService->verifyClinician($licenceNumber,$request);
         }
-
-//        dd($speciality);
 
         return [
             'success' => false,

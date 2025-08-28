@@ -20,6 +20,7 @@ interface Props {
     mustVerifyEmail: boolean;
     status?: string;
     flash: object;
+    isProfileComplete: Boolean;
 }
 
 const message = computed(() => page.props.flash.flashMessage);
@@ -65,12 +66,18 @@ const user = page.props.auth.user as User;
         <Head title="Profile settings" />
 
 
-
         <SettingsLayout>
+            <div v-if="!page.props.isProfileComplete" class="mb-6 rounded-md bg-red-100 p-4 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                ⚠️ Please finish setting up your profile to unlock full job posting permissions
+<!--                <Link :href="route('profile.update')" class="ml-3 text-blue-600 underline">Complete Profile</Link>-->
+            </div>
             <div class="flex flex-col space-y-6">
                 <HeadingSmall title="Profile information" description="Update your name and email address">
                     <CheckCircleIcon class="h-5 w-5 text-red-800" />text-gray-800
                 </HeadingSmall>
+
+
+
 
                 <Form method="patch" :action="route('profile.update')" class="space-y-6" v-slot="{ errors, processing, recentlySuccessful }">
                     <div class="grid gap-2">
@@ -78,7 +85,7 @@ const user = page.props.auth.user as User;
                         <Input
                             :disabled="user.licence_status === 'active'"
                             id="name"
-                            class="mt-1 block w-full"
+                            class="mt-1 block w-full py-2"
                             name="name"
                             :default-value="user.name"
                             required
@@ -135,6 +142,39 @@ const user = page.props.auth.user as User;
                             <small class="ml-2 font-medium text-red-300">
                                 {{ $page.props.flash.flashMessage }}
                             </small>
+                        </div>
+                    </section>
+                    <section v-if="user.roles[0].name === 'recruiter'">
+
+                        <!-- Licence -->
+                        <div>
+                            <Label for="name" class="text-sm font-semibold text-gray-700">PBB License</Label>
+                            <input
+
+                                type="text"
+                                name="licence_number"
+                                id="licence_number"
+                                placeholder="e.g. PBXXYYY000"
+                                class="w-full mt-3 rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                            />
+                            <div v-if="errors.licence_number" class="mt-1 text-sm text-red-500">{{ errors.licence_number }}</div>
+                        </div>
+
+
+                        <!-- contact number -->
+                        <div CLASS="mt-10">
+                            <label for="contact_number" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            >Contact Number *</label
+                            >
+                            <input
+
+                                type="text"
+                                name="contact_number"
+                                id="contact_number"
+                                placeholder="e.g. 0711898122"
+                                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                            />
+                            <div v-if="errors.contact_number" class="mt-1 text-sm text-red-500">{{ errors.contact_number }}</div>
                         </div>
                     </section>
                     <div class="grid gap-2">

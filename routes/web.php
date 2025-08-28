@@ -46,6 +46,7 @@ Route::middleware(['auth', 'permission:view-job-postings'])->group(function () {
         });
 });
 
+// permissionid = . 2 and role id = 4
 Route::middleware(['auth', 'roles:super-admin'])->group(function () {
     Route::controller(RolesAndPermissionsController::class)
         ->prefix('iam')
@@ -62,7 +63,9 @@ Route::middleware(['auth', 'roles:super-admin'])->group(function () {
 
 
 
+Route::middleware(['auth', 'permission:has-complete-profile'])->group(function () {
 
+});
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

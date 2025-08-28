@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import type { BreadcrumbItem } from '@/types';
 import { useAuth } from '@/utils/auth';
 import { Head, Link, router } from '@inertiajs/vue3';
-import { reactive } from 'vue';
+import { onMounted, reactive } from 'vue';
 const user = useAuth();
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -12,6 +12,10 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
 ];
+
+onMounted(() => {
+    // console.log();
+})
 
 const props = defineProps({
     jobs: Object,
@@ -66,7 +70,7 @@ const formatSalary = (salary) => {
                 </div>
 
                 <!-- Create Job Button (Conditional) -->
-                <div v-if="user.hasPermission('create-job-postings')" class="mb-6 flex justify-end">
+                <div v-if="user.hasPermission('create-job-postings') && $page.props.isProfileComplete" class="mb-6 flex justify-end">
                     <Link
                         class="flex items-center rounded-md bg-blue-600 px-4 py-2.5 font-medium text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         :href="route('health-jobs.create')"
