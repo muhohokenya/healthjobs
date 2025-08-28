@@ -22,7 +22,7 @@ class RolesAndPermissionsController extends Controller
 
     public function map(){
         return Inertia::render('iam/Map', [
-            'permissions' => Permission::all(),
+            'permissions' => Permission::query()->orderBy('name')->get(),
             'roles' => Role::query()->with('permissions')->get(),
             'user' =>User::with('roles.permissions')->get(),
         ]);

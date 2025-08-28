@@ -46,6 +46,7 @@ class ProfileController extends Controller
             $user->email_verified_at = null;
         }
 
+
         $licenceNumber = $request->get('licence');
 
         if ($licenceNumber) {
@@ -59,6 +60,8 @@ class ProfileController extends Controller
 
         $user->save();
 
+
+
         return redirect()->route('profile.edit');
     }
 
@@ -67,6 +70,18 @@ class ProfileController extends Controller
      */
     private function handleLicenceVerification(ProfileUpdateRequest $request, string $licenceNumber): array
     {
+        $role = $request->user()->roles[0]['name'];
+
+        if ($role === 'recruiter'){
+            $facilityData = [
+                'license_number' => $licenceNumber,
+                'name' => $request->name,
+                'contact_number' => $request->contact_number,
+                'email' => $request->email,
+            ];
+            return $this->verificationService->verifyFacility($facilityData);
+        }
+
         $speciality = $request->get('speciality');
 
         if ($speciality === 'nurse') {
@@ -93,10 +108,11 @@ class ProfileController extends Controller
      */
     private function updateUserLicenceData($user, array $licenceData): void
     {
-        $user->licence_number = $licenceData['licence_number'];
-        $user->licence_number_expiry = $licenceData['expiry_date'];
+//        dd($licenceData);
+        $user->licence_number = $licenceData['license_number'];
+        $user->licence_number_expiry = $licenceData['licence_expiry_date'];
         $user->name = $licenceData['name']; // FULL NAME AS REGISTERED BY PBB
-        $user->licence_status = $licenceData['status'];
+        $user->licence_status = $licenceData['license_number_validity'];
     }
 
     /**

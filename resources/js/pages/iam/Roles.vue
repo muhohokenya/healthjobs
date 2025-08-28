@@ -50,7 +50,7 @@ const props = defineProps<{
                     <Link
                         class="flex items-center rounded-md bg-blue-600 px-4 py-2.5 font-medium text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         :href="route('iam.roles.map')"
-                        >Create New Role/Permission</Link
+                        >Manage roles and permissions</Link
                     >
                 </div>
 

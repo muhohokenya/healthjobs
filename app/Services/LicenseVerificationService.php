@@ -16,6 +16,7 @@ class LicenseVerificationService
     private const NCK_URL = 'https://osp.nckenya.com/ajax/public';
     private const COC_URL = 'https://portal.clinicalofficerscouncil.org/ajax/public';
     private const KMPDU_URL = 'https://kmpdc.go.ke/Registers/General_Practitioners.php';
+    private const KMLTTB_URL = 'https://kmlttb.org/professionals/';
     private const FACILITY_CADRE = 'Facilities';
     private const PRACTITIONER_CADRE = 4;
 
@@ -30,7 +31,7 @@ class LicenseVerificationService
                     'Content-Type' => 'application/x-www-form-urlencoded',
                 ])
                 ->asForm()
-                ->post('https://kmlttb.org/professionals/', [
+                ->post(self::KMLTTB_URL, [
                     'search_term' => $licenceNumber,
                     'search' => 'Search'
                 ]);
@@ -39,7 +40,7 @@ class LicenseVerificationService
             if (!$response->successful() || !$this->hasResults($response->body())) {
                 $response = Http::timeout(30)
                     ->withHeaders(['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'])
-                    ->get('https://kmlttb.org/professionals/', [
+                    ->get(self::KMLTTB_URL, [
                         'search_term' => $licenceNumber,
                         'search' => 'Search'
                     ]);
@@ -77,9 +78,11 @@ class LicenseVerificationService
                         }
 
                         $found = [
+                            'license_number_validity' => $status,
                             'name' => $name,
-                            'licence_number' => $regNo,
+                            'license_number' => $regNo,
                             'expiry_date' => Carbon::create($validYear, 12, 31)->endOfDay(),
+                            'licence_expiry_date' => Carbon::create($validYear, 12, 31)->endOfDay(),
                             'status' => $status,
                         ];
                     }
@@ -181,7 +184,7 @@ class LicenseVerificationService
                         if ($licenceNumber === $searchValue) {
                             $found = [
                                 'name' => $registeredName,
-                                'licence_number' => $licenceNumber,
+                                'license_number' => $licenceNumber,
                                 'status' => $status,
                             ];
                         }
@@ -202,7 +205,7 @@ class LicenseVerificationService
                         if ($licenceNumber === $searchValue) {
                             $licenceFound = [
                                 'name' => trim($cells->eq(0)->text()),
-                                'licence_number' => $licenceNumber,
+                                'license_number' => $licenceNumber,
                                 'status' => trim($cells->eq(2)->text()),
                             ];
                         }
@@ -254,7 +257,7 @@ class LicenseVerificationService
      */
     public function verifyFacility(array $facilityData): array
     {
-        $response = $this->makeRequest(self::BASE_URL, [
+        $response = $this->makeRequest(self::POISONS_BOARD_URL, [
             'search_register' => 1,
             'cadre_id' => self::FACILITY_CADRE,
             'search_text' => $facilityData['name'],
@@ -265,8 +268,8 @@ class LicenseVerificationService
         }
 
         $facilities = $this->parseFacilityResponse($response['data']);
-        $candidate = $this->findMatchingFacility($facilities, $facilityData);
 
+        $candidate = $this->findMatchingFacility($facilities, $facilityData);
         if (!$candidate) {
             return [
                 'success' => false,
@@ -329,11 +332,15 @@ class LicenseVerificationService
                         preg_match('/(\d{4}-\d{2}-\d{2})/', $statusCell, $matches);
                         $expiryDate = $matches[1] ?? null;
 
+
+
+
                         $clinician = [
-                            'name' => $name,
-                            'licence_number' => $licenseNumber,
                             'status' => $status,
-                            'expiry_date' => $expiryDate,
+                            'name' => $name,
+                            'license_number' => $licenseNumber,
+                            'license_number_validity' => $status,
+                            'licence_expiry_date' => $expiryDate,
                         ];
                     }
                 }
@@ -545,11 +552,14 @@ class LicenseVerificationService
                     preg_match('/(\d{4}-\d{2}-\d{2})/', $statusCell, $matches);
                     $expiryDate = $matches[1] ?? '';
 
+
+
                     $nurseData = [
                         'name' => $name,
-                        'licence_number' => $licenseNumber,
+                        'license_number' => $licenseNumber,
                         'status' => $status,
-                        'expiry_date' => $expiryDate
+                        'license_number_validity' => $status,
+                        'licence_expiry_date' => $expiryDate
                     ];
                 }
             }
@@ -663,13 +673,14 @@ function parseFacilityResponse(string $html): Collection
     return collect($crawler->filter('table.facility_datatables tbody tr')->each(function (Crawler $row) {
         $cols = $row->filter('td')->each(fn(Crawler $c) => trim($c->text()));
 
-        return [
+        $respnse = [
             'facility_name' => $cols[0] ?? null,
             'license_number' => $cols[1] ?? null,
             'status_validity' => $cols[2] ?? null,
             'details' => $row->filter('a.popStatus')->count() ?
                 $row->filter('a.popStatus')->attr('rel') : null,
         ];
+        return $respnse;
     }));
 }
 
@@ -698,10 +709,12 @@ function parsePractitionerResponse(string $html, string $licenceNumber): ?array
             $expiryDate = end($words);
             $status = $words[1] ?? 'Unknown';
 
+
             $practitioner = [
                 'name' => $name,
-                'licence_number' => $license,
-                'expiry_date' => $expiryDate,
+                'license_number' => $license,
+                'licence_expiry_date' => $expiryDate,
+                'license_number_validity' => $status,
                 'status' => $status,
             ];
         }
@@ -732,13 +745,13 @@ function findMatchingFacility(Collection $facilities, array $facilityData): ?arr
 
         // Extract core license number (before dash)
         $facilityLicenseCore = $this->getLicenseCore($facility['license_number']);
-        $inputLicenseCore = $this->getLicenseCore($facilityData['licence_number']);
+        $inputLicenseCore = $this->getLicenseCore($facilityData['license_number']);
 
         $nameMatch = $this->normalize($nameOnly) === $this->normalize($facilityData['name']);
-        $locationMatch = $scrapedLocation === $this->normalize($facilityData['location']);
+//        $locationMatch = $scrapedLocation === $this->normalize($facilityData['location']);
         $licenseMatch = $facilityLicenseCore === $inputLicenseCore;
 
-        return $nameMatch && $locationMatch && $licenseMatch;
+        return $nameMatch && $licenseMatch;
     });
 }
 
@@ -763,7 +776,7 @@ function processFacilityMatch(array $candidate, array $facilityData): array
     $total = 3;
 
     $licenseMatch = $this->getLicenseCore($candidate['license_number']) ===
-        $this->getLicenseCore($facilityData['licence_number']);
+        $this->getLicenseCore($facilityData['license_number']);
     $statusActive = $status === 'Active';
     $locationMatch = true; // Already matched in selection
 
@@ -779,10 +792,10 @@ function processFacilityMatch(array $candidate, array $facilityData): array
 
     $payload = [
         'name' => $candidate['facility_name'],
-        'licence_number_validity' => $status,
+        'license_number_validity' => $status,
         'licence_expiry_date' => $expiryDate,
-        'licence_number' => $this->getLicenseCore($candidate['license_number']),
-        'location' => $facilityData['location'] . ' (' . $scrapedLocation . ')',
+        'license_number' => $this->getLicenseCore($candidate['license_number']),
+//        'location' => $facilityData['location'] . ' (' . $scrapedLocation . ')',
         'contact_number' => $facilityData['contact_number'],
         'email' => $facilityData['email'],
     ];
@@ -792,9 +805,9 @@ function processFacilityMatch(array $candidate, array $facilityData): array
         'verified' => $percentage === 100.0,
         'percentage' => $percentage,
         'checks' => [
-            'licence_number_match' => $licenseMatch,
+            'license_number_match' => $licenseMatch,
             'status_active' => $statusActive,
-            'location_match' => $locationMatch,
+//            'location_match' => $locationMatch,
         ],
         'data' => $payload,
         'message' => $percentage === 100.0 ?
