@@ -42,8 +42,7 @@ const allNavItems = [
         title: 'Manage Facility',
         href: '/facilities',
         icon: User,
-        requiredPermissions: ['manage-facilities'],
-        requireAnyPermission:true
+        requiredRoles: ['super-admin']
     },
     {
         title: 'Reports',

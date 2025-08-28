@@ -20,7 +20,7 @@ Route::middleware(['auth', 'permission:access-dashboard'])->group(function () {
     });
 });
 
-Route::middleware(['auth', 'permission:view-facilities'])->group(function () {
+Route::middleware(['auth', 'roles:super-admin'])->group(function () {
     Route::controller(FacilityController::class)
         ->prefix('facilities')
         ->name('facilities.')
