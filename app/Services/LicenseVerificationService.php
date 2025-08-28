@@ -295,16 +295,92 @@ class LicenseVerificationService
         return $maxSimilarity >= $threshold;
     }
 
-    public function verifyClinician($licence): array
+    public function verifyClinician($licence, Request $request): array
     {
         $response = $this->makeRequest(self::COC_URL, [
             'search_register' => 1,
-            'search_text' => $licence['name'],
+            'search_text' => $licence,
         ]);
 
-        // TODO: Implement clinician verification logic
-        return [];
+        if (!$response['success']) {
+            return $response;
+        }
+
+        try {
+            $crawler = new Crawler($response['data']);
+            $clinician = null;
+
+            $crawler->filter('#datatable2 tbody tr')->each(function (Crawler $row) use (&$clinician, $licence) {
+                if ($clinician) return;
+
+                $cells = $row->filter('td');
+                if ($cells->count() >= 3) {
+                    $name = trim($cells->eq(0)->text());
+                    $licenseNumber = trim($cells->eq(1)->text());
+                    $statusCell = trim($cells->eq(2)->text());
+
+                    if (strcasecmp($licenseNumber, $licence) === 0) {
+                        // Extract status
+                        $statusSpan = $cells->eq(2)->filter('span.label')->text();
+                        $status = str_replace('Status: ', '', $statusSpan);
+
+                        // Extract expiry date (YYYY-MM-DD from cell)
+                        preg_match('/(\d{4}-\d{2}-\d{2})/', $statusCell, $matches);
+                        $expiryDate = $matches[1] ?? null;
+
+                        $clinician = [
+                            'name' => $name,
+                            'licence_number' => $licenseNumber,
+                            'status' => $status,
+                            'expiry_date' => $expiryDate,
+                        ];
+                    }
+                }
+            });
+
+            if (!$clinician) {
+                return [
+                    'success' => false,
+                    'message' => 'License number not found or invalid',
+                    'data' => null
+                ];
+            }
+
+            // Status check
+            if ($clinician['status'] !== 'Active') {
+                return [
+                    'success' => false,
+                    'message' => "License is {$clinician['status']}. Only active licenses are valid",
+                    'data' => $clinician
+                ];
+            }
+
+            // Name check
+            $givenName = strtolower($request->get('name'));
+            $verifiedName = strtolower($clinician['name']);
+
+            if ($this->isNameMatch($givenName, $verifiedName)) {
+                return [
+                    'success' => true,
+                    'message' => 'Clinician verified successfully',
+                    'data' => $clinician
+                ];
+            } else {
+                return [
+                    'success' => false,
+                    'message' => "License number valid, but name doesn't match registered holder. Verify details and try again.",
+                    'data' => $clinician
+                ];
+            }
+
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ];
+        }
     }
+
 
     /**
      * Get headers and cookies from NCK website

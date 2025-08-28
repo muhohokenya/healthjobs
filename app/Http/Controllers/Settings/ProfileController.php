@@ -73,7 +73,11 @@ class ProfileController extends Controller
             return $this->verificationService->verifyPractitioner($licenceNumber, $request, false);
         }else if ($speciality === 'labtechnician') {
             return $this->verificationService->searchKMLTTB($licenceNumber,$request);
+        }else if($speciality === 'clinician'){
+            return $this->verificationService->verifyClinician($licenceNumber,$request);
         }
+
+//        dd($speciality);
 
         return [
             'success' => false,

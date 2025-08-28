@@ -85,3 +85,41 @@ test('correct password must be provided to delete account', function () {
 
     expect($user->fresh())->not->toBeNull();
 });
+
+test('inactive user must provide name when updating profile', function () {
+    // licence_status defaults to 'inactive' via DB default
+    $user = User::factory()->create();
+
+    $response = $this
+        ->actingAs($user)
+        ->from('/settings/profile')
+        ->patch('/settings/profile', [
+            // Intentionally omit 'name'
+            'email' => 'new-email@example.com',
+        ]);
+
+    $response
+        ->assertSessionHasErrors('name')
+        ->assertRedirect('/settings/profile');
+});
+
+test('active user may update profile without name', function () {
+    $user = User::factory()->create(['licence_status' => 'active']);
+    $originalName = $user->name;
+
+    $response = $this
+        ->actingAs($user)
+        ->patch('/settings/profile', [
+            // Omitting 'name' should be allowed when active
+            'email' => 'active-user@example.com',
+        ]);
+
+    $response
+        ->assertSessionHasNoErrors()
+        ->assertRedirect('/settings/profile');
+
+    $user->refresh();
+    expect($user->email)->toBe('active-user@example.com');
+    // Name should remain unchanged when not provided
+    expect($user->name)->toBe($originalName);
+});

@@ -16,7 +16,11 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [
+                'string',
+                'max:255',
+                Rule::requiredIf(fn () => $this->user()?->licence_status !== 'active'),
+            ],
             'email' => [
                 'required',
                 'string',
@@ -25,14 +29,14 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-//            PT2025D08038
-//            'licence' => [
-//                'nullable',
-//                'min:12',
-//                'max:20',
-//                'regex:/^[A-Z0-9\-\/]+$/', // Allow letters, numbers, hyphens, and forward slashes
-//                Rule::unique('users', 'licence_number')->ignore($this->user()->id),
-//            ],
+            //            PT2025D08038
+            //            'licence' => [
+            //                'nullable',
+            //                'min:12',
+            //                'max:20',
+            //                'regex:/^[A-Z0-9\-\/]+$/', // Allow letters, numbers, hyphens, and forward slashes
+            //                Rule::unique('users', 'licence_number')->ignore($this->user()->id),
+            //            ],
         ];
     }
 }

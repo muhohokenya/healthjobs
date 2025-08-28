@@ -29,6 +29,7 @@ export interface User {
     id: number;
     name: string;
     licence_number: string;
+    licence_status: string;
     email: string;
     avatar?: string;
     email_verified_at: string | null;

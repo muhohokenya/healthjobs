@@ -76,6 +76,7 @@ const user = page.props.auth.user as User;
                     <div class="grid gap-2">
                         <Label for="name">Name</Label>
                         <Input
+                            :disabled="user.licence_status === 'active'"
                             id="name"
                             class="mt-1 block w-full"
                             name="name"
@@ -90,10 +91,11 @@ const user = page.props.auth.user as User;
                         <div class="">
                             <label for="speciality" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Speciality *</label>
                             <select
+
                                 name="speciality"
                                 id="speciality"
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
-                                required
+                                :required="!user.licence_status"
                             >
                                 <option value="">I am a</option>
                                 <option value="clinician">Clinician <b>(COC)</b></option>
