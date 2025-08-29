@@ -1,5 +1,4 @@
-name: Deploy Medicareer App to Prod
-
+name: Deploy MediCareer App to Prod
 on:
   push:
     branches: [main]
