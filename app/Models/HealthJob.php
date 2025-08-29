@@ -16,6 +16,13 @@ class HealthJob extends Model
         return $this->belongsTo(Facility::class);
     }
 
+    // App\Models\HealthJob.php
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+        // 'user_id' should be the FK column in your health_jobs table
+    }
+
     protected $fillable = [
         'title',
         'company',

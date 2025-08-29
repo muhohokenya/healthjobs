@@ -13,9 +13,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-onMounted(() => {
-    // console.log();
-})
+
 
 const props = defineProps({
     jobs: Object,
@@ -26,7 +24,7 @@ const props = defineProps({
 const searchForm = reactive({
     search: props.filters.search || '',
     job_type: props.filters.job_type || '',
-    experience_level: props.filters.experience_level || '',
+    location: props.filters.location || '',
 });
 
 const search = () => {
@@ -106,18 +104,18 @@ const formatSalary = (salary) => {
                             </select>
                         </div>
                         <div>
-                            <label for="experience_level_filter" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                                >Experience Level</label
+                            <label for="location" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                                >Location</label
                             >
                             <select
-                                v-model="searchForm.experience_level"
-                                id="experience_level_filter"
+                                v-model="searchForm.location"
+                                id="location"
                                 class="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             >
                                 <option value="">All Levels</option>
-                                <option value="entry">Entry Level</option>
-                                <option value="mid">Mid Level</option>
-                                <option value="senior">Senior Level</option>
+                                <option value="entry">Kiambu</option>
+                                <option value="mid">Nyeri</option>
+                                <option value="senior">Nairobi</option>
                             </select>
                         </div>
                         <div class="flex items-end">
@@ -199,7 +197,7 @@ const formatSalary = (salary) => {
                             </div>
                             <div>
                                 <span v-if="props.isProfileComplete" class="text-base font-medium text-gray-700 dark:text-gray-300">
-                                    {{ job.location }}
+                                    {{job.facility.location}}
                                 </span>
                                 <span v-else class="text-base text-gray-400/80 italic dark:text-gray-500"> [Hidden] </span>
                             </div>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Facility extends Model
@@ -15,5 +16,10 @@ class Facility extends Model
     public function user():BelongsTo
     {
         return $this->hasOne(User::class);
+    }
+
+    public function jobs():HasMany
+    {
+        return $this->hasMany(HealthJob::class);
     }
 }
