@@ -7,7 +7,6 @@ const user = useAuth();
 const form = useForm({
     avatar:'',
     title: 'Pharmaceutical Technologist',
-    company: 'Futuremed Hospital',
     description: 'Qualification in Pharmaceutical studies,Valid license from the Pharmacy and Poisons Board,At least 3 years’ experience in a hospital or retail pharmacy,Strong communication and customer service skills',
     location: 'Baraka Towers, Pangani – Nairobi',
     job_type: '',
@@ -48,19 +47,7 @@ const form = useForm({
                                 />
                             </div>
 
-                            <!-- Company -->
-                            <div>
-                                <label for="company" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Facility *</label>
-                                <input
-                                    v-model="form.company"
-                                    type="text"
-                                    name="company"
-                                    id="company"
-                                    placeholder="e.g. HealthCare Inc."
-                                    required
-                                    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
-                                />
-                            </div>
+
                         </div>
                         <!-- Description -->
                         <div>
@@ -75,21 +62,6 @@ const form = useForm({
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             />
                         </div>
-
-                        <!-- Location -->
-                        <div>
-                            <label for="location" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Location *</label>
-                            <input
-                                v-model="form.location"
-                                type="text"
-                                name="location"
-                                id="location"
-                                placeholder="e.g. Nairobi, Kilimani"
-                                required
-                                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
-                            />
-                        </div>
-
                         <!-- Job Type & Experience -->
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <div>

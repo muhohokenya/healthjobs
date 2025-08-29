@@ -27,6 +27,8 @@ class HealthJob extends Model
         'experience_level',
         'requirements',
         'is_active',
+        'user_id',
+        'facility_id',
     ];
 
     protected $casts = [

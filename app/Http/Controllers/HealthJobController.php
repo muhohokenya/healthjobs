@@ -7,6 +7,7 @@ use App\Models\Facility;
 use App\Models\HealthJob;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -139,9 +140,9 @@ class HealthJobController extends Controller
         $healthJob = $request->validated();
 
 //        Facility::query()->where('');
-        $healthJob['facility_id'] = $request->user()->roles[0];
+        $healthJob['facility_id'] = $request->user()->facility->id;
+        $healthJob['user_id'] = Auth::id();
 
-        dd($healthJob);
 
         // Create the health job record
         $healthJob = HealthJob::create($healthJob);

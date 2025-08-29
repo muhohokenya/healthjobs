@@ -81,8 +81,8 @@ class User extends Authenticatable
         return true;
     }
 
-//    public function facility():HasOne
-//    {
-//        return $this->hasOne(Facility::class);
-//    }
+    public function facility():HasOne
+    {
+        return $this->hasOne(Facility::class);
+    }
 }

@@ -29,22 +29,11 @@ class HealthJobRequest extends FormRequest
                 'max:255',
                 'min:3'
             ],
-            'company' => [
-                'required',
-                'string',
-                'max:255',
-                'min:2'
-            ],
             'description' => [
                 'required',
                 'string',
                 'min:50',
                 'max:10000'
-            ],
-            'location' => [
-                'required',
-                'string',
-                'max:255'
             ],
             'job_type' => [
                 'required',
