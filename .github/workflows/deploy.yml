@@ -44,6 +44,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          local-dir: public/build/
+          local-dir: public/
           server-dir: /domains/medicareers.co.ke/public_html/
 
