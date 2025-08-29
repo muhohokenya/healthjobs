@@ -45,5 +45,5 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: public/build/
-          server-dir: /domains/medicareers.co.ke/public_html/build/
+          server-dir: /domains/medicareers.co.ke/public_html/
 
