@@ -34,7 +34,6 @@ Route::middleware(['auth', 'roles:super-admin'])->group(function () {
 Route::post('check-licence', [HealthJobController::class, 'checkLicence'])->name('check-licence');
 
 Route::middleware(['auth', 'permission:view-job-postings'])->group(function () {
-    // Health Jobs routes (protected)
     Route::controller(HealthJobController::class)
         ->prefix('health-jobs')
         ->name('health-jobs.')
@@ -46,7 +45,7 @@ Route::middleware(['auth', 'permission:view-job-postings'])->group(function () {
         });
 });
 
-// permissionid = . 2 and role id = 4
+
 Route::middleware(['auth', 'roles:super-admin'])->group(function () {
     Route::controller(RolesAndPermissionsController::class)
         ->prefix('iam')

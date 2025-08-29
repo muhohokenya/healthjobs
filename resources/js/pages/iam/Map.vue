@@ -12,6 +12,19 @@ const props = defineProps({
 const selectedRole = ref<number | null>(null);
 const selectedPermission = ref<number | null>(null);
 
+const formatRoleName = (name: string): string => {
+    if (!name) {
+        return '';
+    }
+    return name
+        .replace(/[_-]+/g, ' ')
+        .trim()
+        .split(' ')
+        .filter(Boolean)
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+};
+
 const getRolePermissions = (roleId: number) => {
     const role = props.roles.find((r: any) => r.id === roleId);
     return role ? role.permissions : [];
@@ -23,7 +36,9 @@ const availablePermissions = (roleId: number) => {
 };
 
 const addPermission = (roleId: number, permissionId: number) => {
-    if (!roleId || !permissionId) return;
+    if (!roleId || !permissionId) {
+        return;
+    }
     const role = props.roles.find((r: any) => r.id === roleId);
     if (role) {
         const perm = props.permissions.find((p: any) => p.id === permissionId);
@@ -70,7 +85,7 @@ const removePermission = (roleId: number, permissionId: number) => {
                                         : 'border border-gray-200 bg-white text-gray-700 hover:bg-gray-100',
                                 ]"
                             >
-                                {{ role.name }}
+                                {{ formatRoleName(role.name) }}
                             </li>
                         </ul>
                     </div>

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Events\FacilityVerifiedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Listeners\FacilityVerifiedListener;
 use App\Services\LicenseVerificationService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -79,7 +82,12 @@ class ProfileController extends Controller
                 'contact_number' => $request->contact_number,
                 'email' => $request->email,
             ];
-            return $this->verificationService->verifyFacility($facilityData);
+
+            $verified = $this->verificationService->verifyFacility($facilityData);
+//            dd($verified);
+
+            event(new FacilityVerifiedEvent($verified));
+            return $verified;
         }
 
         $speciality = $request->get('speciality');

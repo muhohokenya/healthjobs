@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('health_jobs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('company');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('facility_id')->constrained()->onDelete('cascade');
             $table->text('description');
-            $table->string('location');
             $table->string('job_type'); // full-time, part-time, contract
             $table->decimal('salary_min', 10, 2)->nullable();
             $table->decimal('salary_max', 10, 2)->nullable();

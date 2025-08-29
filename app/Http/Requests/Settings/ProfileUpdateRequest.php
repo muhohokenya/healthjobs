@@ -21,6 +21,11 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::requiredIf(fn () => $this->user()?->licence_status !== 'active'),
             ],
+            'contact_number'=>[
+                'string',
+                'max:21',
+                'regex:/^(\+254|0)(7|1)[0-9]{8}$/', // Kenyan phone number format
+            ],
             'email' => [
                 'required',
                 'string',
@@ -29,14 +34,11 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-            //            PT2025D08038
-            //            'licence' => [
-            //                'nullable',
-            //                'min:12',
-            //                'max:20',
-            //                'regex:/^[A-Z0-9\-\/]+$/', // Allow letters, numbers, hyphens, and forward slashes
-            //                Rule::unique('users', 'licence_number')->ignore($this->user()->id),
-            //            ],
+            'licence' => [
+                'nullable',
+                'between:9,20',
+                Rule::unique('facilities', 'licence_number')->ignore($this->user()->id),
+            ],
         ];
     }
 }

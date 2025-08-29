@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('facilities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('email')->nullable();
             $table->string('licence_number')->unique();
             $table->enum('licence_number_validity', ['active', 'inactive'])->default('inactive');

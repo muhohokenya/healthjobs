@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -51,11 +53,6 @@ class User extends Authenticatable
         ];
     }
 
-    public function profile()
-    {
-        return $this->hasOne(Profile::class);
-    }
-
     public function isProfileComplete(): bool
     {
         // basic fields on users table
@@ -64,20 +61,28 @@ class User extends Authenticatable
         }
 
         // if jobseeker, check profile details
-        if ($this->hasRole('jobseeker')) {
-            $profile = $this->profile;
+        if ($this->hasRole('job-seeker')) {
+            return !empty($this->licence_number)
+                && !empty($this->licence_number_expiry)
+                && !empty($this->licence_status)
+                && $this->licence_status === 'active'
+                && $this->licence_number_expiry > now(); // Check if license is not expired
+        }
 
-            if (!$profile) {
-                return false;
-            }
-
-            return !empty($profile->profession)
-                && !empty($profile->years_experience)
-                && !empty($profile->location);
-            // license is optional
+        if ($this->hasRole('recruiter')) {
+            return !empty($this->licence_number)
+                && !empty($this->licence_number_expiry)
+                && !empty($this->licence_status)
+                && $this->licence_status === 'active'
+                && $this->licence_number_expiry > now(); // Check if license is not expired
         }
 
         // employers only need name + email for now
         return true;
     }
+
+//    public function facility():HasOne
+//    {
+//        return $this->hasOne(Facility::class);
+//    }
 }

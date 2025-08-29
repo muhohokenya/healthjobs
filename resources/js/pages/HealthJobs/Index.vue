@@ -57,9 +57,9 @@ const formatSalary = (salary) => {
 
     <AppLayout>
         <div class="min-h-screen bg-gray-50 py-8 dark:bg-gray-900">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-9xl px-4 sm:px-6 lg:px-8">
                 <!-- Header -->
-                <div class="mb-8">
+                <div class="mb-7">
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Health Jobs</h1>
                     <p class="mt-2 text-gray-600 dark:text-gray-300">Find your next healthcare opportunity</p>
                 </div>

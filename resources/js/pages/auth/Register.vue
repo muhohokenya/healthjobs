@@ -10,18 +10,13 @@ import { LoaderCircle } from 'lucide-vue-next';
 const props = defineProps({
     errors: Object
 })
-
-const checkLicence = () => {
-    const licenceValue = document.getElementById('licence_number').value; // Or use a ref
-    router.post('/check-licence', { licence_number: licenceValue });
-};
 </script>
 
 <template>
     <div class="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
         <Head title="Register" />
 
-        <div class="w-full max-w-4xl">
+        <div class="w-full max-w-2xl">
             <!-- Header Section -->
             <div class="mb-8 text-center">
                 <div class="mb-6 flex items-center justify-center space-x-3">
@@ -48,16 +43,16 @@ const checkLicence = () => {
                             <!-- Role -->
                             <div class="space-y-2">
                                 <div>
-                                    <label for="role" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Role *</label>
+                                    <label for="role" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Interest *</label>
                                     <select
                                         name="role"
                                         id="role"
                                         class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
                                         required
                                     >
-                                        <option value="">Select your role</option>
-                                        <option value="job-seeker">I am a Jobseeker (Medic)</option>
-                                        <option value="recruiter">I am an Employer (Facility/Recruiter)</option>
+                                        <option value="">I want to</option>
+                                        <option value="job-seeker">Search for medical jobs</option>
+                                        <option value="recruiter">Post medical jobs</option>
                                     </select>
                                 </div>
                             </div>
