@@ -86,28 +86,33 @@
     </AppLayout>
 </template>
 
-<script setup>
-import { Head, Link } from '@inertiajs/vue3'
+<script setup lang="ts">
+import { Head, Link } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 
-const props = defineProps({
-    job: Object
-})
+const { job } = defineProps<{ job: any }>();
 
-const formatJobType = (type) => {
-    if (!type) return 'Not specified'
-    return type.split('-').map(word =>
-        word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ')
-}
+const formatJobType = (type: string): string => {
+    if (!type) {
+        return 'Not specified';
+    }
+    return type
+        .split('-')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+};
 
-const formatExperienceLevel = (level) => {
-    if (!level) return 'Not specified'
-    return level.charAt(0).toUpperCase() + level.slice(1) + ' Level'
-}
+const formatExperienceLevel = (level: string): string => {
+    if (!level) {
+        return 'Not specified';
+    }
+    return level.charAt(0).toUpperCase() + level.slice(1) + ' Level';
+};
 
-const formatSalary = (salary) => {
-    if (!salary || salary === 0) return 'Not specified'
-    return new Intl.NumberFormat('en-US').format(salary)
-}
+const formatSalary = (salary: number): string => {
+    if (!salary || salary === 0) {
+        return 'Not specified';
+    }
+    return new Intl.NumberFormat('en-US').format(salary);
+};
 </script>

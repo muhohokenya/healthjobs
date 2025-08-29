@@ -11,7 +11,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type User } from '@/types';
 import { CheckCircle as CheckCircleIcon, BadgeIcon, BadgeCheckIcon } from 'lucide-vue-next';
-import { computed, onMounted, watch } from 'vue';
+import { computed, watch } from 'vue';
 import Swal from 'sweetalert2'; // Add this import
 
 
@@ -20,7 +20,7 @@ interface Props {
     mustVerifyEmail: boolean;
     status?: string;
     flash: object;
-    isProfileComplete: Boolean;
+    isProfileComplete: boolean;
 }
 
 const message = computed(() => page.props.flash.flashMessage);

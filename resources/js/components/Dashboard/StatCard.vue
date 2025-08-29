@@ -17,7 +17,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { BriefcaseIcon, BuildingIcon, CheckCircleIcon, ClockIcon, PlayIcon, ShieldCheckIcon, UserCheckIcon } from 'lucide-vue-next';
 
@@ -34,7 +34,7 @@ const props = defineProps({
 });
 
 const iconComponent = computed(() => {
-    const icons = {
+    const icons: Record<string, any> = {
         briefcase: BriefcaseIcon,
         'check-circle': CheckCircleIcon,
         building: BuildingIcon,
@@ -43,11 +43,11 @@ const iconComponent = computed(() => {
         play: PlayIcon,
         clock: ClockIcon,
     };
-    return icons[props.icon] || BriefcaseIcon;
+    return icons[props.icon as string] || BriefcaseIcon;
 });
 
 const iconClasses = computed(() => {
-    const colorClasses = {
+    const colorClasses: Record<string, string> = {
         blue: 'bg-blue-100 text-blue-600',
         green: 'bg-green-100 text-green-600',
         purple: 'bg-purple-100 text-purple-600',
@@ -56,11 +56,13 @@ const iconClasses = computed(() => {
         yellow: 'bg-yellow-100 text-yellow-600',
     };
 
-    return ['flex items-center justify-center h-12 w-12 rounded-md', colorClasses[props.color] || colorClasses['blue']];
+    return ['flex items-center justify-center h-12 w-12 rounded-md', colorClasses[props.color as string] || colorClasses['blue']];
 });
 
-const formatNumber = (num) => {
-    if (num === null || num === undefined) return '0';
+const formatNumber = (num: number | null | undefined): string => {
+    if (num === null || num === undefined) {
+        return '0';
+    }
     return new Intl.NumberFormat().format(num);
 };
 </script>

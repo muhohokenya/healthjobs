@@ -1,19 +1,10 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import type { BreadcrumbItem } from '@/types';
 import { useAuth } from '@/utils/auth';
 import { Head, Link, router } from '@inertiajs/vue3';
-import { onMounted, reactive } from 'vue';
+import { reactive } from 'vue';
+
 const user = useAuth();
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Jobs Pages',
-        href: '/dashboard',
-    },
-];
-
-
 
 const props = defineProps({
     jobs: Object,
@@ -27,25 +18,25 @@ const searchForm = reactive({
     location: props.filters.location || '',
 });
 
-const search = () => {
+const search = (): void => {
     router.get(route('health-jobs.index'), searchForm, {
         preserveState: true,
         replace: true,
     });
 };
 
-const formatJobType = (type) => {
+const formatJobType = (type: string): string => {
     return type
         .split('-')
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
 };
 
-const formatExperienceLevel = (level) => {
+const formatExperienceLevel = (level: string): string => {
     return level.charAt(0).toUpperCase() + level.slice(1) + ' Level';
 };
 
-const formatSalary = (salary) => {
+const formatSalary = (salary: number): string => {
     return new Intl.NumberFormat('en-US').format(salary);
 };
 </script>
@@ -55,8 +46,7 @@ const formatSalary = (salary) => {
 
     <AppLayout>
         <div class="min-h-screen bg-gray-50 py-8 dark:bg-gray-900">
-            <div class="mx-auto max-w-9xl px-4 sm:px-6 lg:px-8">
-                <!-- Header -->
+            <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
                 <div class="mb-7">
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Health Jobs</h1>
                     <p class="mt-2 text-gray-600 dark:text-gray-300">Find your next healthcare opportunity</p>
@@ -67,8 +57,7 @@ const formatSalary = (salary) => {
                     <Link :href="route('profile.update')" class="ml-3 text-blue-600 underline">Complete Profile</Link>
                 </div>
 
-                <!-- Create Job Button (Conditional) -->
-                <div v-if="user.hasPermission('create-job-postings') && $page.props.isProfileComplete" class="mb-6 flex justify-end">
+                <div v-if="user.hasPermission('create-job-postings') && props.isProfileComplete" class="mb-6 flex justify-end">
                     <Link
                         class="flex items-center rounded-md bg-blue-600 px-4 py-2.5 font-medium text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         :href="route('health-jobs.create')"
@@ -76,7 +65,6 @@ const formatSalary = (salary) => {
                     >
                 </div>
 
-                <!-- Filters -->
                 <div class="mb-6 rounded-lg bg-white p-6 shadow dark:bg-gray-800 dark:shadow-gray-700/25">
                     <h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Filter Jobs</h2>
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -104,9 +92,7 @@ const formatSalary = (salary) => {
                             </select>
                         </div>
                         <div>
-                            <label for="location" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                                >Location</label
-                            >
+                            <label for="location" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Location</label>
                             <select
                                 v-model="searchForm.location"
                                 id="location"
@@ -135,19 +121,16 @@ const formatSalary = (salary) => {
                     </div>
                 </div>
 
-                <!-- Jobs Grid -->
-                <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                     <div
                         v-for="job in props.jobs.data"
                         :key="job.id"
                         class="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 dark:border-gray-700/50 dark:bg-gray-800/50 dark:backdrop-blur-sm dark:hover:shadow-gray-700/25"
                     >
-                        <!-- Decorative gradient background -->
                         <div
                             class="absolute -top-8 -right-8 h-24 w-24 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10 transition-transform duration-300 group-hover:scale-150 dark:from-blue-500/20 dark:to-purple-500/20"
                         ></div>
 
-                        <!-- Header section with enhanced typography hierarchy -->
                         <div class="relative mb-6 flex items-start justify-between">
                             <div class="flex-1 pr-4">
                                 <h3
@@ -156,7 +139,6 @@ const formatSalary = (salary) => {
                                     {{ job.title }}
                                 </h3>
 
-                                <!-- Company info with enhanced styling -->
                                 <div class="mb-3 flex items-center space-x-2">
                                     <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
                                         <svg class="h-4 w-4 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -174,7 +156,6 @@ const formatSalary = (salary) => {
                                 </div>
                             </div>
 
-                            <!-- Enhanced job type badge -->
                             <div class="relative">
                                 <span
                                     class="inline-flex items-center rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-2 text-sm font-semibold text-blue-700 ring-1 ring-blue-200/50 transition-all duration-200 group-hover:from-blue-100 group-hover:to-indigo-100 group-hover:ring-blue-300/50 dark:from-blue-900/30 dark:to-indigo-900/30 dark:text-blue-300 dark:ring-blue-800/50"
@@ -184,7 +165,6 @@ const formatSalary = (salary) => {
                             </div>
                         </div>
 
-                        <!-- Location with improved visual design -->
                         <div class="mb-6 flex items-center space-x-3">
                             <div class="flex h-10 w-10 items-center justify-center rounded-full bg-green-50 dark:bg-green-900/30">
                                 <svg class="h-5 w-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
@@ -203,22 +183,18 @@ const formatSalary = (salary) => {
                             </div>
                         </div>
 
-                        <!-- Description with improved readability -->
                         <div class="mb-6">
                             <p class="line-clamp-3 leading-relaxed text-gray-600 dark:text-gray-300">{{ job.description.substring(0, 150) }}...</p>
                         </div>
 
-                        <!-- Enhanced bottom section with better visual hierarchy -->
                         <div class="flex items-end justify-between border-t border-gray-50 pt-6 dark:border-gray-700/50">
                             <div class="space-y-3">
-                                <!-- Salary with prominent styling -->
                                 <div class="flex items-center space-x-2">
                                     <small class="text-sm font-bold text-green-600 dark:text-green-400">
                                         Ksh {{ formatSalary(job.salary_min) }} - {{ formatSalary(job.salary_max) }}
                                     </small>
                                 </div>
 
-                                <!-- Experience level with subtle styling -->
                                 <div class="flex items-center space-x-2">
                                     <div class="flex h-6 w-6 items-center justify-center rounded-full bg-purple-50 dark:bg-purple-900/30">
                                         <svg class="h-3 w-3 text-purple-600 dark:text-purple-400" fill="currentColor" viewBox="0 0 20 20">
@@ -235,7 +211,6 @@ const formatSalary = (salary) => {
                                 </div>
                             </div>
 
-                            <!-- Enhanced action button -->
                             <div class="ml-6">
                                 <Link
                                     v-if="props.isProfileComplete"
@@ -272,23 +247,6 @@ const formatSalary = (salary) => {
                     </div>
                 </div>
 
-                <!-- Pagination -->
-                <div class="flex justify-center" v-if="jobs.links.length > 3">
-                    <div class="flex space-x-1">
-                        <!--                    <Link-->
-                        <!--                        v-for="link in jobs.links"-->
-                        <!--                        :key="link.label"-->
-                        <!--                        :href="link.url"-->
-                        <!--                        v-html="link.label"-->
-                        <!--                        class="px-3 py-2 text-sm border rounded"-->
-                        <!--                        :class="{-->
-                        <!--                            'bg-blue-600 text-white border-blue-600': link.active,-->
-                        <!--                            'bg-white text-gray-700 border-gray-300 hover:bg-gray-50': !link.active && link.url,-->
-                        <!--                            'bg-gray-100 text-gray-400 border-gray-300 cursor-not-allowed': !link.url-->
-                        <!--                        }"-->
-                        <!--                    />-->
-                    </div>
-                </div>
             </div>
         </div>
     </AppLayout>

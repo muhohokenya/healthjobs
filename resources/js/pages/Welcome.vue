@@ -1,47 +1,38 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const showLogin = ref(false)
-const showRegister = ref(false)
-const mobileMenuOpen = ref(false)
-
-const stats = [
-    { number: '15,000+', label: 'Medical Jobs' },
-    { number: '8,500+', label: 'Healthcare Facilities' },
-    { number: '25,000+', label: 'Registered Doctors' },
-    { number: '98%', label: 'Success Rate' }
-]
+const mobileMenuOpen = ref(false);
 
 const features = [
     {
         icon: '🩺',
         title: 'Smart Job Matching',
-        description: 'AI-powered matching system connects you with perfect opportunities based on your specialty and preferences.'
+        description: 'AI-powered matching system connects you with perfect opportunities based on your specialty and preferences.',
     },
     {
         icon: '🏥',
         title: 'Verified Healthcare Facilities',
-        description: 'Only work with pre-screened, reputable hospitals and clinics across the country.'
+        description: 'Only work with pre-screened, reputable hospitals and clinics across the country.',
     },
     {
         icon: '📊',
         title: 'Career Analytics',
-        description: 'Track your application progress and get insights to boost your medical career.'
+        description: 'Track your application progress and get insights to boost your medical career.',
     },
     {
         icon: '⚡',
         title: 'Instant Applications',
-        description: 'Apply to multiple positions with one click using your verified medical profile.'
-    }
-]
+        description: 'Apply to multiple positions with one click using your verified medical profile.',
+    },
+];
 
-const navigateToLogin = () => {
-    window.location.href = '/login'
-}
+const navigateToLogin = (): void => {
+    window.location.href = '/login';
+};
 
-const navigateToRegister = () => {
-    window.location.href = '/register'
-}
+const navigateToRegister = (): void => {
+    window.location.href = '/register';
+};
 </script>
 
 <template>

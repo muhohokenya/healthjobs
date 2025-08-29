@@ -5,9 +5,9 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Users, Settings, FileText, Cog, User } from 'lucide-vue-next';
+import { LayoutGrid, Users, Settings, FileText, Cog, User } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { useAuth } from '@/utils/auth';
 
 const user = useAuth();
@@ -17,7 +17,6 @@ const allNavItems = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
-        // No requirements - always visible
     },
     {
         title: 'Jobs',
@@ -25,7 +24,6 @@ const allNavItems = [
         icon: Users,
         requiredPermissions: ['view-job-postings'],
     },
-
     {
         title: 'Access Management',
         href: '/iam',
@@ -42,14 +40,14 @@ const allNavItems = [
         title: 'Manage Facility',
         href: '/facilities',
         icon: User,
-        requiredRoles: ['super-admin']
+        requiredRoles: ['super-admin'],
     },
     {
         title: 'Reports',
         href: '/reports',
         icon: FileText,
         requiredPermissions: ['view reports', 'generate reports'],
-        requireAnyPermission: false, // requires ALL permissions
+        requireAnyPermission: false,
     },
     {
         title: 'Settings',
@@ -60,10 +58,8 @@ const allNavItems = [
     },
 ];
 
-// Filter items based on access
 const mainNavItems = computed((): NavItem[] => {
     return allNavItems.filter((item) => {
-        // Extract access requirements from the item
         const requirements = {
             requiredRoles: item.requiredRoles || [],
             requiredPermissions: item.requiredPermissions || [],

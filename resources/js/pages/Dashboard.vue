@@ -13,8 +13,6 @@
 
         <div class="py-8">
             <div class="max-w-7xl mx-auto space-y-8">
-
-                <!-- Key Stats -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div
                         v-for="card in statCards"
@@ -29,10 +27,7 @@
                     </div>
                 </div>
 
-                <!-- Content Grid -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
-                    <!-- Recent Jobs -->
                     <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-200">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,7 +52,6 @@
                         </ul>
                     </div>
 
-                    <!-- Top Facilities -->
                     <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-200">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -80,37 +74,33 @@
                         </ul>
                     </div>
                 </div>
-
             </div>
         </div>
     </AppLayout>
 </template>
 
-<script setup>
-import { Head } from '@inertiajs/vue3'
-import AppLayout from '@/layouts/AppLayout.vue'
+<script setup lang="ts">
+import { Head } from '@inertiajs/vue3';
+import AppLayout from '@/layouts/AppLayout.vue';
 
-// Props
 const props = defineProps({
     stats: Object,
     recent_jobs: Array,
     top_facilities: Array,
-})
+});
 
-// Key stat cards config
-import { Briefcase, Building } from 'lucide-vue-next'
+import { Briefcase, Building } from 'lucide-vue-next';
 
 const statCards = [
-    { title: "Total Jobs", value: props.stats.total_jobs, icon: Briefcase },
-    { title: "Total Facilities", value: props.stats.total_facilities, icon: Building },
-]
+    { title: 'Total Jobs', value: props.stats.total_jobs, icon: Briefcase },
+    { title: 'Total Facilities', value: props.stats.total_facilities, icon: Building },
+];
 
-// Format date
-const formatDate = (dateString) => {
-    const date = new Date(dateString)
+const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
-    })
-}
+    });
+};
 </script>

@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { useAuth } from '@/utils/auth';
 import { Head, useForm } from '@inertiajs/vue3';
-const user = useAuth();
 
 const form = useForm({
-    avatar:'',
+    avatar: '',
     title: 'Pharmaceutical Technologist',
-    description: 'Qualification in Pharmaceutical studies,Valid license from the Pharmacy and Poisons Board,At least 3 years’ experience in a hospital or retail pharmacy,Strong communication and customer service skills',
+    description:
+        'Qualification in Pharmaceutical studies,Valid license from the Pharmacy and Poisons Board,At least 3 years’ experience in a hospital or retail pharmacy,Strong communication and customer service skills',
     location: 'Baraka Towers, Pangani – Nairobi',
     job_type: '',
     salary_min: '',
     salary_max: '',
     experience_level: '',
-    requirements: '', // This should be a JSON string
+    requirements: '',
     is_active: true,
 });
 </script>
