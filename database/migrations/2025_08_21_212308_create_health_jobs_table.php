@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('health_jobs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('facility_id')->constrained()->onDelete('cascade');
+            $table->string('company');
+            $table->string('location');
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('facility_id')->nullable()->constrained()->nullOnDelete();
             $table->text('description');
             $table->string('job_type'); // full-time, part-time, contract
             $table->decimal('salary_min', 10, 2)->nullable();
