@@ -58,13 +58,18 @@ class HealthJobRequest extends FormRequest
                 'string',
                 'in:entry,mid,senior'
             ],
-            'requirements' => [
+            // Add qualifications validation rules
+            'qualifications' => [
                 'nullable',
-                'array'
+                'array',
+                'max:5'  // Maximum 5 qualifications
             ],
-            'requirements.*' => [
+            'qualifications.*' => [
+                'required',  // Each qualification must not be empty
                 'string',
-                'max:500'
+                'min:10',    // Minimum 10 characters per qualification
+                'max:500',   // Maximum 500 characters per qualification
+                'distinct'   // Each qualification must be unique
             ],
             'is_active' => [
                 'sometimes',

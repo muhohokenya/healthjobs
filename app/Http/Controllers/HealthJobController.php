@@ -151,6 +151,8 @@ class HealthJobController extends Controller
 //        Facility::query()->where('');
         $healthJob['facility_id'] = $request->user()->facility->id;
         $healthJob['user_id'] = Auth::id();
+        $healthJob['requirements'] = $request->qualifications;
+
 
 
         // Create the health job record

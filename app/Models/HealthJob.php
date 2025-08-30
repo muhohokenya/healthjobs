@@ -43,5 +43,6 @@ class HealthJob extends Model
         'salary_min' => 'decimal:2',
         'salary_max' => 'decimal:2',
         'is_active' => 'boolean',
+        'qualifications' => 'array',
     ];
 }

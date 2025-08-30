@@ -14,6 +14,14 @@ const breadcrumbItems: BreadcrumbItem[] = [
         href: '/settings/appearance',
     },
 ];
+
+function toPascalCase(str) {
+    return str
+        .toLowerCase()
+        .replace(/(^\w|[-_ ]+\w)/g, match =>
+            match.replace(/[-_ ]+/, "").toUpperCase()
+        );
+}
 </script>
 
 <template>
@@ -22,12 +30,7 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
         <SettingsLayout>
             <div class="space-y-6">
-                <HeadingSmall title="Role" :description="user.name" />
-
-
-                <h3>
-                    {{user.roles[0].name}}
-                </h3>
+                <HeadingSmall title="Role" :description="toPascalCase(user.roles[0].name)" />
             </div>
         </SettingsLayout>
     </AppLayout>

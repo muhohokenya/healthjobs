@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('salary_min', 10, 2)->nullable();
             $table->decimal('salary_max', 10, 2)->nullable();
             $table->string('experience_level'); // entry, mid, senior
+            $table->json('qualifications')->nullable();
             $table->json('requirements')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();

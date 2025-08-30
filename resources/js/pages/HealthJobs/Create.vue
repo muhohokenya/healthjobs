@@ -1,20 +1,31 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, Form } from '@inertiajs/vue3';
+import { useAuth } from '@/utils/auth';
+import { ref, computed } from 'vue';
 
-const form = useForm({
-    avatar: '',
-    title: 'Pharmaceutical Technologist',
-    description:
-        'Qualification in Pharmaceutical studies,Valid license from the Pharmacy and Poisons Board,At least 3 years’ experience in a hospital or retail pharmacy,Strong communication and customer service skills',
-    location: 'Baraka Towers, Pangani – Nairobi',
-    job_type: '',
-    salary_min: '',
-    salary_max: '',
-    experience_level: '',
-    requirements: '',
-    is_active: true,
+const user = useAuth();
+
+// Dynamic qualifications list
+const qualifications = ref([]);
+const maxQualifications = 5;
+
+// Computed property to check if we can add more qualifications
+const canAddMore = computed(() => {
+    return qualifications.value.length < maxQualifications;
 });
+
+// Add a new qualification input
+const addQualification = () => {
+    if (canAddMore.value) {
+        qualifications.value.push('');
+    }
+};
+
+// Remove a qualification input
+const removeQualification = (index: number) => {
+    qualifications.value.splice(index, 1);
+};
 </script>
 
 <template>
@@ -23,20 +34,22 @@ const form = useForm({
         <div class="min-h-screen bg-gray-50 py-8 dark:bg-gray-900">
             <div class="max-w-4xl px-4 sm:px-6 lg:px-8">
                 <!-- Job Creation Form -->
-                <div  ref="jobForm" class="mt-12">
+                <div ref="jobForm" class="mt-12">
                     <div class="mb-6 border-b border-gray-200 pb-4 dark:border-gray-700">
-                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Create New Job Posting</h2>
-                        <p class="text-gray-600 dark:text-gray-300">Fill out the form below to create a new job listing</p>
+                        <h4>{{user.facility.name}}</h4>
+                        <p class="text-gray-600 mt-4 dark:text-gray-300">Fill out the form below to create a new job listing</p>
                     </div>
 
-                    <form @submit.prevent="form.post(route('health-jobs.store'))"
-                          class="space-y-6 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800">
+                    <Form
+                        :action="route('health-jobs.store')"
+                        method="post"
+                        class="space-y-6 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800"
+                    >
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Job Title -->
                             <div>
                                 <label for="title" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Job Title *</label>
                                 <input
-                                    v-model="form.title"
                                     type="text"
                                     name="title"
                                     id="title"
@@ -45,14 +58,12 @@ const form = useForm({
                                     class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                                 />
                             </div>
-
-
                         </div>
+
                         <!-- Description -->
                         <div>
                             <label for="description" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Description *</label>
                             <textarea
-                                v-model="form.description"
                                 name="description"
                                 id="description"
                                 rows="4"
@@ -60,13 +71,16 @@ const form = useForm({
                                 required
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             />
+                            {{prop}}
                         </div>
+
+
+
                         <!-- Job Type & Experience -->
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <div>
                                 <label for="job_type" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Job Type *</label>
                                 <select
-                                    v-model="form.job_type"
                                     name="job_type"
                                     id="job_type"
                                     required
@@ -81,10 +95,9 @@ const form = useForm({
 
                             <div>
                                 <label for="experience_level" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    >Experience Level *</label
+                                >Experience Level *</label
                                 >
                                 <select
-                                    v-model="form.experience_level"
                                     name="experience_level"
                                     id="experience_level"
                                     required
@@ -98,21 +111,92 @@ const form = useForm({
                             </div>
                         </div>
 
+                        <!-- Salary Range -->
+                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                            <div>
+                                <label for="salary_min" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Min Range</label>
+                                <input
+                                    type="text"
+                                    name="salary_min"
+                                    id="salary_min"
+                                    placeholder="e.g. Kes 35000"
+                                    required
+                                    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                />
+                            </div>
+                            <div>
+                                <label for="salary_max" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Max Range</label>
+                                <input
+                                    type="text"
+                                    name="salary_max"
+                                    id="salary_max"
+                                    placeholder="e.g. Kes 85000"
+                                    required
+                                    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                />
+                            </div>
+                        </div>
 
-                        <input type="file" @input="form.avatar = $event.target.files[0]" />
-                        <progress v-if="form.progress" :value="form.progress.percentage" max="100">
-                            {{ form.progress.percentage }}%
-                        </progress>
+                        <!-- Dynamic Qualifications Section -->
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Qualifications & Requirements
+                                </label>
+                                <button
+                                    type="button"
+                                    @click="addQualification"
+                                    :disabled="!canAddMore"
+                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed dark:text-blue-400 dark:bg-blue-900 dark:hover:bg-blue-800"
+                                >
+                                    <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                    Add Qualification
+                                </button>
+                            </div>
 
+                            <div class="space-y-3" v-if="qualifications.length > 0">
+                                <div
+                                    v-for="(qualification, index) in qualifications"
+                                    :key="index"
+                                    class="flex items-center gap-3"
+                                >
+                                    <div class="flex-1">
+                                        <input
+                                            v-model="qualifications[index]"
+                                            type="text"
+                                            :name="`qualifications[${index}]`"
+                                            :placeholder="`Qualification ${index + 1} (e.g., Bachelor's degree in Nursing)`"
+                                            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                        />
+                                    </div>
+                                    <button
+                                        type="button"
+                                        @click="removeQualification(index)"
+                                        class="flex-shrink-0 p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-lg transition-colors dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900"
+                                        title="Remove qualification"
+                                    >
+                                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
 
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                Add up to {{ maxQualifications }} qualifications. These will appear as bullet points in the job listing.
+                            </p>
+                        </div>
 
                         <!-- Active Checkbox -->
                         <div class="flex items-center space-x-3 pt-2">
                             <input
-                                v-model="form.is_active"
                                 type="checkbox"
                                 name="is_active"
                                 id="is_active"
+                                value="1"
+                                checked
                                 class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:focus:ring-blue-400"
                             />
                             <label for="is_active" class="text-sm font-medium text-gray-700 dark:text-gray-300">Job is Active</label>
@@ -122,27 +206,12 @@ const form = useForm({
                         <div class="pt-4">
                             <button
                                 type="submit"
-                                :disabled="form.processing"
                                 class="flex w-full items-center justify-center rounded-lg bg-blue-600 px-6 py-3.5 text-lg font-semibold text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:opacity-50 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-400 dark:focus:ring-offset-gray-800"
                             >
-                                <svg
-                                    v-if="form.processing"
-                                    class="mr-2 h-5 w-5 animate-spin text-white"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path
-                                        class="opacity-75"
-                                        fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                    ></path>
-                                </svg>
-                                {{ form.processing ? 'Creating Job...' : 'Create Job' }}
+                                Create Job
                             </button>
                         </div>
-                    </form>
+                    </Form>
                 </div>
             </div>
         </div>
