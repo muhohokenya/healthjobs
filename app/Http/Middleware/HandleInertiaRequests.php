@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user() ? [
-                    ...$request->user()->toArray(),
+                    ...$request->user()->load(['facility', 'roles', 'permissions'])->toArray(),
                     'roles' => $request->user()->roles()->get(['id', 'name']),
                     'permissions' => $request->user()->getAllPermissions(['id', 'name']),
                     'isProfileComplete' => $request->user()->isProfileComplete(),

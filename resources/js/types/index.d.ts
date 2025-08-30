@@ -28,6 +28,7 @@ export type AppPageProps<T extends Record<string, unknown> = Record<string, unkn
 export interface User {
     id: number;
     name: string;
+    contact_number: string;
     licence_number: string;
     licence_status: string;
     email: string;
