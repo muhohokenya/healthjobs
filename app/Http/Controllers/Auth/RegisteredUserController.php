@@ -33,7 +33,7 @@ class RegisteredUserController extends Controller
 
         $validator = \Validator::make($request->all(), [
             'role' => ['required', 'string'],
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|lowercase|email|max:255|unique:users,email',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 

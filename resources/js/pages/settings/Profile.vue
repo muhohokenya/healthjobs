@@ -166,7 +166,6 @@ const user = page.props.auth.user as User;
                             <Label for="name" class="text-sm font-semibold text-gray-700">Contact *</Label>
 
                             <Input
-                                :default-value="user.facility.contact_number"
                                 name="contact_number"
                                 id="contact_number"
                                 placeholder="07xxx"

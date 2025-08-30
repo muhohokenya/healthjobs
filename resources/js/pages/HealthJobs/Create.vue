@@ -35,7 +35,7 @@ const removeQualification = (index: number) => {
             <div class="max-w-4xl px-4 sm:px-6 lg:px-8">
                 <!-- Job Creation Form -->
                 <div ref="jobForm" class="mt-12">
-                    <div class="mb-6 border-b border-gray-200 pb-4 dark:border-gray-700">
+                    <div  class="mb-6 border-b border-gray-200 pb-4 dark:border-gray-700">
                         <h4>{{user.facility.name}}</h4>
                         <p class="text-gray-600 mt-4 dark:text-gray-300">Fill out the form below to create a new job listing</p>
                     </div>
