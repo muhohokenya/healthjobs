@@ -48,7 +48,7 @@ const navigateToRegister = (): void => {
                             <circle cx="7" cy="6" r="2"/>
                         </svg>
                     </div>
-                    <span class="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">MediJobs</span>
+                    <span class="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">MediCareers</span>
                 </div>
 
                 <div class="hidden md:flex items-center space-x-8">
@@ -271,7 +271,7 @@ const navigateToRegister = (): void => {
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-5xl font-bold mb-6">
                     Why Choose
-                    <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">MediJobs?</span>
+                    <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">MediCareers?</span>
                 </h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
                     Advanced technology meets human-centered design to create the ultimate platform for medical career growth.
@@ -306,7 +306,7 @@ const navigateToRegister = (): void => {
                 </span>
             </h2>
             <p class="text-xl text-blue-100 mb-12 leading-relaxed">
-                Join thousands of medical professionals who've found their perfect match through MediJobs. Your dream position is just one click away.
+                Join thousands of medical professionals who've found their perfect match through MediCareers. Your dream position is just one click away.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <button @click="navigateToRegister" class="bg-white text-blue-600 px-10 py-4 rounded-full text-lg font-bold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-2">
