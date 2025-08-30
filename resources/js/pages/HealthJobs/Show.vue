@@ -2,7 +2,7 @@
     <Head :title="job.title" />
     <AppLayout>
     <div class="min-h-screen bg-gray-50 py-8">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                 <!-- Header -->
                 <div class="bg-blue-600 text-white p-6">
@@ -67,10 +67,7 @@
                     <!-- Actions -->
                     <div class="flex flex-col sm:flex-row gap-4">
                         <button class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 font-medium">
-                            Apply Now
-                        </button>
-                        <button class="border border-gray-300 text-gray-700 px-6 py-3 rounded-md hover:bg-gray-50 font-medium">
-                            Save Job
+                            Interested
                         </button>
                         <Link
                             :href="route('health-jobs.index')"
