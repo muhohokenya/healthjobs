@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('health_jobs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('company');
             $table->string('location');
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('facility_id')->nullable()->constrained()->nullOnDelete();
