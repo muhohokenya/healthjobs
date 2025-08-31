@@ -157,6 +157,7 @@ class RolePermissionSeeder extends Seeder
                 'send-messages',
                 'receive-messages',
                 'view-user-profiles',
+                'create-job-postings',
             ],
 
             'hiring-manager' => [

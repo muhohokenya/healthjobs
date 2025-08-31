@@ -6,6 +6,7 @@ use App\Http\Controllers\HealthJobController;
 use App\Http\Controllers\RolesAndPermissionsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use \App\Http\Controllers\NotificationController;
 
 // Public routes
 Route::get('/', [\App\Http\Controllers\welcomeController::class,'index'])->name('home');
@@ -20,6 +21,21 @@ Route::get('/', [\App\Http\Controllers\welcomeController::class,'index'])->name(
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::controller(NotificationController::class)
+        ->prefix('notifications')
+        ->name('notifications.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::patch('/notifications/{notification}/read', 'markAsRead')->name('notifications.read');
+            Route::patch('/notifications/mark-all-read', 'markAllAsRead')->name('notifications.mark-all-read');
+        });
+});
+
+
 
 Route::middleware(['auth', 'roles:super-admin'])->group(function () {
     Route::controller(FacilityController::class)
@@ -42,7 +58,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('create', 'create')->name('create');
             Route::post('jobs', 'store')->name('store');
-            Route::get('{healthJob}', 'show')->name('show');
+            Route::get('{uuid}', 'show')->name('show');
+            Route::post('interested', 'interested')->name('interested');
         });
 });
 

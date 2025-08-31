@@ -31,14 +31,12 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['nullable', 'string'],
         ]);
 
         $payload = [
-            'name' => $validated['name'],
             'email' => $validated['email'],
             // Explicitly hash to be clear, even though the model casts password as hashed
             'password' => Hash::make($validated['password']),

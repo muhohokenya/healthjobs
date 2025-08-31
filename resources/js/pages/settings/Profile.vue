@@ -89,7 +89,7 @@ const user = page.props.auth.user as User;
                             :default-value="user.name"
                             required
                             autocomplete="name"
-                            placeholder="Name of the facility"
+                            :placeholder="user.roles[0].name === 'job-seeker' ? 'Full Name' : 'Full Facility Name'"
                         />
                         <InputError class="mt-2" :message="errors.name" />
                     </div>
@@ -120,7 +120,7 @@ const user = page.props.auth.user as User;
                             <div class="relative">
                                 <Label for="licence">Licence</Label>
                                 <Input
-                                    :disabled="user.licence_number != ''"
+                                    :disabled="user.licence_number != null"
                                     id="licence"
                                     class="mt-1 block w-full"
                                     name="licence"
@@ -129,7 +129,7 @@ const user = page.props.auth.user as User;
                                     :placeholder="license_pattern"
                                 />
                                 <span>{{ page.props.errors.licence }}</span>
-                                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-4">
                                     <BadgeCheckIcon v-if="user.licence_number" class="h-4 w-4 text-green-500" />
                                     <BadgeIcon v-else class="h-4 w-4 text-red-500" />
                                 </div>

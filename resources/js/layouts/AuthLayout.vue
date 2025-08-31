@@ -8,6 +8,7 @@ defineProps<{
 </script>
 
 <template>
+    <h1>Hapa</h1>
     <AuthLayout :title="title" :description="description">
         <slot />
     </AuthLayout>

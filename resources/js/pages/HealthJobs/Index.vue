@@ -3,6 +3,8 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { useAuth } from '@/utils/auth';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { reactive } from 'vue';
+import AuthLayout from '@/layouts/AuthLayout.vue';
+import { Input } from '@/components/ui/input';
 
 const user = useAuth();
 
@@ -247,7 +249,7 @@ const formatSalary = (salary: number): string => {
                                 <div>
                                     <Link
                                         v-if="props.isProfileComplete"
-                                        :href="route('health-jobs.show', job.id)"
+                                        :href="route('health-jobs.show', job.uuid)"
                                         class="group/btn inline-flex items-center space-x-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-500/25 transition-all duration-200 hover:from-blue-700 hover:to-blue-800 hover:shadow-xl hover:shadow-blue-500/30 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:from-blue-500 dark:to-blue-600 dark:shadow-blue-500/20 dark:hover:from-blue-600 dark:hover:to-blue-700 dark:focus:ring-offset-gray-800"
                                     >
                                         <span>View Details</span>

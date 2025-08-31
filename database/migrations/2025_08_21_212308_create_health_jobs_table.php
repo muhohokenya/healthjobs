@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('health_jobs', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->string('title');
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('facility_id')->nullable()->constrained()->nullOnDelete();

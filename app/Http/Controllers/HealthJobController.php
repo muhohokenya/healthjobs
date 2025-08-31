@@ -6,10 +6,13 @@ use App\Http\Requests\HealthJobRequest;
 use App\Models\Facility;
 use App\Models\HealthJob;
 use App\Models\User;
+use App\Notifications\JobInterestNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -154,6 +157,7 @@ class HealthJobController extends Controller
 //        Facility::query()->where('');
         $healthJob['facility_id'] = $request->user()->facility->id;
         $healthJob['user_id'] = Auth::id();
+        $healthJob['uuid'] = Str::uuid();
         $healthJob['requirements'] = $request->qualifications;
 
 
@@ -170,10 +174,26 @@ class HealthJobController extends Controller
         ], 201);
     }
 
-    public function show(HealthJob $healthJob)
+    public function show($id)
     {
+
+       $healthJob = HealthJob::query()->
+           where('uuid', $id)->firstOrFail();
+
         return Inertia::render('HealthJobs/Show', [
             'job' => $healthJob,
         ]);
     }
+
+
+    public function interested(Request $request)
+    {
+        $job = HealthJob::query()->where('uuid', $request->job)->with('user')->firstOrFail();
+
+//        Notification::send($job->user(), new JobInterestNotification());
+
+        $job->user->notify(new JobInterestNotification($request->user(),$job));
+    }
+
+
 }

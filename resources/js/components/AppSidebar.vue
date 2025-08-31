@@ -10,6 +10,7 @@ import AppLogo from './AppLogo.vue';
 import { computed } from 'vue';
 import { useAuth } from '@/utils/auth';
 
+
 const user = useAuth();
 
 const allNavItems = [

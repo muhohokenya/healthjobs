@@ -83,13 +83,17 @@
 import { Head } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 
+
+
 const props = defineProps({
     stats: Object,
     recent_jobs: Array,
     top_facilities: Array,
 });
 
+
 import { Briefcase, Building } from 'lucide-vue-next';
+
 
 const statCards = [
     { title: 'Total Jobs', value: props.stats.total_jobs, icon: Briefcase },

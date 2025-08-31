@@ -24,6 +24,7 @@ class HealthJob extends Model
     }
 
     protected $fillable = [
+        'uuid',
         'title',
         'description',
         'job_type',
