@@ -109,14 +109,14 @@ const transformedNotifications = computed(() => {
     });
 });
 
-// Computed properties
-const unreadNotifications = computed(() =>
+// Computed properties - renamed to avoid collision with props
+const computedUnreadNotifications = computed(() =>
     transformedNotifications.value.filter(n => !n.read_at)
 );
 
 const filteredNotifications = computed(() => {
     if (filterType.value === 'unread') {
-        return unreadNotifications.value;
+        return computedUnreadNotifications.value;
     }
     if (filterType.value === 'read') {
         return transformedNotifications.value.filter(n => n.read_at);
