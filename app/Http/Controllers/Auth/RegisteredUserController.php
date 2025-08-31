@@ -31,11 +31,13 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
 
-        $validator = \Validator::make($request->all(), [
-            'role' => ['required', 'string'],
-            'email' => 'required|string|lowercase|email|max:255|unique:users,email',
+        $request->validate([
+            'role' => 'required',
+            'email' => 'required|email|unique:users,email',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
+
 
         $selected_role = $request->get('role');
 
