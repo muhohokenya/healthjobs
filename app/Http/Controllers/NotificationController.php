@@ -7,7 +7,8 @@ use Inertia\Inertia;
 
 class NotificationController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         // Get all unread notifications for the authenticated user
         $unreadNotifications = auth()->user()
             ->unreadNotifications()
@@ -30,7 +31,7 @@ class NotificationController extends Controller
     /**
      * Mark a notification as read
      */
-    public function markAsRead(Request $request, $notificationId)
+    public function markAsRead(Request $request, string $notificationId)
     {
         $notification = auth()->user()
             ->notifications()
@@ -45,11 +46,45 @@ class NotificationController extends Controller
     }
 
     /**
+     * Mark the selected notifications as read (bulk)
+     */
+    public function markSelectedAsRead(Request $request)
+    {
+        $ids = (array) $request->input('notification_ids', []);
+
+        if (! empty($ids)) {
+            auth()->user()
+                ->notifications()
+                ->whereIn('id', $ids)
+                ->update(['read_at' => now()]);
+        }
+
+        return back();
+    }
+
+    /**
      * Mark all notifications as read
      */
     public function markAllAsRead()
     {
         auth()->user()->unreadNotifications->markAsRead();
+
+        return back();
+    }
+
+    /**
+     * Delete selected notifications
+     */
+    public function deleteSelected(Request $request)
+    {
+        $ids = (array) $request->input('notification_ids', []);
+
+        if (! empty($ids)) {
+            auth()->user()
+                ->notifications()
+                ->whereIn('id', $ids)
+                ->delete();
+        }
 
         return back();
     }

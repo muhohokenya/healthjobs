@@ -3,26 +3,22 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\HealthJobController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RolesAndPermissionsController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use \App\Http\Controllers\NotificationController;
 
 // Public routes
-Route::get('/', [\App\Http\Controllers\welcomeController::class,'index'])->name('home');
+Route::get('/', [\App\Http\Controllers\welcomeController::class, 'index'])->name('home');
 
-
-//// Public routes
-//Route::controller(WelcomeController::class)->group(function () {
+// // Public routes
+// Route::controller(WelcomeController::class)->group(function () {
 //    Route::get('/', 'index')->name('welcome');
-//})
+// })
 
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
-
-
 
 Route::middleware(['auth'])->group(function () {
     Route::controller(NotificationController::class)
@@ -30,12 +26,12 @@ Route::middleware(['auth'])->group(function () {
         ->name('notifications.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::patch('/notifications/{notification}/read', 'markAsRead')->name('notifications.read');
-            Route::patch('/notifications/mark-all-read', 'markAllAsRead')->name('notifications.mark-all-read');
+            Route::patch('{notification}/read', 'markAsRead')->name('read');
+            Route::patch('mark-selected-read', 'markSelectedAsRead')->name('mark-selected-read');
+            Route::patch('mark-all-read', 'markAllAsRead')->name('mark-all-read');
+            Route::delete('delete-selected', 'deleteSelected')->name('delete-selected');
         });
 });
-
-
 
 Route::middleware(['auth', 'roles:super-admin'])->group(function () {
     Route::controller(FacilityController::class)
