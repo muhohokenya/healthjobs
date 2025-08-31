@@ -8,6 +8,7 @@ const user = useAuth();
 
 const props = defineProps({
     jobs: Object,
+    locations: Object,
     filters: Object,
     isProfileComplete: Boolean,
 });
@@ -98,10 +99,8 @@ const formatSalary = (salary: number): string => {
                                 id="location"
                                 class="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             >
-                                <option value="">All Levels</option>
-                                <option value="entry">Kiambu</option>
-                                <option value="mid">Nyeri</option>
-                                <option value="senior">Nairobi</option>
+                                <option value="">Select Location</option>
+                                <option v-for="location in locations" :value="location.location">{{location.location}}</option>
                             </select>
                         </div>
                         <div class="flex items-end">
@@ -152,7 +151,7 @@ const formatSalary = (salary: number): string => {
                                             </svg>
                                         </div>
                                         <span v-if="props.isProfileComplete" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                            {{ job.company }}
+                                            {{ job.facility.name }}
                                         </span>
                                         <span v-else class="text-sm italic text-gray-400/80 dark:text-gray-500"> [Hidden – complete profile] </span>
                                     </div>

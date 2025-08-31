@@ -116,7 +116,8 @@ class HealthJobController extends Controller
             })
             ->when($request->job_type, fn($query, $jobType) => $query->where('job_type', $jobType))
             ->when($request->experience_level, fn($query, $level) => $query->where('experience_level', $level))
-            // NEW: Location filter
+
+            // 👇 This part handles location filtering
             ->when($request->location, function ($query, $location) {
                 $query->whereHas('facility', function ($facilityQuery) use ($location) {
                     $facilityQuery->where('location', 'like', "%{$location}%");
@@ -127,7 +128,9 @@ class HealthJobController extends Controller
             ->paginate(12)
             ->withQueryString();
 
+
         return Inertia::render('HealthJobs/Index', [
+            'locations'=> Facility::query()->distinct()->get(['location']),
             'jobs' => $jobs,
             'filters' => $request->only(['search', 'job_type', 'experience_level']),
             'isProfileComplete' => $isProfileComplete,

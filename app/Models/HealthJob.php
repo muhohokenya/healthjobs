@@ -25,9 +25,7 @@ class HealthJob extends Model
 
     protected $fillable = [
         'title',
-        'company',
         'description',
-        'location',
         'job_type',
         'salary_min',
         'salary_max',
