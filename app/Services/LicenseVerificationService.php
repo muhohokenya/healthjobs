@@ -2,22 +2,18 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Client\ConnectionException;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\DomCrawler\Crawler;
-use Illuminate\Support\Collection;
-use Carbon\Carbon;
 
 class LicenseVerificationService
 {
-    private const POISONS_BOARD_URL = 'https://practice.pharmacyboardkenya.org/ajax/public';
-    private const NCK_URL = 'https://osp.nckenya.com/ajax/public';
-    private const COC_URL = 'https://portal.clinicalofficerscouncil.org/ajax/public';
-    private const KMPDU_URL = 'https://kmpdc.go.ke/Registers/General_Practitioners.php';
-    private const KMLTTB_URL = 'https://kmlttb.org/professionals/';
+    // URLs now come from config/license_verification.php (env-driven)
     private const FACILITY_CADRE = 'Facilities';
+
     private const PRACTITIONER_CADRE = 4;
 
     public function searchKMLTTB(string $licenceNumber, Request $request): array
@@ -31,27 +27,27 @@ class LicenseVerificationService
                     'Content-Type' => 'application/x-www-form-urlencoded',
                 ])
                 ->asForm()
-                ->post(self::KMLTTB_URL, [
+                ->post(config('license_verification.kmlttb_url'), [
                     'search_term' => $licenceNumber,
-                    'search' => 'Search'
+                    'search' => 'Search',
                 ]);
 
             // If POST doesn't work, try GET with parameters
-            if (!$response->successful() || !$this->hasResults($response->body())) {
+            if (! $response->successful() || ! $this->hasResults($response->body())) {
                 $response = Http::timeout(30)
                     ->withHeaders(['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'])
-                    ->get(self::KMLTTB_URL, [
+                    ->get(config('license_verification.kmlttb_url'), [
                         'search_term' => $licenceNumber,
-                        'search' => 'Search'
+                        'search' => 'Search',
                     ]);
             }
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 return ['success' => false, 'message' => 'Failed to fetch data'];
             }
 
             // Check if we got results or just the form
-            if (!$this->hasResults($response->body())) {
+            if (! $this->hasResults($response->body())) {
                 return ['success' => false, 'message' => 'No search results found - license may not exist'];
             }
 
@@ -61,7 +57,9 @@ class LicenseVerificationService
             $found = null;
 
             $crawler->filter('table.table tbody tr')->each(function (Crawler $row) use (&$found, $givenName, $licenceNumber) {
-                if ($found) return;
+                if ($found) {
+                    return;
+                }
 
                 $cells = $row->filter('td');
                 if ($cells->count() >= 7) {
@@ -72,8 +70,9 @@ class LicenseVerificationService
 
                     if ($regNo === $licenceNumber) {
                         // Check if name matches (if provided)
-                        if ($givenName && !$this->isNameMatch($givenName, $name)) {
+                        if ($givenName && ! $this->isNameMatch($givenName, $name)) {
                             $found = ['name_mismatch' => true, 'registered_name' => $name];
+
                             return;
                         }
 
@@ -89,7 +88,7 @@ class LicenseVerificationService
                 }
             });
 
-            if (!$found) {
+            if (! $found) {
                 return ['success' => false, 'message' => 'License number not found'];
             }
 
@@ -97,7 +96,7 @@ class LicenseVerificationService
                 return [
                     'success' => false,
                     'message' => "License valid but name doesn't match. Registered: {$found['registered_name']}",
-                    'data' => $found
+                    'data' => $found,
                 ];
             }
 
@@ -113,7 +112,7 @@ class LicenseVerificationService
             return [
                 'success' => true,
                 'message' => 'Professional verified',
-                'data' => $found
+                'data' => $found,
             ];
 
         } catch (\Exception $e) {
@@ -126,7 +125,7 @@ class LicenseVerificationService
         // Check if the response contains a results table
         return strpos($html, '<table class="table table-striped') !== false &&
             strpos($html, '<tbody>') !== false &&
-            !preg_match('/<tbody>\s*<\/tbody>/', $html); // Not empty tbody
+            ! preg_match('/<tbody>\s*<\/tbody>/', $html); // Not empty tbody
     }
 
     private function calculateNameSimilarity(string $submittedName, string $registeredName): int
@@ -135,11 +134,15 @@ class LicenseVerificationService
         $registered = strtoupper(trim($registeredName));
 
         // Exact match
-        if ($submitted === $registered) return 100;
+        if ($submitted === $registered) {
+            return 100;
+        }
 
         // Use Levenshtein distance for similarity
         $maxLen = max(strlen($submitted), strlen($registered));
-        if ($maxLen === 0) return 100;
+        if ($maxLen === 0) {
+            return 100;
+        }
 
         $distance = levenshtein($submitted, $registered);
         $similarity = (1 - ($distance / $maxLen)) * 100;
@@ -147,18 +150,17 @@ class LicenseVerificationService
         return (int) round($similarity);
     }
 
-
     public function searchKMPDC(string $searchValue, Request $request): array
     {
         try {
             // Get the full page with all data
             $response = Http::timeout(30)
                 ->withHeaders([
-                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
                 ])
-                ->get(self::KMPDU_URL);
+                ->get(config('license_verification.kmpdu_url'));
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 return ['success' => false, 'message' => 'Failed to fetch page'];
             }
 
@@ -170,7 +172,9 @@ class LicenseVerificationService
 
             // Step 1: Search by name first
             $crawler->filter('table tbody tr')->each(function (Crawler $row) use (&$found, $givenName, $searchValue) {
-                if ($found) return;
+                if ($found) {
+                    return;
+                }
 
                 $cells = $row->filter('td');
                 if ($cells->count() >= 3) {
@@ -192,11 +196,13 @@ class LicenseVerificationService
                 }
             });
 
-            if (!$found) {
+            if (! $found) {
                 // If not found by name+licence combo, check if licence exists but with different name
                 $licenceFound = null;
                 $crawler->filter('table tbody tr')->each(function (Crawler $row) use (&$licenceFound, $searchValue) {
-                    if ($licenceFound) return;
+                    if ($licenceFound) {
+                        return;
+                    }
 
                     $cells = $row->filter('td');
                     if ($cells->count() >= 3) {
@@ -218,14 +224,14 @@ class LicenseVerificationService
                     return [
                         'success' => false,
                         'message' => "License number valid, but name doesn't match registered holder. Verify details and try again.",
-                        'data' => $licenceFound
+                        'data' => $licenceFound,
                     ];
                 }
 
                 return [
                     'success' => false,
                     'message' => 'License number not found or invalid',
-                    'data' => null
+                    'data' => null,
                 ];
             }
 
@@ -234,14 +240,14 @@ class LicenseVerificationService
                 return [
                     'success' => false,
                     'message' => "License is {$found['status']}. Only active licenses are valid",
-                    'data' => $found
+                    'data' => $found,
                 ];
             }
 
             return [
                 'success' => true,
                 'message' => 'Practitioner verified successfully',
-                'data' => $found
+                'data' => $found,
             ];
 
         } catch (\Exception $e) {
@@ -251,37 +257,34 @@ class LicenseVerificationService
 
     /**
      * Verify a facility against the pharmacy board registry
-     *
-     * @param array $facilityData
-     * @return array
      */
     public function verifyFacility(array $facilityData): array
     {
-        $response = $this->makeRequest(self::POISONS_BOARD_URL, [
+        $response = $this->makeRequest(config('license_verification.poisons_board_url'), [
             'search_register' => 1,
             'cadre_id' => self::FACILITY_CADRE,
             'search_text' => $facilityData['name'],
         ]);
 
-        if (!$response['success']) {
+        if (! $response['success']) {
             return $response;
         }
 
         $facilities = $this->parseFacilityResponse($response['data']);
 
         $candidate = $this->findMatchingFacility($facilities, $facilityData);
-        if (!$candidate) {
+        if (! $candidate) {
             return [
                 'success' => false,
                 'message' => 'No matching facility found in the registry',
-                'data' => null
+                'data' => null,
             ];
         }
 
         return $this->processFacilityMatch($candidate, $facilityData);
     }
 
-    function isNameMatch($givenName, $verifiedName, $threshold = 80)
+    public function isNameMatch($givenName, $verifiedName, $threshold = 80)
     {
         $givenParts = array_filter(explode(' ', strtolower(trim($givenName))));
         $verifiedParts = array_filter(explode(' ', strtolower(trim($verifiedName))));
@@ -301,12 +304,12 @@ class LicenseVerificationService
 
     public function verifyClinician($licence, Request $request): array
     {
-        $response = $this->makeRequest(self::COC_URL, [
+        $response = $this->makeRequest(config('license_verification.coc_url'), [
             'search_register' => 1,
             'search_text' => $licence,
         ]);
 
-        if (!$response['success']) {
+        if (! $response['success']) {
             return $response;
         }
 
@@ -315,7 +318,9 @@ class LicenseVerificationService
             $clinician = null;
 
             $crawler->filter('#datatable2 tbody tr')->each(function (Crawler $row) use (&$clinician, $licence) {
-                if ($clinician) return;
+                if ($clinician) {
+                    return;
+                }
 
                 $cells = $row->filter('td');
                 if ($cells->count() >= 3) {
@@ -332,9 +337,6 @@ class LicenseVerificationService
                         preg_match('/(\d{4}-\d{2}-\d{2})/', $statusCell, $matches);
                         $expiryDate = $matches[1] ?? null;
 
-
-
-
                         $clinician = [
                             'status' => $status,
                             'name' => $name,
@@ -346,11 +348,11 @@ class LicenseVerificationService
                 }
             });
 
-            if (!$clinician) {
+            if (! $clinician) {
                 return [
                     'success' => false,
                     'message' => 'License number not found or invalid',
-                    'data' => null
+                    'data' => null,
                 ];
             }
 
@@ -359,7 +361,7 @@ class LicenseVerificationService
                 return [
                     'success' => false,
                     'message' => "License is {$clinician['status']}. Only active licenses are valid",
-                    'data' => $clinician
+                    'data' => $clinician,
                 ];
             }
 
@@ -371,36 +373,33 @@ class LicenseVerificationService
                 return [
                     'success' => true,
                     'message' => 'Clinician verified successfully',
-                    'data' => $clinician
+                    'data' => $clinician,
                 ];
             } else {
                 return [
                     'success' => false,
                     'message' => "License number valid, but name doesn't match registered holder. Verify details and try again.",
-                    'data' => $clinician
+                    'data' => $clinician,
                 ];
             }
 
         } catch (\Exception $e) {
             return [
                 'success' => false,
-                'message' => 'Error: ' . $e->getMessage()
+                'message' => 'Error: '.$e->getMessage(),
             ];
         }
     }
 
-
     /**
      * Get headers and cookies from NCK website
-     *
-     * @return array
      */
     private function getNCKHeaders(): array
     {
         try {
-            $response = Http::get(self::NCK_URL);
+            $response = Http::get(config('license_verification.nck_url'));
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 return ['success' => false];
             }
 
@@ -414,7 +413,7 @@ class LicenseVerificationService
                 foreach ($cookieHeaders as $cookie) {
                     $parts = explode(';', $cookie);
                     if (strpos($parts[0], '=') !== false) {
-                        list($name, $value) = explode('=', $parts[0], 2);
+                        [$name, $value] = explode('=', $parts[0], 2);
                         $cookies[trim($name)] = trim($value);
                     }
                 }
@@ -422,7 +421,7 @@ class LicenseVerificationService
 
             return [
                 'success' => true,
-                'cookies' => $cookies
+                'cookies' => $cookies,
             ];
 
         } catch (\Exception $e) {
@@ -430,23 +429,18 @@ class LicenseVerificationService
         }
     }
 
-
     /**
      * Updated verifyNurse method with name matching
-     *
-     * @param string $licence
-     * @param Request $request
-     * @return array
      */
     public function verifyNurse(string $licence, Request $request): array
     {
         // Step 1: Get headers
         $headerData = $this->getNCKHeaders();
 
-        if (!$headerData['success']) {
+        if (! $headerData['success']) {
             return [
                 'success' => false,
-                'message' => 'Failed to get headers'
+                'message' => 'Failed to get headers',
             ];
         }
 
@@ -459,30 +453,30 @@ class LicenseVerificationService
                 'Origin' => 'https://osp.nckenya.com',
                 'Referer' => 'https://osp.nckenya.com/LicenseStatus',
                 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36',
-                'X-Requested-With' => 'XMLHttpRequest'
+                'X-Requested-With' => 'XMLHttpRequest',
             ])
                 ->withCookies($headerData['cookies'], 'osp.nckenya.com')
                 ->asForm()
-                ->post(self::NCK_URL, [
+                ->post(config('license_verification.nck_url'), [
                     'search_register' => 1,
-                    'search_text' => $licence
+                    'search_text' => $licence,
                 ]);
 
-            if (!$response->successful()) {
+            if (! $response->successful()) {
                 return [
                     'success' => false,
-                    'message' => 'Request failed: ' . $response->status()
+                    'message' => 'Request failed: '.$response->status(),
                 ];
             }
 
             // Step 3: Parse the data
             $nurseData = $this->parseNurseData($response->body(), $licence);
 
-            if (!$nurseData) {
+            if (! $nurseData) {
                 return [
                     'success' => false,
                     'message' => 'License number not found or invalid',
-                    'data' => null
+                    'data' => null,
                 ];
             }
 
@@ -491,7 +485,7 @@ class LicenseVerificationService
                 return [
                     'success' => false,
                     'message' => "License is {$nurseData['status']}. Only active licenses are valid",
-                    'data' => $nurseData
+                    'data' => $nurseData,
                 ];
             }
 
@@ -503,30 +497,26 @@ class LicenseVerificationService
                 return [
                     'success' => true,
                     'message' => 'Nurse verified successfully',
-                    'data' => $nurseData
+                    'data' => $nurseData,
                 ];
             } else {
                 return [
                     'success' => false,
                     'message' => "License number valid, but name doesn't match registered holder. Verify details and try again.",
-                    'data' => $nurseData
+                    'data' => $nurseData,
                 ];
             }
 
         } catch (\Exception $e) {
             return [
                 'success' => false,
-                'message' => 'Error: ' . $e->getMessage()
+                'message' => 'Error: '.$e->getMessage(),
             ];
         }
     }
 
     /**
      * Parse nurse data from HTML response
-     *
-     * @param string $html
-     * @param string $licence
-     * @return array|null
      */
     private function parseNurseData(string $html, string $licence): ?array
     {
@@ -535,7 +525,9 @@ class LicenseVerificationService
         $nurseData = null;
 
         $crawler->filter('#datatable2 tbody tr')->each(function (Crawler $row) use (&$nurseData, $licence) {
-            if ($nurseData) return;
+            if ($nurseData) {
+                return;
+            }
 
             $cells = $row->filter('td');
             if ($cells->count() >= 3) {
@@ -552,14 +544,12 @@ class LicenseVerificationService
                     preg_match('/(\d{4}-\d{2}-\d{2})/', $statusCell, $matches);
                     $expiryDate = $matches[1] ?? '';
 
-
-
                     $nurseData = [
                         'name' => $name,
                         'license_number' => $licenseNumber,
                         'status' => $status,
                         'license_number_validity' => $status,
-                        'licence_expiry_date' => $expiryDate
+                        'licence_expiry_date' => $expiryDate,
                     ];
                 }
             }
@@ -568,276 +558,252 @@ class LicenseVerificationService
         return $nurseData;
     }
 
-/**
- * Verify a Pharmacist practitioner against the pharmacy board registry
- *
- * @param string $licenceNumber
- * @return array
- */
-public
-function verifyPharmacy(string $licenceNumber, Request $request, $strict = false,$cadre = Integer::class): array
-{
-    $response = $this->makeRequest(self::POISONS_BOARD_URL, [
-        'search_register' => 1,
-        'cadre_id' => $cadre,
-        'search_text' => $licenceNumber,
-    ]);
+    /**
+     * Verify a Pharmacist practitioner against the pharmacy board registry
+     */
+    public function verifyPharmacy(string $licenceNumber, Request $request, $strict = false, $cadre = Integer::class): array
+    {
+        $response = $this->makeRequest(config('license_verification.poisons_board_url'), [
+            'search_register' => 1,
+            'cadre_id' => $cadre,
+            'search_text' => $licenceNumber,
+        ]);
 
-    if (!$response['success']) {
-        return $response;
-    }
+        if (! $response['success']) {
+            return $response;
+        }
 
-    $practitioner = $this->parsePractitionerResponse($response['data'], $licenceNumber);
+        $practitioner = $this->parsePractitionerResponse($response['data'], $licenceNumber);
 
-    if (!$practitioner) {
-        return [
-            'success' => false,
-            'message' => 'License number not found or invalid',
-            'data' => null
-        ];
-    }
-
-    //We can decide later if we want to reject expired licences
-    if ($practitioner['status'] !== 'Active') {
-        return [
-            'success' => false,
-            'message' => "License is {$practitioner['status']}. Only active licenses are valid",
-            'data' => $practitioner
-        ];
-    }
-
-    $given_name = strtolower($request->get('name'));
-    $verified_name = strtolower($practitioner['name']);
-
-    if ($this->isNameMatch($given_name, $verified_name)) {
-        return [
-            'success' => true,
-            'message' => 'Practitioner verified successfully',
-            'data' => $practitioner
-        ];
-    } else {
-        return [
-            'success' => false,
-            'message' => "License number valid, but name doesn't match registered holder. Verify details and try again.",
-            'data' => $practitioner
-        ];
-    }
-}
-
-/**
- * Make HTTP request to specified URL with payload
- *
- * @param string $url The target URL for the request
- * @param array $payload The data to send in the request
- * @param int $timeout Request timeout in seconds (default: 30)
- * @return array
- */
-private
-function makeRequest(string $url, array $payload, int $timeout = 30): array
-{
-    try {
-        $response = Http::timeout($timeout)->asForm()->post($url, $payload);
-
-        if (!$response->successful()) {
+        if (! $practitioner) {
             return [
                 'success' => false,
-                'message' => 'Verification service is currently unavailable',
-                'data' => null
+                'message' => 'License number not found or invalid',
+                'data' => null,
             ];
         }
+
+        // We can decide later if we want to reject expired licences
+        if ($practitioner['status'] !== 'Active') {
+            return [
+                'success' => false,
+                'message' => "License is {$practitioner['status']}. Only active licenses are valid",
+                'data' => $practitioner,
+            ];
+        }
+
+        $given_name = strtolower($request->get('name'));
+        $verified_name = strtolower($practitioner['name']);
+
+        if ($this->isNameMatch($given_name, $verified_name)) {
+            return [
+                'success' => true,
+                'message' => 'Practitioner verified successfully',
+                'data' => $practitioner,
+            ];
+        } else {
+            return [
+                'success' => false,
+                'message' => "License number valid, but name doesn't match registered holder. Verify details and try again.",
+                'data' => $practitioner,
+            ];
+        }
+    }
+
+    /**
+     * Make HTTP request to specified URL with payload
+     *
+     * @param  string  $url  The target URL for the request
+     * @param  array  $payload  The data to send in the request
+     * @param  int  $timeout  Request timeout in seconds (default: 30)
+     */
+    private function makeRequest(string $url, array $payload, int $timeout = 30): array
+    {
+        try {
+            $response = Http::timeout($timeout)->asForm()->post($url, $payload);
+
+            if (! $response->successful()) {
+                return [
+                    'success' => false,
+                    'message' => 'Verification service is currently unavailable',
+                    'data' => null,
+                ];
+            }
+
+            return [
+                'success' => true,
+                'data' => $response->body(),
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Failed to connect to verification service',
+                'data' => null,
+            ];
+        }
+    }
+
+    /**
+     * Parse facility response HTML
+     */
+    private function parseFacilityResponse(string $html): Collection
+    {
+        $crawler = new Crawler($html);
+
+        return collect($crawler->filter('table.facility_datatables tbody tr')->each(function (Crawler $row) {
+            $cols = $row->filter('td')->each(fn (Crawler $c) => trim($c->text()));
+
+            $respnse = [
+                'facility_name' => $cols[0] ?? null,
+                'license_number' => $cols[1] ?? null,
+                'status_validity' => $cols[2] ?? null,
+                'details' => $row->filter('a.popStatus')->count() ?
+                    $row->filter('a.popStatus')->attr('rel') : null,
+            ];
+
+            return $respnse;
+        }));
+    }
+
+    /**
+     * Parse practitioner response HTML
+     */
+    private function parsePractitionerResponse(string $html, string $licenceNumber): ?array
+    {
+        $crawler = new Crawler($html);
+        $practitioner = null;
+
+        $crawler->filter('#datatable2 tbody tr')->each(function (Crawler $row) use (&$practitioner, $licenceNumber) {
+            if ($practitioner) {
+                return;
+            }
+
+            $name = trim($row->filter('td')->eq(0)->text());
+            $license = trim($row->filter('td')->eq(1)->text());
+            $statusValidity = trim($row->filter('td')->eq(2)->text());
+
+            if ($license === $licenceNumber) {
+                $words = explode(' ', $statusValidity);
+                $expiryDate = end($words);
+                $status = $words[1] ?? 'Unknown';
+
+                $practitioner = [
+                    'name' => $name,
+                    'license_number' => $license,
+                    'licence_expiry_date' => $expiryDate,
+                    'license_number_validity' => $status,
+                    'status' => $status,
+                ];
+            }
+        });
+
+        return $practitioner;
+    }
+
+    /**
+     * Find matching facility from parsed results
+     */
+    private function findMatchingFacility(Collection $facilities, array $facilityData): ?array
+    {
+        return $facilities->first(function ($facility) use ($facilityData) {
+            $nameRaw = $facility['facility_name'] ?? '';
+
+            // Extract name without location in brackets
+            $nameOnly = trim(preg_replace('/\s*\(.+\)$/', '', $nameRaw));
+
+            // Extract location from brackets
+            preg_match('/\((.*?)\)/', $nameRaw, $matches);
+            $scrapedLocation = $this->normalize($matches[1] ?? '');
+
+            // Extract core license number (before dash)
+            $facilityLicenseCore = $this->getLicenseCore($facility['license_number']);
+            $inputLicenseCore = $this->getLicenseCore($facilityData['license_number']);
+
+            $nameMatch = $this->normalize($nameOnly) === $this->normalize($facilityData['name']);
+            //        $locationMatch = $scrapedLocation === $this->normalize($facilityData['location']);
+            $licenseMatch = $facilityLicenseCore === $inputLicenseCore;
+
+            return $nameMatch && $licenseMatch;
+        });
+    }
+
+    /**
+     * Process facility match and calculate verification score
+     */
+    private function processFacilityMatch(array $candidate, array $facilityData): array
+    {
+        // Parse status and expiry
+        $statusValidity = $candidate['status_validity'] ?? '';
+        $words = explode(' ', $statusValidity);
+        $expiryDate = end($words);
+        $status = $words[1] ?? 'Unknown';
+
+        // Calculate verification score
+        $score = 0;
+        $total = 3;
+
+        $licenseMatch = $this->getLicenseCore($candidate['license_number']) ===
+            $this->getLicenseCore($facilityData['license_number']);
+        $statusActive = $status === 'Active';
+        $locationMatch = true; // Already matched in selection
+
+        if ($licenseMatch) {
+            $score++;
+        }
+        if ($statusActive) {
+            $score++;
+        }
+        if ($locationMatch) {
+            $score++;
+        }
+
+        $percentage = round(($score / $total) * 100, 2);
+
+        // Extract scraped location for payload
+        preg_match('/\((.*?)\)/', $candidate['facility_name'], $locMatches);
+        $scrapedLocation = $locMatches[1] ?? '';
+
+        $payload = [
+            'name' => $candidate['facility_name'],
+            'license_number_validity' => $status,
+            'licence_expiry_date' => $expiryDate,
+            'license_number' => $this->getLicenseCore($candidate['license_number']),
+            //        'location' => $facilityData['location'] . ' (' . $scrapedLocation . ')',
+            'contact_number' => $facilityData['contact_number'],
+            'email' => $facilityData['email'],
+        ];
 
         return [
             'success' => true,
-            'data' => $response->body()
-        ];
-    } catch (\Exception $e) {
-        return [
-            'success' => false,
-            'message' => 'Failed to connect to verification service',
-            'data' => null
+            'verified' => $percentage === 100.0,
+            'percentage' => $percentage,
+            'checks' => [
+                'license_number_match' => $licenseMatch,
+                'status_active' => $statusActive,
+                //            'location_match' => $locationMatch,
+            ],
+            'data' => $payload,
+            'message' => $percentage === 100.0 ?
+                'Facility fully verified' :
+                'Facility partially verified',
         ];
     }
-}
 
-/**
- * Parse facility response HTML
- *
- * @param string $html
- * @return Collection
- */
-private
-function parseFacilityResponse(string $html): Collection
-{
-    $crawler = new Crawler($html);
+    /**
+     * Normalize string for comparison
+     */
+    private function normalize(string $string): string
+    {
+        return strtoupper(trim(preg_replace('/\s+/', ' ', $string)));
+    }
 
-    return collect($crawler->filter('table.facility_datatables tbody tr')->each(function (Crawler $row) {
-        $cols = $row->filter('td')->each(fn(Crawler $c) => trim($c->text()));
+    /**
+     * Extract core license number (before dash)
+     */
+    private function getLicenseCore(string $license): string
+    {
+        $core = trim(explode('-', $license)[0] ?? '');
 
-        $respnse = [
-            'facility_name' => $cols[0] ?? null,
-            'license_number' => $cols[1] ?? null,
-            'status_validity' => $cols[2] ?? null,
-            'details' => $row->filter('a.popStatus')->count() ?
-                $row->filter('a.popStatus')->attr('rel') : null,
-        ];
-        return $respnse;
-    }));
-}
-
-/**
- * Parse practitioner response HTML
- *
- * @param string $html
- * @param string $licenceNumber
- * @return array|null
- */
-private
-function parsePractitionerResponse(string $html, string $licenceNumber): ?array
-{
-    $crawler = new Crawler($html);
-    $practitioner = null;
-
-    $crawler->filter('#datatable2 tbody tr')->each(function (Crawler $row) use (&$practitioner, $licenceNumber) {
-        if ($practitioner) return;
-
-        $name = trim($row->filter('td')->eq(0)->text());
-        $license = trim($row->filter('td')->eq(1)->text());
-        $statusValidity = trim($row->filter('td')->eq(2)->text());
-
-        if ($license === $licenceNumber) {
-            $words = explode(" ", $statusValidity);
-            $expiryDate = end($words);
-            $status = $words[1] ?? 'Unknown';
-
-
-            $practitioner = [
-                'name' => $name,
-                'license_number' => $license,
-                'licence_expiry_date' => $expiryDate,
-                'license_number_validity' => $status,
-                'status' => $status,
-            ];
-        }
-    });
-
-    return $practitioner;
-}
-
-/**
- * Find matching facility from parsed results
- *
- * @param Collection $facilities
- * @param array $facilityData
- * @return array|null
- */
-private
-function findMatchingFacility(Collection $facilities, array $facilityData): ?array
-{
-    return $facilities->first(function ($facility) use ($facilityData) {
-        $nameRaw = $facility['facility_name'] ?? '';
-
-        // Extract name without location in brackets
-        $nameOnly = trim(preg_replace('/\s*\(.+\)$/', '', $nameRaw));
-
-        // Extract location from brackets
-        preg_match('/\((.*?)\)/', $nameRaw, $matches);
-        $scrapedLocation = $this->normalize($matches[1] ?? '');
-
-        // Extract core license number (before dash)
-        $facilityLicenseCore = $this->getLicenseCore($facility['license_number']);
-        $inputLicenseCore = $this->getLicenseCore($facilityData['license_number']);
-
-        $nameMatch = $this->normalize($nameOnly) === $this->normalize($facilityData['name']);
-//        $locationMatch = $scrapedLocation === $this->normalize($facilityData['location']);
-        $licenseMatch = $facilityLicenseCore === $inputLicenseCore;
-
-        return $nameMatch && $licenseMatch;
-    });
-}
-
-/**
- * Process facility match and calculate verification score
- *
- * @param array $candidate
- * @param array $facilityData
- * @return array
- */
-private
-function processFacilityMatch(array $candidate, array $facilityData): array
-{
-    // Parse status and expiry
-    $statusValidity = $candidate['status_validity'] ?? '';
-    $words = explode(" ", $statusValidity);
-    $expiryDate = end($words);
-    $status = $words[1] ?? 'Unknown';
-
-    // Calculate verification score
-    $score = 0;
-    $total = 3;
-
-    $licenseMatch = $this->getLicenseCore($candidate['license_number']) ===
-        $this->getLicenseCore($facilityData['license_number']);
-    $statusActive = $status === 'Active';
-    $locationMatch = true; // Already matched in selection
-
-    if ($licenseMatch) $score++;
-    if ($statusActive) $score++;
-    if ($locationMatch) $score++;
-
-    $percentage = round(($score / $total) * 100, 2);
-
-    // Extract scraped location for payload
-    preg_match('/\((.*?)\)/', $candidate['facility_name'], $locMatches);
-    $scrapedLocation = $locMatches[1] ?? '';
-
-    $payload = [
-        'name' => $candidate['facility_name'],
-        'license_number_validity' => $status,
-        'licence_expiry_date' => $expiryDate,
-        'license_number' => $this->getLicenseCore($candidate['license_number']),
-//        'location' => $facilityData['location'] . ' (' . $scrapedLocation . ')',
-        'contact_number' => $facilityData['contact_number'],
-        'email' => $facilityData['email'],
-    ];
-
-    return [
-        'success' => true,
-        'verified' => $percentage === 100.0,
-        'percentage' => $percentage,
-        'checks' => [
-            'license_number_match' => $licenseMatch,
-            'status_active' => $statusActive,
-//            'location_match' => $locationMatch,
-        ],
-        'data' => $payload,
-        'message' => $percentage === 100.0 ?
-            'Facility fully verified' :
-            'Facility partially verified'
-    ];
-}
-
-/**
- * Normalize string for comparison
- *
- * @param string $string
- * @return string
- */
-private
-function normalize(string $string): string
-{
-    return strtoupper(trim(preg_replace('/\s+/', ' ', $string)));
-}
-
-/**
- * Extract core license number (before dash)
- *
- * @param string $license
- * @return string
- */
-private
-function getLicenseCore(string $license): string
-{
-    $core = trim(explode('-', $license)[0] ?? '');
-    return strtoupper($core);
-}
+        return strtoupper($core);
+    }
 }
