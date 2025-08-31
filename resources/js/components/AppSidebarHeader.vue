@@ -6,6 +6,7 @@ import { Bell } from 'lucide-vue-next';
 import { useAuth } from '@/utils/auth';
 import { computed } from 'vue';
 import type { BreadcrumbItemType } from '@/types';
+import { Link } from '@inertiajs/vue3';
 
 withDefaults(
     defineProps<{
@@ -46,26 +47,26 @@ const displayCount = computed(() => {
 
         <!-- Notification Bell - Far Right -->
         <div class="ml-auto">
-            <Button
-                variant="ghost"
-                size="icon"
-                class="h-8 w-8 relative hover:bg-gray-100 dark:hover:bg-gray-800"
-                @click="$inertia.visit('/notifications')"
+            <Link
+                :href="route('notifications.index')"
+                class="relative inline-flex items-center justify-center h-10 w-10 rounded-full transition-all duration-300 hover:scale-110 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-                <Bell class="h-5 w-5" />
+                <Bell
+                    class="h-6 w-6 text-gray-700 dark:text-gray-200 transition-transform duration-300 group-hover:rotate-12"
+                />
 
                 <!-- Notification Badge -->
                 <div
                     v-if="hasNotifications"
-                    class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-xs font-medium rounded-full border-2 border-white dark:border-gray-900 flex items-center justify-center"
+                    class="absolute -top-1 -right-1 min-w-[20px] h-[20px] px-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-[11px] font-bold rounded-full border-2 border-white dark:border-gray-900 shadow-md animate-bounce flex items-center justify-center"
                 >
                     {{ displayCount }}
                 </div>
 
                 <span class="sr-only">
-                    {{ hasNotifications ? `${unreadCount} unread notifications` : 'Notifications' }}
-                </span>
-            </Button>
+            {{ hasNotifications ? `${unreadCount} unread notifications` : 'Notifications' }}
+        </span>
+            </Link>
         </div>
     </header>
 </template>
