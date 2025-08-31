@@ -274,6 +274,7 @@ const navigateToRegister = (): void => {
                 </p>
             </div>
 
+
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 <!-- Sample Job Card 1 -->
                 <div class="group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/20">
