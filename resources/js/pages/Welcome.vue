@@ -642,7 +642,7 @@ const navigateToRegister = (): void => {
                 </button>
 
                 <!-- WhatsApp Chat -->
-                <a href="https://wa.me/254700000000" target="_blank" rel="noopener"
+                <a href="https://wa.me/254712419949" target="_blank" rel="noopener"
                    class="flex items-center space-x-2 bg-green-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-green-600 transition-all duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                         <path
