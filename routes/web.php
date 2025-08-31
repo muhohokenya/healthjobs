@@ -8,9 +8,13 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Public routes
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
+Route::get('/', [\App\Http\Controllers\welcomeController::class,'index'])->name('home');
+
+
+//// Public routes
+//Route::controller(WelcomeController::class)->group(function () {
+//    Route::get('/', 'index')->name('welcome');
+//})
 
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {

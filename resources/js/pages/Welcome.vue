@@ -258,6 +258,318 @@ const navigateToRegister = (): void => {
         </div>
     </section>
 
+    <!-- Jobs Showcase Section -->
+    <section class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-100 to-blue-100 rounded-full text-green-700 text-sm font-medium mb-6">
+                    🏥 Live Job Opportunities
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                    Explore
+                    <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Available Positions</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Discover exciting healthcare opportunities from top medical facilities. Sign up to unlock full job details and start your application journey.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <!-- Sample Job Card 1 -->
+                <div class="group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/20">
+                    <div class="absolute -top-8 -right-8 h-24 w-24 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10 transition-transform duration-300 group-hover:scale-150"></div>
+
+                    <!-- Header Section -->
+                    <div class="relative p-6 pb-4">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex-1 pr-4">
+                                <h3 class="text-xl font-bold leading-tight text-gray-900 transition-colors duration-200 group-hover:text-blue-600 mb-2">
+                                    Registered Nurse - ICU
+                                </h3>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                                        <svg class="h-4 w-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-6a1 1 0 00-1-1H9a1 1 0 00-1 1v6a1 1 0 01-1 1H4a1 1 0 110-2V4z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-sm text-gray-400 italic">[Sign up to view facility name]</span>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 px-3 py-1.5 text-xs font-semibold text-blue-700 ring-1 ring-blue-200/50">
+                                Full Time
+                            </span>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-green-50">
+                                <svg class="h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm text-gray-400 italic">[Location hidden]</span>
+                        </div>
+                    </div>
+
+                    <!-- Content Section -->
+                    <div class="flex-1 px-6">
+                        <div class="mb-4">
+                            <p class="text-sm leading-relaxed text-gray-600">Join our dynamic ICU team providing critical care to patients. We're looking for experienced nurses who are passionate about...</p>
+                        </div>
+
+                        <!-- Teaser Qualifications -->
+                        <div class="mb-6">
+                            <div class="rounded-lg border border-blue-100 bg-blue-50/50 p-4">
+                                <h4 class="mb-3 flex items-center text-sm font-semibold text-blue-800">
+                                    <svg class="mr-2 h-4 w-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Key Requirements
+                                </h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start text-xs text-blue-700">
+                                        <div class="mr-3 mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-500"></div>
+                                        <span class="blur-sm">BSN degree required</span>
+                                    </li>
+                                    <li class="flex items-start text-xs text-blue-700">
+                                        <div class="mr-3 mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-500"></div>
+                                        <span class="blur-sm">2+ years ICU experience</span>
+                                    </li>
+                                    <li class="flex items-center text-xs font-medium text-blue-600">
+                                        <div class="mr-3 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-400"></div>
+                                        Sign up to view all requirements
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Section -->
+                    <div class="mt-auto border-t border-gray-50 p-6 pt-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="space-y-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm font-bold text-gray-400">Ksh ••••• - •••••</span>
+                                    <span class="text-xs text-blue-600 cursor-pointer">Sign up to view</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex h-5 w-5 items-center justify-center rounded-full bg-purple-50">
+                                        <svg class="h-3 w-3 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v6.5A1.5 1.5 0 0116.5 16h-13A1.5 1.5 0 012 14.5V8a2 2 0 012-2h2zm4-1a1 1 0 00-1 1v1h2V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-xs font-medium text-gray-500">Senior Level</span>
+                                </div>
+                            </div>
+                            <button @click="navigateToRegister" class="inline-flex items-center space-x-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl">
+                                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                                </svg>
+                                <span>Unlock Details</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sample Job Card 2 -->
+                <div class="group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/20">
+                    <div class="absolute -top-8 -right-8 h-24 w-24 rounded-full bg-gradient-to-br from-purple-400/10 to-pink-400/10 transition-transform duration-300 group-hover:scale-150"></div>
+
+                    <div class="relative p-6 pb-4">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex-1 pr-4">
+                                <h3 class="text-xl font-bold leading-tight text-gray-900 transition-colors duration-200 group-hover:text-purple-600 mb-2">
+                                    Pediatrician
+                                </h3>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                                        <svg class="h-4 w-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-6a1 1 0 00-1-1H9a1 1 0 00-1 1v6a1 1 0 01-1 1H4a1 1 0 110-2V4z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-sm text-gray-400 italic">[Premium Children's Hospital]</span>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center rounded-full bg-gradient-to-r from-purple-50 to-pink-50 px-3 py-1.5 text-xs font-semibold text-purple-700 ring-1 ring-purple-200/50">
+                                Full Time
+                            </span>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-green-50">
+                                <svg class="h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm text-gray-400 italic">[Nairobi Area]</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 px-6">
+                        <div class="mb-4">
+                            <p class="text-sm leading-relaxed text-gray-600">Seeking a compassionate pediatrician to join our child-focused medical team. Excellent opportunity for growth and development...</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="rounded-lg border border-purple-100 bg-purple-50/50 p-4">
+                                <h4 class="mb-3 flex items-center text-sm font-semibold text-purple-800">
+                                    <svg class="mr-2 h-4 w-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Key Requirements
+                                </h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start text-xs text-purple-700">
+                                        <div class="mr-3 mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-purple-500"></div>
+                                        <span class="blur-sm">Medical degree & pediatric residency</span>
+                                    </li>
+                                    <li class="flex items-start text-xs text-purple-700">
+                                        <div class="mr-3 mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-purple-500"></div>
+                                        <span class="blur-sm">Board certification required</span>
+                                    </li>
+                                    <li class="flex items-center text-xs font-medium text-purple-600">
+                                        <div class="mr-3 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-purple-400"></div>
+                                        +3 more qualifications
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto border-t border-gray-50 p-6 pt-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="space-y-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm font-bold text-gray-400">Ksh ••••• - •••••</span>
+                                    <span class="text-xs text-purple-600 cursor-pointer">Sign up to view</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex h-5 w-5 items-center justify-center rounded-full bg-purple-50">
+                                        <svg class="h-3 w-3 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v6.5A1.5 1.5 0 0116.5 16h-13A1.5 1.5 0 012 14.5V8a2 2 0 012-2h2zm4-1a1 1 0 00-1 1v1h2V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-xs font-medium text-gray-500">Expert Level</span>
+                                </div>
+                            </div>
+                            <button @click="navigateToRegister" class="inline-flex items-center space-x-2 rounded-xl bg-gradient-to-r from-purple-600 to-purple-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl">
+                                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                                </svg>
+                                <span>Unlock Details</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sample Job Card 3 -->
+                <div class="group relative flex flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-green-500/20">
+                    <div class="absolute -top-8 -right-8 h-24 w-24 rounded-full bg-gradient-to-br from-green-400/10 to-cyan-400/10 transition-transform duration-300 group-hover:scale-150"></div>
+
+                    <div class="relative p-6 pb-4">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex-1 pr-4">
+                                <h3 class="text-xl font-bold leading-tight text-gray-900 transition-colors duration-200 group-hover:text-green-600 mb-2">
+                                    Medical Laboratory Technologist
+                                </h3>
+                                <div class="flex items-center space-x-2 mb-3">
+                                    <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
+                                        <svg class="h-4 w-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-6a1 1 0 00-1-1H9a1 1 0 00-1 1v6a1 1 0 01-1 1H4a1 1 0 110-2V4z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-sm text-gray-400 italic">[Leading Diagnostic Center]</span>
+                                </div>
+                            </div>
+                            <span class="inline-flex items-center rounded-full bg-gradient-to-r from-green-50 to-cyan-50 px-3 py-1.5 text-xs font-semibold text-green-700 ring-1 ring-green-200/50">
+                                Contract
+                            </span>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-green-50">
+                                <svg class="h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <span class="text-sm text-gray-400 italic">[Multiple Locations]</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 px-6">
+                        <div class="mb-4">
+                            <p class="text-sm leading-relaxed text-gray-600">Join our state-of-the-art laboratory team. Excellent opportunity to work with cutting-edge diagnostic equipment and contribute to...</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="rounded-lg border border-green-100 bg-green-50/50 p-4">
+                                <h4 class="mb-3 flex items-center text-sm font-semibold text-green-800">
+                                    <svg class="mr-2 h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Key Requirements
+                                </h4>
+                                <ul class="space-y-2">
+                                    <li class="flex items-start text-xs text-green-700">
+                                        <div class="mr-3 mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-green-500"></div>
+                                        <span class="blur-sm">Bachelor's in Medical Lab Technology</span>
+                                    </li>
+                                    <li class="flex items-start text-xs text-green-700">
+                                        <div class="mr-3 mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-green-500"></div>
+                                        <span class="blur-sm">KMLTTB certification</span>
+                                    </li>
+                                    <li class="flex items-center text-xs font-medium text-green-600">
+                                        <div class="mr-3 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-green-400"></div>
+                                        View all requirements
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto border-t border-gray-50 p-6 pt-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="space-y-2">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm font-bold text-gray-400">Ksh ••••• - •••••</span>
+                                    <span class="text-xs text-green-600 cursor-pointer">Sign up to view</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex h-5 w-5 items-center justify-center rounded-full bg-green-50">
+                                        <svg class="h-3 w-3 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v6.5A1.5 1.5 0 0116.5 16h-13A1.5 1.5 0 012 14.5V8a2 2 0 012-2h2zm4-1a1 1 0 00-1 1v1h2V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <span class="text-xs font-medium text-gray-500">Mid Level</span>
+                                </div>
+                            </div>
+                            <button @click="navigateToRegister" class="inline-flex items-center space-x-2 rounded-xl bg-gradient-to-r from-green-600 to-green-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:shadow-xl">
+                                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                                </svg>
+                                <span>Unlock Details</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View All Jobs CTA -->
+            <div class="text-center">
+                <div class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full text-gray-600 text-sm font-medium mb-6">
+                    📈 New jobs posted daily • 15,000+ active positions
+                </div>
+                <div class="space-y-4">
+                    <button @click="navigateToRegister" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-10 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 mr-4">
+                        View All 15,000+ Jobs
+                    </button>
+                    <p class="text-gray-500 text-sm max-w-md mx-auto">
+                        Create your free account to access detailed job descriptions, salary information, and apply with one click.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Features Section -->
     <section class="py-24 bg-slate-50 relative">
         <!-- Wave Top -->
