@@ -100,7 +100,7 @@ const formatSalary = (salary: number): string => {
                                 class="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             >
                                 <option value="">Select Location</option>
-                                <option v-for="location in locations" :value="location.location">{{location.location}}</option>
+                                <option v-for="location in locations" :value="location.location" v-bind:key="location">{{location.location}}</option>
                             </select>
                         </div>
                         <div class="flex items-end">
