@@ -109,7 +109,7 @@ class HealthJobController extends Controller
             ->with('facility')
             ->when($request->search, function ($query, $search) {
                 $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('company', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
                     ->orWhereHas('facility', function ($facilityQuery) use ($search) {
                         $facilityQuery->where('location', 'like', "%{$search}%");
                     });
