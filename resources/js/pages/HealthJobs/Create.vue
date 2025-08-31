@@ -88,8 +88,7 @@ const removeQualification = (index: number) => {
                                 >
                                     <option value="" disabled selected>Select Job Type</option>
                                     <option value="full-time">Full-Time</option>
-                                    <option value="part-time">Part-Time</option>
-                                    <option value="contract">Contract</option>
+                                    <option value="part-time">Locum</option>
                                 </select>
                             </div>
 

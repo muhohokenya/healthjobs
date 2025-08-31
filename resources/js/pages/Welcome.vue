@@ -615,23 +615,43 @@ const navigateToRegister = (): void => {
             <h2 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
                 Ready to Transform Your
                 <span class="block bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">
-                    Medical Career?
-                </span>
+      Medical Career?
+    </span>
             </h2>
+
             <p class="text-xl text-blue-100 mb-12 leading-relaxed">
-                Join thousands of medical professionals who've found their perfect match through MediCareers. Your dream position is just one click away.
+                Join thousands of medical professionals who've found their perfect match through MediCareers.
+                Your dream position is just one click away.
             </p>
+
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <button @click="navigateToRegister" class="bg-white text-blue-600 px-10 py-4 rounded-full text-lg font-bold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-2">
+                <!-- Register button -->
+                <button @click="navigateToRegister"
+                        class="bg-white text-blue-600 px-10 py-4 rounded-full text-lg font-bold hover:shadow-2xl transform hover:scale-105 transition-all duration-300 flex items-center space-x-2">
                     <span>Start Your Journey Today</span>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                     </svg>
                 </button>
-                <button class="border-2 border-white text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-blue-600 transition-all duration-300">
+
+                <!-- Learn More -->
+                <button
+                    class="border-2 border-white text-white px-10 py-4 rounded-full text-lg font-semibold hover:bg-white hover:text-blue-600 transition-all duration-300">
                     Learn More
                 </button>
+
+                <!-- WhatsApp Chat -->
+                <a href="https://wa.me/254700000000" target="_blank" rel="noopener"
+                   class="flex items-center space-x-2 bg-green-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-green-600 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M20.52 3.48A11.91 11.91 0 0012 0C5.37 0 0 5.37 0 12c0 2.1.54 4.15 1.56 5.96L0 24l6.31-1.63A11.94 11.94 0 0012 24c6.63 0 12-5.37 12-12 0-3.19-1.24-6.19-3.48-8.52zM12 22a9.94 9.94 0 01-5.1-1.39l-.36-.21-3.74.96.99-3.64-.24-.38A9.94 9.94 0 012 12c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10zm5.28-7.17c-.29-.14-1.71-.84-1.98-.93-.27-.1-.47-.14-.67.14s-.77.93-.94 1.12c-.17.19-.35.21-.64.07-.29-.14-1.22-.45-2.32-1.43-.86-.77-1.44-1.71-1.61-2-.17-.29-.02-.45.13-.59.14-.14.29-.35.43-.52.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.19 0-.5.07-.76.36-.26.29-1 1-1 2.45s1.03 2.84 1.17 3.04c.14.19 2.03 3.09 4.92 4.33.69.3 1.22.48 1.64.61.69.22 1.31.19 1.8.12.55-.08 1.71-.7 1.95-1.38.24-.67.24-1.24.17-1.38-.07-.14-.26-.22-.55-.36z" />
+                    </svg>
+                    <span>Chat on WhatsApp</span>
+                </a>
             </div>
         </div>
+
     </section>
 </template>

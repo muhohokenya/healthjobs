@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Head, Link, Form } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Input } from '@/components/ui/input';
 import { useAuth } from '@/utils/auth';
 
 
