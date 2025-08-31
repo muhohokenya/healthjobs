@@ -21,22 +21,9 @@ class HealthJobFactory extends Factory
             'Healthcare Administrator',
         ];
 
-        $companies = [
-            'City General Hospital',
-            'HealthCare Plus',
-            'Metro Medical Center',
-            'Sunrise Clinic',
-            'Community Health Services',
-            'Advanced Medical Solutions',
-            'Prime Healthcare',
-            'Regional Medical Group',
-        ];
-
         return [
             'title' => $this->faker->randomElement($jobTitles),
-            'company' => $this->faker->randomElement($companies),
             'description' => $this->faker->paragraphs(3, true),
-            'location' => $this->faker->city().', '.$this->faker->stateAbbr(),
             'job_type' => $this->faker->randomElement(['full-time', 'part-time', 'contract']),
             'salary_min' => $this->faker->numberBetween(40000, 80000),
             'salary_max' => $this->faker->numberBetween(80000, 150000),
