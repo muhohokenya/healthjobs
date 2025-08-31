@@ -27,7 +27,7 @@
                         <div class="text-center p-4 bg-green-50 rounded-lg">
                             <h3 class="text-sm font-medium text-gray-500 mb-1">Salary Range</h3>
                             <p class="text-lg font-semibold text-green-600">
-                                ${{ formatSalary(job.salary_min) }} - ${{ formatSalary(job.salary_max) }}
+                                Ksh: {{ formatSalary(job.salary_min) }} - {{ formatSalary(job.salary_max) }}
                             </p>
                         </div>
 
