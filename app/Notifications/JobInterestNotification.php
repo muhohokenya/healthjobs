@@ -56,7 +56,7 @@ class JobInterestNotification extends Notification
             'type' => 'job_interest',
             'user' => [
                 'id' => $this->candidate->id,
-                'name' => $this->candidate->name,
+                'name' => ucwords(strtolower($this->candidate->name)),
                 'email' => $this->candidate->email,
                 'licence_number' => $this->candidate->licence_number,
                 'licence_number_expiry' => $this->candidate->licence_number_expiry,
