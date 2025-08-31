@@ -62,7 +62,7 @@ class HealthJobRequest extends FormRequest
             'qualifications' => [
                 'nullable',
                 'array',
-                'max:25',  // Maximum 5 qualifications
+                'max:25',  // Maximum 25 qualifications
             ],
             'qualifications.*' => [
                 'required',  // Each qualification must not be empty

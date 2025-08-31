@@ -2,7 +2,10 @@
 import { Head, Link, Form } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/utils/auth';
 
+
+const user = useAuth();
 const { job } = defineProps<{ job: any }>();
 
 const formatJobType = (type: string): string => {
@@ -84,9 +87,8 @@ const formatSalary = (salary: number): string => {
                                 </li>
                             </ul>
                         </div>
-
                         <!-- Actions -->
-                        <div class="flex flex-col sm:flex-row gap-4">
+                        <div v-if="user.roles[0].name !== 'recruiter'" class="flex flex-col sm:flex-row gap-4">
                             <!-- Interested Form -->
                             <Form :action="route('health-jobs.interested')" method="post">
                                 <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 font-medium">
