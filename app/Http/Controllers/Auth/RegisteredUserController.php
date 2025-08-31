@@ -30,29 +30,29 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-
-        $request->validate([
-            'role' => 'required',
-            'email' => 'required|email|unique:users,email',
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['nullable', 'string'],
         ]);
 
-
-
-        $selected_role = $request->get('role');
-
         $payload = [
-            'selected_role' => $selected_role,
-            'licence_number' => '',
-            'name' => '',
-            'expiry_date' => '',
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            // Explicitly hash to be clear, even though the model casts password as hashed
+            'password' => Hash::make($validated['password']),
         ];
+
+        if (! empty($validated['role'])) {
+            $payload['selected_role'] = $validated['role'];
+        }
 
         $user = User::create($payload);
 
-        $user->assignRole($selected_role);
+        if (! empty($validated['role'])) {
+            $user->assignRole($validated['role']);
+        }
 
         event(new Registered($user));
 
