@@ -35,12 +35,12 @@ class User extends Authenticatable
     /**
      * Get the user's first name.
      */
-    protected function name(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => ucwords(strtolower($value)),
-        );
-    }
+//    protected function name(): Attribute
+//    {
+//        return Attribute::make(
+//            get: fn (string $value) => ucwords(strtolower($value)),
+//        );
+//    }
 
     /**
      * The attributes that should be hidden for serialization.
