@@ -65,6 +65,8 @@ class User extends Authenticatable
         ];
     }
 
+    //
+
     public function isProfileComplete(): bool
     {
         // basic fields on users table
