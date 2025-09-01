@@ -15,7 +15,6 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-
         return [
             'name' => [
                 'string',
@@ -25,7 +24,7 @@ class ProfileUpdateRequest extends FormRequest
             'profession' => [
                 'nullable',
                 'max:255',
-                Rule::requiredIf(fn () => $this->user()?->roles[0]->name === 'job-seeker' && $this->user()?->licence_status !== 'active'),
+                Rule::requiredIf(fn () => $this->user()?->hasRole('job-seeker') && $this->user()?->licence_status !== 'active'),
                 Rule::in([
                     'clinician',
                     'pharmacist',
@@ -34,11 +33,12 @@ class ProfileUpdateRequest extends FormRequest
                     'lab_technician',
                 ]),
             ],
-            'contacts'=>[
+            'contacts' => [
+                'nullable',
                 'string',
                 'max:21',
-                'regex:/^(\+254|0)(7|1)[0-9]{8}$/', // Kenyan phone number format
-                Rule::unique(User::class)->ignore($this->user()->id)
+                'regex:/^(\+254|0)(7|1)[0-9]{8}$/',
+                Rule::unique(User::class)->ignore($this->user()->id),
             ],
             'email' => [
                 'required',
