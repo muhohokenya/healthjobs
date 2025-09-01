@@ -54,14 +54,6 @@ const density = ref<'compact' | 'cozy'>('compact');
 const selectedId = ref<string | null>(null);
 
 // -------------------- Derived --------------------
-const formattedUser = computed(() => {
-    if (!props.user) return 'User';
-    return props.user
-        .toLowerCase()
-        .split(' ')
-        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(' ');
-});
 
 const getNotificationStyle = (type: string) => {
     const styles = {
@@ -124,6 +116,10 @@ const filteredNotifications = computed(() => {
     if (filterType.value === 'unread') return computedUnreadNotifications.value;
     if (filterType.value === 'read') return transformedNotifications.value.filter(n => n.read_at);
     return transformedNotifications.value;
+});
+
+const selectedNotification = computed(() => {
+    return transformedNotifications.value.find(n => n.id === selectedId.value) || null;
 });
 
 const isAllSelected = computed(() =>
@@ -345,56 +341,56 @@ const selectRow = (nId: string) => {
 
                         <!-- RIGHT: DETAILS -->
                         <div class="min-h-[60vh] max-h-[72vh] overflow-y-auto border-t lg:border-t-0 lg:border-l border-gray-200/60 dark:border-gray-700/60">
-                            <div v-if="selectedId" class="p-4 lg:p-6" v-for="n in transformedNotifications" :key="n.id" v-show="n.id===selectedId">
+                            <div v-if="selectedNotification" class="p-4 lg:p-6">
                                 <div class="flex items-start justify-between mb-3">
-                                    <h3 class="text-base lg:text-lg font-semibold">{{ n.title }}</h3>
-                                    <Button v-if="!n.read_at" @click="markAsRead(n.id)" variant="ghost" size="sm" class="h-8 px-3 text-xs">
+                                    <h3 class="text-base lg:text-lg font-semibold">{{ selectedNotification.title }}</h3>
+                                    <Button v-if="!selectedNotification.read_at" @click="markAsRead(selectedNotification.id)" variant="ghost" size="sm" class="h-8 px-3 text-xs">
                                         <Check class="w-4 h-4 mr-1" /> Mark read
                                     </Button>
                                 </div>
 
                                 <!-- Job interest details -->
-                                <template v-if="n.raw.data.type === 'job_interest'">
+                                <template v-if="selectedNotification.raw.data.type === 'job_interest'">
                                     <div class="rounded-xl border border-gray-200/60 dark:border-gray-700/60 p-4 bg-white/70 dark:bg-gray-800/50 space-y-3">
                                         <div class="flex items-center gap-3">
-                                            <img v-if="n.raw.data.user.avatar" :src="n.raw.data.user.avatar" class="w-10 h-10 rounded-lg object-cover" />
+                                            <img v-if="selectedNotification.raw.data.user.avatar" :src="selectedNotification.raw.data.user.avatar" class="w-10 h-10 rounded-lg object-cover" />
                                             <div v-else class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 text-white grid place-items-center font-bold">
-                                                {{ n.raw.data.user.name.charAt(0).toUpperCase() }}
+                                                {{ selectedNotification.raw.data.user.name.charAt(0).toUpperCase() }}
                                             </div>
                                             <div class="min-w-0">
                                                 <div class="flex items-center gap-2">
-                                                    <p class="font-semibold text-sm truncate">{{ n.raw.data.user.name }}</p>
-                                                    <span v-if="n.raw.data.user.licence_status"
+                                                    <p class="font-semibold text-sm truncate">{{ selectedNotification.raw.data.user.name }}</p>
+                                                    <span v-if="selectedNotification.raw.data.user.licence_status"
                                                           class="text-[10px] px-2 py-0.5 rounded-full"
-                                                          :class="n.raw.data.user.licence_status==='active'
+                                                          :class="selectedNotification.raw.data.user.licence_status==='active'
                                   ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
                                   : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'">
-                            {{ n.raw.data.user.licence_status }} license
+                            {{ selectedNotification.raw.data.user.licence_status }} license
                           </span>
                                                 </div>
-                                                <p class="text-xs text-gray-500">Applied for: <span class="font-medium">{{ n.raw.data.job.title }}</span></p>
+                                                <p class="text-xs text-gray-500">Applied for: <span class="font-medium">{{ selectedNotification.raw.data.job.title }}</span></p>
                                             </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-700 dark:text-gray-300">
-                                            <div class="flex items-center gap-2"><Mail class="w-3 h-3"/> {{ n.raw.data.user.email }}</div>
-                                            <div v-if="n.raw.data.user.contacts" class="flex items-center gap-2"><Phone class="w-3 h-3"/> {{ n.raw.data.user.contacts }}</div>
+                                            <div class="flex items-center gap-2"><Mail class="w-3 h-3"/> {{ selectedNotification.raw.data.user.email }}</div>
+                                            <div v-if="selectedNotification.raw.data.user.contacts" class="flex items-center gap-2"><Phone class="w-3 h-3"/> {{ selectedNotification.raw.data.user.contacts }}</div>
                                         </div>
 
                                         <div class="flex flex-wrap items-center gap-2 pt-2">
                                             <Button
-                                                @click.stop="window.open(`mailto:${n.raw.data.user.email}?subject=Regarding your application for ${n.raw.data.job.title}`, '_blank')"
+                                                @click.stop="window.open(`mailto:${selectedNotification.raw.data.user.email}?subject=Regarding your application for ${selectedNotification.raw.data.job.title}`, '_blank')"
                                                 variant="outline" size="sm" class="h-8 px-3 text-xs">
                                                 <Mail class="w-4 h-4 mr-1" /> Email
                                             </Button>
                                             <Button
-                                                v-if="n.raw.data.user.contacts"
-                                                @click.stop="window.open(`tel:${n.raw.data.user.contacts}`, '_self')"
+                                                v-if="selectedNotification.raw.data.user.contacts"
+                                                @click.stop="window.open(`tel:${selectedNotification.raw.data.user.contacts}`, '_self')"
                                                 variant="outline" size="sm" class="h-8 px-3 text-xs">
                                                 <Phone class="w-4 h-4 mr-1" /> Call
                                             </Button>
                                             <Button
-                                                @click.stop="window.open(n.raw.data.action_url, '_blank')"
+                                                @click.stop="window.open(selectedNotification.raw.data.action_url, '_blank')"
                                                 variant="outline" size="sm" class="h-8 px-3 text-xs">
                                                 <FileText class="w-4 h-4 mr-1" /> View Job
                                             </Button>
@@ -404,16 +400,16 @@ const selectRow = (nId: string) => {
 
                                 <!-- Default details -->
                                 <template v-else>
-                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ n.description }}</p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ selectedNotification.description }}</p>
                                 </template>
 
                                 <div class="mt-4 flex items-center gap-2 text-xs text-gray-500">
                                     <Clock class="w-3 h-3" />
-                                    <span>{{ n.time }}</span>
+                                    <span>{{ selectedNotification.time }}</span>
                                 </div>
                             </div>
 
-                            <div v-if="!selectedId" class="h-full grid place-items-center p-8 text-sm text-gray-500">
+                            <div v-else class="h-full grid place-items-center p-8 text-sm text-gray-500">
                                 Select a notification to preview details.
                             </div>
                         </div>

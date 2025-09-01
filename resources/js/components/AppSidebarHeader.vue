@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
 import { Bell } from 'lucide-vue-next';
 import { useAuth } from '@/utils/auth';
 import { computed } from 'vue';

@@ -3,8 +3,6 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { useAuth } from '@/utils/auth';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { reactive } from 'vue';
-import AuthLayout from '@/layouts/AuthLayout.vue';
-import { Input } from '@/components/ui/input';
 
 const user = useAuth();
 
