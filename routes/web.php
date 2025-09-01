@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('notifications.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::delete('/{uuid}', 'deleteNotifications')->name('deleteNotifications');
             Route::patch('{notification}/read', 'markAsRead')->name('read');
             Route::patch('mark-selected-read', 'markSelectedAsRead')->name('mark-selected-read');
             Route::patch('mark-all-read', 'markAllAsRead')->name('mark-all-read');

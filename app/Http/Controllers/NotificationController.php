@@ -104,4 +104,6 @@ class NotificationController extends Controller
             'count' => $unreadNotifications->count(),
         ]);
     }
+
+    public function deleteNotifications($uuid) {}
 }
