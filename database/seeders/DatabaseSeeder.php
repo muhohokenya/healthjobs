@@ -19,9 +19,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create test users with roles (optional - for development)
-        if (app()->environment('local')) {
-            $this->createTestUsers();
-        }
+//        if (app()->environment('local')) {
+//            $this->createTestUsers();
+//        }
     }
 
     /**

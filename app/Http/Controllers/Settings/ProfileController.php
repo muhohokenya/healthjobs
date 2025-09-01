@@ -42,10 +42,12 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
 
+//        dd($request->all());
+
         $user = $request->user();
         $user->fill($request->validated());
 
-        if ($user->isDirty('email')) {
+        if ($user->isDirty(['email','contacts'])) {
             $user->email_verified_at = null;
         }
 
@@ -90,7 +92,7 @@ class ProfileController extends Controller
             return $verified;
         }
 
-        $speciality = $request->get('speciality');
+        $speciality = $request->get('profession');
 
         if ($speciality === 'nurse') {
             return $this->verificationService->verifyNurse($licenceNumber,$request);

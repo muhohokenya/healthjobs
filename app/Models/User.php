@@ -30,6 +30,9 @@ class User extends Authenticatable
         'password',
         'selected_role',
         'licence_number',
+        'contacts',
+        'profession',
+        'email_verified_at',
     ];
 
     /**

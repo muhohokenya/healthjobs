@@ -17,6 +17,8 @@ class PermissionSeeder extends Seeder
             'name' => 'Administrator',
             'email'=>'superadmin@gmail.com',
             'password'=> bcrypt('w8?i1-3[GJ1('),
+            'contacts'=>'0712419949',
+            'profession'=>'Web Developer',
         ]);
 
         $user->assignRole('super-admin');

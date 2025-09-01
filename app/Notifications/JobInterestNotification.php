@@ -14,8 +14,8 @@ class JobInterestNotification extends Notification
 {
     use Queueable;
 
-    protected $candidate;
-    protected $job;
+    protected User $candidate;
+    protected HealthJob $job;
 
     /**
      * Create a new notification instance.
@@ -61,6 +61,8 @@ class JobInterestNotification extends Notification
                 'licence_number' => $this->candidate->licence_number,
                 'licence_number_expiry' => $this->candidate->licence_number_expiry,
                 'licence_status' => $this->candidate->licence_status,
+                'contacts' => $this->candidate->contacts,
+                'profession' => $this->candidate->profession,
                 'avatar' => $this->candidate->avatar ?? null,
             ],
             'job' => [

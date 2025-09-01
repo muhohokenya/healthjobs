@@ -15,16 +15,30 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'name' => [
                 'string',
                 'max:255',
                 Rule::requiredIf(fn () => $this->user()?->licence_status !== 'active'),
             ],
-            'contact_number'=>[
+            'profession' => [
+                'nullable',
+                'max:255',
+                Rule::requiredIf(fn () => $this->user()?->roles[0]->name === 'job-seeker' && $this->user()?->licence_status !== 'active'),
+                Rule::in([
+                    'clinician',
+                    'pharmacist',
+                    'pharm_tech',
+                    'nurse',
+                    'lab_technician',
+                ]),
+            ],
+            'contacts'=>[
                 'string',
                 'max:21',
                 'regex:/^(\+254|0)(7|1)[0-9]{8}$/', // Kenyan phone number format
+                Rule::unique(User::class)->ignore($this->user()->id)
             ],
             'email' => [
                 'required',

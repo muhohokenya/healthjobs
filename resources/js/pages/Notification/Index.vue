@@ -3,6 +3,8 @@ import { Head, router } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import {useAuth} from '@/utils/auth';
+const auth = useAuth();
 import {
     Bell,
     Check,
@@ -16,7 +18,8 @@ import {
     Settings,
     Trash2,
     Filter,
-    X
+    X,
+    Phone
 } from 'lucide-vue-next';
 import { ref, computed } from 'vue';
 
@@ -252,7 +255,7 @@ const getPriorityIndicator = (priority: string) => {
                                         {{ props.unreadCount }} unread • {{ props.allNotifications.total }} total
                                     </p>
                                     <p v-if="formattedUser" class="text-white/70 text-sm mt-1">
-                                        Welcome back, {{ formattedUser }}! 👋
+                                        Welcome back, {{ auth.name }}! 👋
                                     </p>
                                 </div>
                             </div>
@@ -420,12 +423,100 @@ const getPriorityIndicator = (priority: string) => {
                                                 </button>
                                             </div>
 
-                                            <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 text-sm"
-                                               :class="{ 'text-gray-500 dark:text-gray-500': notification.read_at }">
-                                                {{ notification.description }}
-                                            </p>
+                                            <!-- Job Interest Specific Content - Compact Version -->
+                                            <div v-if="notification.raw.data.type === 'job_interest'" class="space-y-3">
+                                                <!-- Single Compact Card -->
+                                                <div class="bg-white/70 dark:bg-gray-800/70 rounded-lg p-3 border border-gray-200/50 dark:border-gray-600/50">
+                                                    <!-- Header with applicant and job -->
+                                                    <div class="flex items-center justify-between mb-3">
+                                                        <div class="flex items-center gap-3">
+                                                            <!-- Compact Avatar -->
+                                                            <div v-if="notification.raw.data.user.avatar" class="w-8 h-8 rounded-lg overflow-hidden border border-white dark:border-gray-600">
+                                                                <img :src="notification.raw.data.user.avatar" :alt="notification.raw.data.user.name" class="w-full h-full object-cover" />
+                                                            </div>
+                                                            <div v-else class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xs">
+                                                                {{ notification.raw.data.user.name.charAt(0).toUpperCase() }}
+                                                            </div>
 
-                                            <div class="flex items-center justify-between">
+                                                            <!-- Applicant Name -->
+                                                            <div>
+                                                                <h5 class="font-semibold text-gray-900 dark:text-white text-sm">
+                                                                    {{ notification.raw.data.user.name }}
+                                                                </h5>
+                                                                <p class="text-xs text-gray-500 dark:text-gray-400">
+                                                                    Applied for: <span class="font-medium">{{ notification.raw.data.job.title }}</span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- License Status -->
+                                                        <span v-if="notification.raw.data.user.licence_status"
+                                                              class="text-xs px-2 py-1 rounded-full"
+                                                              :class="notification.raw.data.user.licence_status === 'active'
+                                                                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                                                                : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'">
+                                                            {{ notification.raw.data.user.licence_status }} license
+                                                        </span>
+                                                    </div>
+
+                                                    <!-- Contact Info Row -->
+                                                    <div class="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400 mb-3">
+                                                        <div class="flex items-center gap-1">
+                                                            <Mail class="w-3 h-3" />
+                                                            <span>{{ notification.raw.data.user.email }}</span>
+                                                        </div>
+                                                        <div v-if="notification.raw.data.user.contacts" class="flex items-center gap-1">
+                                                            <Phone class="w-3 h-3" />
+                                                            <span>{{ notification.raw.data.user.contacts }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Quick Action Buttons -->
+                                                    <div class="flex items-center gap-2">
+                                                        <Button
+                                                            @click.stop="window.open(`mailto:${notification.raw.data.user.email}?subject=Regarding your application for ${notification.raw.data.job.title}`, '_blank')"
+                                                            variant="outline"
+                                                            size="sm"
+                                                            class="gap-1 text-xs px-2 py-1 h-7 text-blue-700 border-blue-200 hover:bg-blue-50 dark:text-blue-400 dark:border-blue-700 dark:hover:bg-blue-900/20 rounded-lg"
+                                                        >
+                                                            <Mail class="w-3 h-3" />
+                                                            Email
+                                                        </Button>
+
+                                                        <Button
+                                                            v-if="notification.raw.data.user.contacts"
+                                                            @click.stop="window.open(`tel:${notification.raw.data.user.contacts}`, '_self')"
+                                                            variant="outline"
+                                                            size="sm"
+                                                            class="gap-1 text-xs px-2 py-1 h-7 text-green-700 border-green-200 hover:bg-green-50 dark:text-green-400 dark:border-green-700 dark:hover:bg-green-900/20 rounded-lg"
+                                                        >
+                                                            <Phone class="w-3 h-3" />
+                                                            Call
+                                                        </Button>
+
+                                                        <Button
+                                                            @click.stop="window.open(notification.raw.data.action_url, '_blank')"
+                                                            variant="outline"
+                                                            size="sm"
+                                                            class="gap-1 text-xs px-2 py-1 h-7 text-indigo-700 border-indigo-200 hover:bg-indigo-50 dark:text-indigo-400 dark:border-indigo-700 dark:hover:bg-indigo-900/20 rounded-lg"
+                                                        >
+                                                            <FileText class="w-3 h-3" />
+                                                            View Job
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Default content for other notification types -->
+                                            <div v-else>
+                                                <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4 text-sm"
+                                                   :class="{ 'text-gray-500 dark:text-gray-500': notification.read_at }">
+                                                    {{ notification.description }}
+                                                </p>
+                                            </div>
+
+                                            <!-- Time and Status Footer -->
+                                            <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200/50 dark:border-gray-600/50">
                                                 <div class="flex items-center gap-3">
                                                     <div class="flex items-center gap-2 text-xs bg-white/60 dark:bg-gray-800/60 px-3 py-1.5 rounded-full">
                                                         <Clock class="w-3 h-3 text-gray-500" />

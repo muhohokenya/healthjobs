@@ -93,13 +93,14 @@ const user = page.props.auth.user as User;
                         />
                         <InputError class="mt-2" :message="errors.name" />
                     </div>
+
                     <section v-if="user.roles[0].name === 'job-seeker'">
                         <div class="">
-                            <label for="speciality" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Speciality *</label>
+                            <label for="profession" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Speciality *</label>
                             <select
 
-                                name="speciality"
-                                id="speciality"
+                                name="profession"
+                                id="profession"
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
                                 :required="!user.licence_status"
                             >
@@ -108,10 +109,9 @@ const user = page.props.auth.user as User;
                                 <option value="pharmacist">Pharmacist <b>(PBB)</b></option>
                                 <option value="pharm_tech">Pharmtech <b>(PBB)</b></option>
                                 <option value="nurse">Nurse <b>(NCK)</b></option>
-<!--                                <option value="doctor">Doctor</option>-->
-<!--                                <option value="dentist">Dentist</option>-->
                                 <option value="lab_technician">Medical Lab technician</option>
                             </select>
+                            <InputError class="mt-2" :message="errors.profession" />
 
 <!--                            B01389-->
                         </div>
@@ -128,6 +128,7 @@ const user = page.props.auth.user as User;
                                     autocomplete="licence"
                                     :placeholder="license_pattern"
                                 />
+                                <InputError class="mt-2" :message="errors.licence_number" />
                                 <span>{{ page.props.errors.licence }}</span>
                                 <div class="absolute inset-y-0 right-0 flex items-center pr-4">
                                     <BadgeCheckIcon v-if="user.licence_number" class="h-4 w-4 text-green-500" />
@@ -159,22 +160,21 @@ const user = page.props.auth.user as User;
                             />
                             <InputError class="mt-2" :message="errors.licence_number" />
                         </div>
-
-
-                        <!-- contact number -->
-                        <div class="mt-6 grid gap-2">
-                            <Label for="name" class="text-sm font-semibold text-gray-700">Contact *</Label>
-
-                            <Input
-                                name="contact_number"
-                                id="contact_number"
-                                placeholder="07xxx"
-                                autoComplete="off"
-                                class="mt-1 block w-full py-2"
-                            />
-                            <InputError class="mt-2" :message="errors.contact_number" />
-                        </div>
                     </section>
+                    <!-- contact number -->
+                    <div class="mt-6 grid gap-2">
+                        <Label for="name" class="text-sm font-semibold text-gray-700">Contact *</Label>
+
+                        <Input
+                            :default-value="user.contacts"
+                            name="contacts"
+                            id="contacts"
+                            placeholder="07xxx"
+                            autoComplete="off"
+                            class="mt-1 block w-full py-2"
+                        />
+                        <InputError class="mt-2" :message="errors.contacts" />
+                    </div>
                     <div class="grid gap-2">
                         <Label for="email">Email address</Label>
                         <Input

@@ -179,8 +179,6 @@ class HealthJobController extends Controller
     {
         $job = HealthJob::query()->where('uuid', $request->job)->with('user')->firstOrFail();
 
-        //        Notification::send($job->user(), new JobInterestNotification());
-
         $job->user->notify(new JobInterestNotification($request->user(), $job));
     }
 }
