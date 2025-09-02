@@ -316,17 +316,18 @@ const navigateToRegister = (): void => {
                 <div
                     class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-100 to-green-100 rounded-full text-emerald-700 text-sm font-medium mb-6"
                 >
-                    🏥 Live Roles Across Kenya
+                    🏥 Nationwide Healthcare Openings
                 </div>
                 <h2 class="text-4xl md:text-5xl font-bold mb-6">
-                    Explore
-                    <span class="bg-gradient-to-r from-emerald-700 via-red-600 to-black bg-clip-text text-transparent">Verified Positions</span>
+                    Discover
+                    <span class="bg-gradient-to-r from-emerald-700 via-red-600 to-black bg-clip-text text-transparent">Trusted Medical Careers</span>
                 </h2>
                 <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                    Opportunities from vetted hospitals and clinics. Salary bands shown in KES. Create a profile to view full
-                    details and apply in a click.
+                    Explore opportunities with accredited hospitals and clinics across Kenya. Transparent salary ranges in KES.
+                    Build your professional profile to unlock full details and apply seamlessly in one step.
                 </p>
             </div>
+
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 <!-- Sample Job 1 -->
