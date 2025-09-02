@@ -167,8 +167,9 @@ const navigateToRegister = (): void => {
                             <div class="absolute -inset-1 bg-gradient-to-r from-emerald-600 to-red-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
                             <div class="relative bg-white rounded-2xl overflow-hidden shadow-2xl">
                                 <!-- Main hero: Kenyan hospital scene -->
+<!--                                src="https://images.unsplash.com/photo-1576765608264-7efc7c2e1b9f?q=80&w=1200&auto=format&fit=crop"-->
                                 <img
-                                    src="https://images.unsplash.com/photo-1576765608264-7efc7c2e1b9f?q=80&w=1200&auto=format&fit=crop"
+                                    src="https://guardianhospitalmeru.com/wp-content/uploads/2023/06/WhatsApp-Image-2023-09-11-at-11.10.43-1.jpeg"
                                     alt="Kenyan healthcare professionals"
                                     class="w-full h-96 object-cover"
                                 />
@@ -185,7 +186,7 @@ const navigateToRegister = (): void => {
                                     </svg>
                                 </div>
                                 <div>
-                                    <div class="text-sm font-semibold text-gray-900">Job Match in Nakuru</div>
+                                    <div class="text-sm font-semibold text-gray-900">Job Match in Kenya</div>
                                     <div class="text-xs text-gray-500">96% compatible</div>
                                 </div>
                             </div>
@@ -195,7 +196,7 @@ const navigateToRegister = (): void => {
                         <div class="absolute -bottom-4 -right-4 bg-white rounded-xl p-4 shadow-lg">
                             <div class="flex items-center space-x-3">
                                 <img
-                                    src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=400&auto=format&fit=crop"
+                                    src="https://www.internationalinsurance.com/wp-content/uploads/2020/05/health-insurance-in-kenya-350x233.avif"
                                     alt="Kenyan medic"
                                     class="w-10 h-10 rounded-full object-cover"
                                 />
