@@ -262,8 +262,8 @@ const navigateToRegister = (): void => {
                             class="w-full h-64 object-cover"
                         />
                         <div class="p-6">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Huruma na Uadilifu</h3>
-                            <p class="text-gray-600">Mahusiano yanayojenga imani na kupona.</p>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Compassion and Integrity</h3>
+                            <p class="text-gray-600">elationships that build trust and healing.</p>
                         </div>
                     </div>
                 </div>
@@ -276,8 +276,8 @@ const navigateToRegister = (): void => {
                             class="w-full h-64 object-cover"
                         />
                         <div class="p-6">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Ushirikiano wa Timu</h3>
-                            <p class="text-gray-600">Kutoa matokeo bora kupitia kazi ya pamoja.</p>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Team Work</h3>
+                            <p class="text-gray-600">Delivering excellence through teamwork.</p>
                         </div>
                     </div>
                 </div>
@@ -290,8 +290,8 @@ const navigateToRegister = (): void => {
                             class="w-full h-64 object-cover"
                         />
                         <div class="p-6">
-                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Kesho Iliyo Bora</h3>
-                            <p class="text-gray-600">Kukuza vizazi vijavyo kupitia huduma.</p>
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">A Better Tomorrow</h3>
+                            <p class="text-gray-600">Nurturing future generations through service.</p>
                         </div>
                     </div>
                 </div>
@@ -303,7 +303,7 @@ const navigateToRegister = (): void => {
                     @click="navigateToRegister"
                     class="bg-gradient-to-r from-emerald-600 to-green-700 text-white px-10 py-4 rounded-full text-lg font-semibold hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
                 >
-                    Anza Safari Yako Leo
+                    Get started today
                 </button>
             </div>
         </div>
