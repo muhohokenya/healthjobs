@@ -47,12 +47,13 @@ defineProps<{
                                     id="email"
                                     type="email"
                                     name="email"
+
                                     required
                                     autofocus
                                     :tabindex="1"
                                     autocomplete="email"
                                     placeholder="doctor@example.com"
-                                    class="w-full h-13 px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                                    class="input-kenya w-full h-13 px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all duration-200 bg-white/50 backdrop-blur-sm"
                                 />
                                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                     <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,7 +103,7 @@ defineProps<{
                         <!-- Login Button -->
                         <Button
                             type="submit"
-                            class="w-full h-13 py-3 bg-gradient-to-r from-blue-600
+                            class="btn-kenya w-full h-13 py-3 bg-gradient-to-r from-blue-600
 
                              text-white font-semibold
                              rounded-lg shadow-lg

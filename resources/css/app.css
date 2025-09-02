@@ -85,6 +85,19 @@
 }
 
 :root {
+    --kenya-black: #111111;
+    --kenya-white: #ffffff;
+    --kenya-red: #c1121f;
+    --kenya-green: #0b8f3c;
+    --kenya-emerald: #0f9d58; /* softer UI green */
+    --kenya-ash: #f5f7fb;     /* soft background */
+    --kenya-ink: #0c1222;     /* deep text */
+
+    /* Gradients */
+    --kenya-gradient: linear-gradient(90deg, var(--kenya-emerald) 0%, var(--kenya-red) 60%, var(--kenya-black) 100%);
+    --kenya-gradient-emerald: linear-gradient(90deg, var(--kenya-emerald) 0%, var(--kenya-green) 100%);
+    --kenya-gradient-red: linear-gradient(90deg, var(--kenya-red) 0%, #e02d2d 100%);
+
     --background: hsl(0 0% 100%);
     --foreground: hsl(0 0% 3.9%);
     --card: hsl(0 0% 100%);
@@ -122,6 +135,8 @@
 }
 
 .dark {
+    --kenya-ash: #0b0f17;
+    --kenya-ink: #f3f6ff;
     --background: hsl(0 0% 3.9%);
     --foreground: hsl(0 0% 98%);
     --card: hsl(0 0% 3.9%);

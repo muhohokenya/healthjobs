@@ -241,23 +241,22 @@ const navigateToRegister = (): void => {
                     👋 Karibu, Shujaa wa Afya
                 </div>
                 <h2 class="text-4xl md:text-6xl font-extrabold mb-6">
-                    Kila Mgonjwa Anahitaji
+                    Empowering Medics
                     <span class="bg-gradient-to-r from-emerald-700 via-red-600 to-black bg-clip-text text-transparent block">
-            Huduma Bora
+            Elevating Patient Care
           </span>
                 </h2>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                    Jiunge na jamii ya wahudumu wa afya nchini Kenya. Tunakuunganisha na nafasi halisi,
-                    waajiri waliothibitishwa, na mfumo unaokusaidia kudumisha uhalali wa leseni yako.
+                    Join the community of healthcare professionals in Kenya. We connect you with genuine opportunities, verified employers, and a system that helps you maintain the validity of your license
                 </p>
             </div>
 
-            <!-- Three culture/impact cards with Kenyan imagery -->
+            <!-- Three culture/impact cards with consistent image sizing -->
             <div class="grid md:grid-cols-3 gap-8 mb-12">
-                <div class="relative group transform hover:scale-105 transition-all duration-500">
-                    <div class="relative bg-white rounded-2xl overflow-hidden shadow-xl">
+                <div class="group transform hover:scale-105 transition-all duration-500">
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-xl">
                         <img
-                            src="https://images.unsplash.com/photo-1560343090-f0409e92791a?q=80&w=1200&auto=format&fit=crop"
+                            src="https://ichef.bbci.co.uk/ace/ws/640/cpsprodpb/30FE/production/_124724521_asterguardiansresavedwhitebackground.jpg.webp"
                             alt="Clinician with patient in Kenya"
                             class="w-full h-64 object-cover"
                         />
@@ -268,10 +267,10 @@ const navigateToRegister = (): void => {
                     </div>
                 </div>
 
-                <div class="relative group transform hover:scale-105 transition-all duration-500">
-                    <div class="relative bg-white rounded-2xl overflow-hidden shadow-xl">
+                <div class="group transform hover:scale-105 transition-all duration-500">
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-xl">
                         <img
-                            src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop"
+                            src="https://jessekayhospital.com/wp-content/uploads/elementor/thumbs/Consultation_11zon-qwq0ex9lorndpw6rbe20x6kgnzvcfvv060tafenyq0.jpg"
                             alt="Healthcare teamwork Kenya"
                             class="w-full h-64 object-cover"
                         />
@@ -282,20 +281,21 @@ const navigateToRegister = (): void => {
                     </div>
                 </div>
 
-                <div class="relative group transform hover:scale-105 transition-all duration-500">
-                    <div class="relative bg-white rounded-2xl overflow-hidden shadow-xl">
+                <div class="group transform hover:scale-105 transition-all duration-500">
+                    <div class="bg-white rounded-2xl overflow-hidden shadow-xl">
                         <img
-                            src="https://images.unsplash.com/photo-1522336572468-97b06e8ef143?q=80&w=1200&auto=format&fit=crop"
+                            src="https://www.internationalinsurance.com/wp-content/uploads/2020/05/health-insurance-in-kenya-scaled.jpg"
                             alt="Pediatric care Kenya"
                             class="w-full h-64 object-cover"
                         />
                         <div class="p-6">
                             <h3 class="text-xl font-semibold text-gray-900 mb-2">Kesho Iliyo Bora</h3>
-                            <p class="text-gray-600">Kukuza vizazi vijavyo kupitia huduma za afya bora.</p>
+                            <p class="text-gray-600">Kukuza vizazi vijavyo kupitia huduma.</p>
                         </div>
                     </div>
                 </div>
             </div>
+
 
             <div class="text-center">
                 <button
