@@ -47,13 +47,15 @@ Route::middleware(['auth', 'roles:super-admin'])->group(function () {
 
 Route::post('check-licence', [HealthJobController::class, 'checkLicence'])->name('check-licence');
 
+
 Route::middleware(['auth'])->group(function () {
     Route::controller(HealthJobController::class)
         ->prefix('health-jobs')
         ->name('health-jobs.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('create', 'create')->name('create');
+            Route::get('create', 'create')->name('create')->middleware('permission:create-job-postings');
+            Route::post('upload', 'upload')->name('upload')->middleware('permission:create-job-postings');
             Route::post('jobs', 'store')->name('store');
             Route::get('{uuid}', 'show')->name('show');
             Route::post('interested', 'interested')->name('interested');

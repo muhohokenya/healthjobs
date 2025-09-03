@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Symfony\Component\DomCrawler\Crawler;
+use OpenAI\Laravel\Facades\OpenAI;
+use OpenAI\Exceptions\RateLimitException;
+use OpenAI\Exceptions\ApiException;
 
 class HealthJobController extends Controller
 {
@@ -140,6 +143,46 @@ class HealthJobController extends Controller
     public function create()
     {
         return Inertia::render('HealthJobs/Create');
+    }
+
+
+
+    public function upload(Request $request)
+    {
+        try {
+            $response = OpenAI::responses()->create([
+                'model' => 'gpt-5',
+                'input' => 'Hello!',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => $response->outputText,
+            ]);
+
+        } catch (RateLimitException $e) {
+
+            dd($e->getMessage());
+            // Handle rate limiting gracefully
+            return redirect()->back()->with([
+                'success' => false,
+                'error'   => $e->getMessage(),
+            ], 429);
+
+        } catch (ApiException $e) {
+            // Handle other API-specific errors
+            return response()->json([
+                'success' => false,
+                'error'   => 'OpenAI API error: ' . $e->getMessage(),
+            ], 500);
+
+        } catch (\Exception $e) {
+            // Handle any unexpected errors
+            return response()->json([
+                'success' => false,
+                'error'   => 'Unexpected error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function store(HealthJobRequest $request)
