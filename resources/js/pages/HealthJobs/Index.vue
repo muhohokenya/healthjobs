@@ -83,7 +83,7 @@ const formatTimeAgo = (dateString: string): string => {
                     <Link :href="route('profile.update')" class="ml-3 text-blue-600 underline">Complete Profile</Link>
                 </div>
 
-                <div v-if="user.hasPermission('create-job-postings') && props.isProfileComplete" class="mb-6 flex justify-end">
+                <div v-if="user.hasPermission('create-job-postings')" class="mb-6 flex justify-end">
                     <Link
                         class="flex items-center rounded-md bg-blue-600 px-4 py-2.5 font-medium text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         :href="route('health-jobs.create')"

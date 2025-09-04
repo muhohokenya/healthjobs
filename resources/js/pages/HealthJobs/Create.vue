@@ -3,6 +3,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Form, useForm } from '@inertiajs/vue3';
 import { useAuth } from '@/utils/auth';
 import { ref, computed } from 'vue';
+import {sortedCounties} from '@/utils/counties';
 
 const form = useForm({
     name: null,
@@ -51,7 +52,7 @@ const removeQualification = (index: number) => {
                     </div>
 
                     <Form
-                        v-if="user?.facility"
+                        v-if="user"
                         :action="route('health-jobs.store')"
                         method="post"
                         class="space-y-6 rounded-lg bg-white p-8 shadow-lg dark:bg-gray-800"
@@ -59,7 +60,7 @@ const removeQualification = (index: number) => {
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <!-- Job Title -->
                             <div>
-                                <label for="title" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Job Title *</label>
+                                <label for="title" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Job Title <small class="text-red-700">*</small></label>
                                 <input
                                     type="text"
                                     name="title"
@@ -73,7 +74,7 @@ const removeQualification = (index: number) => {
 
                         <!-- Description -->
                         <div>
-                            <label for="description" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Description *</label>
+                            <label for="description" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Description <small class="text-red-700">*</small></label>
                             <textarea
                                 name="description"
                                 id="description"
@@ -82,13 +83,13 @@ const removeQualification = (index: number) => {
                                 required
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             />
-                            {{ prop }}
+<!--                            {{ prop }}-->
                         </div>
 
                         <!-- Job Type & Experience -->
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <div>
-                                <label for="job_type" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Job Type *</label>
+                                <label for="job_type" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Job Type <small class="text-red-700">*</small> </label>
                                 <select
                                     name="job_type"
                                     id="job_type"
@@ -101,30 +102,28 @@ const removeQualification = (index: number) => {
                                 </select>
                             </div>
 
-                            <div>
-                                <label for="experience_level" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-                                    >Experience Level *</label
-                                >
+
+                            <div  v-if="!user?.facility">
+                                <label for="location" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Location <small class="text-red-700">*</small> </label>
                                 <select
-                                    name="experience_level"
-                                    id="experience_level"
+                                    name="location"
+                                    id="location"
                                     required
                                     class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
                                 >
-                                    <option value="" disabled selected>Select Experience Level</option>
-                                    <option value="entry">Entry</option>
-                                    <option value="mid">Mid</option>
-                                    <option value="senior">Senior</option>
+                                    <option value="" disabled selected>Select location</option>
+                                    <option v-for="county in sortedCounties" v-bind:key="county.code" :value="county.name">{{county.name}}</option>
                                 </select>
                             </div>
                         </div>
 
+
                         <!-- Salary Range -->
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                             <div>
-                                <label for="salary_min" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Min Range</label>
+                                <label for="salary_min" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Min Range (<i>Optional</i>)</label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     name="salary_min"
                                     id="salary_min"
                                     placeholder="e.g. Kes 35000"
@@ -133,9 +132,9 @@ const removeQualification = (index: number) => {
                                 />
                             </div>
                             <div>
-                                <label for="salary_max" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Max Range</label>
+                                <label for="salary_max" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Max Range(<i>Optional</i>) </label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     name="salary_max"
                                     id="salary_max"
                                     placeholder="e.g. Kes 85000"
@@ -148,7 +147,7 @@ const removeQualification = (index: number) => {
                         <!-- Dynamic Qualifications Section -->
                         <div>
                             <div class="mb-3 flex items-center justify-between">
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300"> Qualifications & Requirements </label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300"> Qualifications & Requirements (<i>Optional</i>) </label>
                                 <button
                                     type="button"
                                     @click="addQualification"
@@ -240,55 +239,55 @@ const removeQualification = (index: number) => {
                         </div>
                     </Form>
 
-                    <section v-else>
-                        <form @submit.prevent="submit" class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md space-y-6">
-                            <!-- Name Input -->
-                            <div class="space-y-2">
-                                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    v-model="form.name"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                    placeholder="Enter your name"
-                                />
-                            </div>
+<!--                    <section v-else>-->
+<!--                        <form @submit.prevent="submit" class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md space-y-6">-->
+<!--                            &lt;!&ndash; Name Input &ndash;&gt;-->
+<!--                            <div class="space-y-2">-->
+<!--                                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>-->
+<!--                                <input-->
+<!--                                    type="text"-->
+<!--                                    id="name"-->
+<!--                                    v-model="form.name"-->
+<!--                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"-->
+<!--                                    placeholder="Enter your name"-->
+<!--                                />-->
+<!--                            </div>-->
 
-                            <!-- File Input -->
-                            <div class="space-y-2">
-                                <label for="avatar" class="block text-sm font-medium text-gray-700">Avatar</label>
-                                <input
-                                    type="file"
-                                    id="avatar"
-                                    @input="form.avatar = $event.target.files[0]"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                    accept="image/*"
-                                />
-                            </div>
+<!--                            &lt;!&ndash; File Input &ndash;&gt;-->
+<!--                            <div class="space-y-2">-->
+<!--                                <label for="avatar" class="block text-sm font-medium text-gray-700">Avatar</label>-->
+<!--                                <input-->
+<!--                                    type="file"-->
+<!--                                    id="avatar"-->
+<!--                                    @input="form.avatar = $event.target.files[0]"-->
+<!--                                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"-->
+<!--                                    accept="image/*"-->
+<!--                                />-->
+<!--                            </div>-->
 
-                            <!-- Progress Bar -->
-                            <div v-if="form.progress" class="space-y-2">
-                                <div class="flex justify-between text-sm text-gray-600">
-                                    <span>Uploading...</span>
-                                    <span>{{ form.progress.percentage }}%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div
-                                        class="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
-                                        :style="`width: ${form.progress.percentage}%`"
-                                    ></div>
-                                </div>
-                            </div>
+<!--                            &lt;!&ndash; Progress Bar &ndash;&gt;-->
+<!--                            <div v-if="form.progress" class="space-y-2">-->
+<!--                                <div class="flex justify-between text-sm text-gray-600">-->
+<!--                                    <span>Uploading...</span>-->
+<!--                                    <span>{{ form.progress.percentage }}%</span>-->
+<!--                                </div>-->
+<!--                                <div class="w-full bg-gray-200 rounded-full h-2">-->
+<!--                                    <div-->
+<!--                                        class="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"-->
+<!--                                        :style="`width: ${form.progress.percentage}%`"-->
+<!--                                    ></div>-->
+<!--                                </div>-->
+<!--                            </div>-->
 
-                            <!-- Submit Button -->
-                            <button
-                                type="submit"
-                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Submit
-                            </button>
-                        </form>
-                    </section>
+<!--                            &lt;!&ndash; Submit Button &ndash;&gt;-->
+<!--                            <button-->
+<!--                                type="submit"-->
+<!--                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"-->
+<!--                            >-->
+<!--                                Submit-->
+<!--                            </button>-->
+<!--                        </form>-->
+<!--                    </section>-->
                 </div>
             </div>
         </div>
