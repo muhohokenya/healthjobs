@@ -1,18 +1,9 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Form, useForm } from '@inertiajs/vue3';
+import { Head, Form } from '@inertiajs/vue3';
 import { useAuth } from '@/utils/auth';
 import { ref, computed } from 'vue';
-import {sortedCounties} from '@/utils/counties';
-
-const form = useForm({
-    name: null,
-    avatar: null,
-});
-
-function submit() {
-    form.post('/health-jobs/upload');
-}
+import { sortedCounties } from '@/utils/counties';
 
 const user = useAuth();
 
