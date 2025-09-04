@@ -108,7 +108,7 @@ class HealthJobController extends Controller
         $isProfileComplete = $user?->isProfileComplete() ?? false;
 
         $jobs = HealthJob::query()
-            ->with('facility')
+            ->with('user')
             ->when($request->search, function ($query, $search) {
                 $query->where('title', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%")
@@ -126,6 +126,7 @@ class HealthJobController extends Controller
                 });
             })
             ->where('is_active', true)
+
             ->orderBy('created_at', 'desc')
             ->paginate(12)
             ->withQueryString();
@@ -190,7 +191,7 @@ class HealthJobController extends Controller
         $healthJob = $request->validated();
 
         //        Facility::query()->where('');
-        $healthJob['facility_id'] = $request->user()->facility->id;
+//        $healthJob['facility_id'] = $request->user()->facility->id;
         $healthJob['user_id'] = Auth::id();
         $healthJob['uuid'] = Str::uuid();
         $healthJob['requirements'] = $request->qualifications;

@@ -48,17 +48,11 @@ const formatSalary = (salary: number): string => {
                     <!-- Content -->
                     <div class="p-6">
                         <!-- Salary and Details -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                             <div class="text-center p-4 bg-green-50 rounded-lg">
                                 <h3 class="text-sm font-medium text-gray-500 mb-1">Salary Range</h3>
                                 <p class="text-lg font-semibold text-green-600">
                                     Ksh: {{ formatSalary(job.salary_min) }} - {{ formatSalary(job.salary_max) }}
-                                </p>
-                            </div>
-                            <div class="text-center p-4 bg-purple-50 rounded-lg">
-                                <h3 class="text-sm font-medium text-gray-500 mb-1">Experience Level</h3>
-                                <p class="text-lg font-semibold text-purple-600">
-                                    {{ formatExperienceLevel(job.experience_level) }}
                                 </p>
                             </div>
                             <div class="text-center p-4 bg-blue-50 rounded-lg">
@@ -73,7 +67,7 @@ const formatSalary = (salary: number): string => {
                         <div class="mb-8">
                             <h2 class="text-xl font-semibold text-gray-900 mb-4">Job Description</h2>
                             <div class="prose max-w-none text-gray-700">
-                                <p>{{ job.description }}</p>
+                                <span v-html="job.description"></span>
                             </div>
                         </div>
 

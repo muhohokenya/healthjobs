@@ -4,12 +4,15 @@ import { Head, Form } from '@inertiajs/vue3';
 import { useAuth } from '@/utils/auth';
 import { ref, computed } from 'vue';
 import { sortedCounties } from '@/utils/counties';
+import { QuillEditor } from '@vueup/vue-quill';
+import '@vueup/vue-quill/dist/vue-quill.snow.css' // Snow theme
 
 const user = useAuth();
 
 // Dynamic qualifications list
 const qualifications = ref([]);
 const maxQualifications = 15;
+const description = ref('');
 
 // Computed property to check if we can add more qualifications
 const canAddMore = computed(() => {
@@ -66,14 +69,18 @@ const removeQualification = (index: number) => {
                         <!-- Description -->
                         <div>
                             <label for="description" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Description <small class="text-red-700">*</small></label>
-                            <textarea
-                                name="description"
-                                id="description"
-                                rows="4"
+
+                            <!-- With this: -->
+                            <QuillEditor
+                                v-model:content="description"
+                                content-type="html"
                                 placeholder="Describe the job role and responsibilities"
-                                required
-                                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                theme="snow"
+                                toolbar="full"
+                                class="bg-white dark:bg-gray-700 rounded-lg"
                             />
+                            <!-- Hidden input to send data to Laravel -->
+                            <input type="hidden" name="description" :value="description" />
 <!--                            {{ prop }}-->
                         </div>
 
@@ -118,7 +125,6 @@ const removeQualification = (index: number) => {
                                     name="salary_min"
                                     id="salary_min"
                                     placeholder="e.g. Kes 35000"
-                                    required
                                     class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                                 />
                             </div>
@@ -129,7 +135,6 @@ const removeQualification = (index: number) => {
                                     name="salary_max"
                                     id="salary_max"
                                     placeholder="e.g. Kes 85000"
-                                    required
                                     class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                                 />
                             </div>
@@ -285,4 +290,19 @@ const removeQualification = (index: number) => {
     </AppLayout>
 </template>
 
-<style scoped></style>
+<style scoped>
+:deep(.ql-editor) {
+    min-height: 120px;
+    font-size: 14px;
+}
+
+:deep(.ql-toolbar) {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+:deep(.ql-container) {
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+</style>

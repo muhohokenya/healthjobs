@@ -12,7 +12,8 @@ class HealthJobRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user()->isProfileComplete();
+//        return Auth::user()->isProfileComplete();
+        return true;
     }
 
     /**
@@ -52,11 +53,6 @@ class HealthJobRequest extends FormRequest
                 'min:0',
                 'max:9999999.99',
                 'gte:salary_min', // salary_max must be greater than or equal to salary_min
-            ],
-            'experience_level' => [
-                'required',
-                'string',
-                'in:entry,mid,senior',
             ],
             // Add qualifications validation rules
             'qualifications' => [
