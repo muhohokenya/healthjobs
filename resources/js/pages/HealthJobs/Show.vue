@@ -12,10 +12,6 @@ const formatJobType = (type: string): string => {
     return type.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
 
-const formatExperienceLevel = (level: string): string => {
-    if (!level) return 'Not specified';
-    return level.charAt(0).toUpperCase() + level.slice(1) + ' Level';
-};
 
 const formatSalary = (salary: number): string => {
     if (!salary || salary === 0) return 'Not specified';

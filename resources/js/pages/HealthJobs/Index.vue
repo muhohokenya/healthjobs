@@ -33,9 +33,6 @@ const formatJobType = (type: string): string => {
         .join(' ');
 };
 
-const formatExperienceLevel = (level: string): string => {
-    return level.charAt(0).toUpperCase() + level.slice(1) + ' Level';
-};
 
 const formatSalary = (salary: number): string => {
     return new Intl.NumberFormat('en-US').format(salary);
