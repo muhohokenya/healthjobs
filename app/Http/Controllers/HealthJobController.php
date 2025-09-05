@@ -112,19 +112,12 @@ class HealthJobController extends Controller
             ->when($request->search, function ($query, $search) {
                 $query->where('title', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%")
-                    ->orWhereHas('facility', function ($facilityQuery) use ($search) {
-                        $facilityQuery->where('location', 'like', "%{$search}%");
-                    });
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('location', 'like', "%{$search}%");
             })
             ->when($request->job_type, fn ($query, $jobType) => $query->where('job_type', $jobType))
-            ->when($request->experience_level, fn ($query, $level) => $query->where('experience_level', $level))
+            ->when($request->location, fn ($query, $location) => $query->where('location', $location))
 
-            // 👇 This part handles location filtering
-            ->when($request->location, function ($query, $location) {
-                $query->whereHas('facility', function ($facilityQuery) use ($location) {
-                    $facilityQuery->where('location', 'like', "%{$location}%");
-                });
-            })
             ->where('is_active', true)
 
             ->orderBy('created_at', 'desc')
@@ -132,7 +125,10 @@ class HealthJobController extends Controller
             ->withQueryString();
 
         return Inertia::render('HealthJobs/Index', [
-            'locations' => Facility::query()->distinct()->get(['location']),
+            'locations' => HealthJob::query()
+                ->distinct()
+                ->whereNotNull('location')
+                ->get(['location']),
             'jobs' => $jobs,
             'filters' => $request->only(['search', 'job_type', 'experience_level']),
             'isProfileComplete' => $isProfileComplete,
@@ -195,6 +191,7 @@ class HealthJobController extends Controller
         $healthJob['user_id'] = Auth::id();
         $healthJob['uuid'] = Str::uuid();
         $healthJob['requirements'] = $request->qualifications;
+        $healthJob['location'] = $request->location;
 
         // Create the health job record
         $healthJob = HealthJob::create($healthJob);

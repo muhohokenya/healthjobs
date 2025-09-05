@@ -18,13 +18,14 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('facility_id')->nullable()->constrained()->nullOnDelete();
             $table->text('description');
+            $table->text('location')->nullable();
             $table->string('job_type'); // full-time, locum
             $table->decimal('salary_min', 10, 2)->nullable();
             $table->decimal('salary_max', 10, 2)->nullable();
             $table->string('experience_level')->nullable(); // entry, mid, senior
             $table->json('qualifications')->nullable();
             $table->json('requirements')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }

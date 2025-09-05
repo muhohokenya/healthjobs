@@ -37,6 +37,7 @@ class HealthJob extends Model
         'uuid',
         'title',
         'description',
+        'location',
         'job_type',
         'salary_min',
         'salary_max',

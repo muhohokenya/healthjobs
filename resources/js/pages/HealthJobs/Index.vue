@@ -205,12 +205,6 @@ const formatTimeAgo = (dateString: string): string => {
                                         ]"
                                     >
                                         {{ job.title }}
-                                        <span
-                                            v-if="job.user.license_status !== 'active'"
-                                            class="ml-2 text-xs font-medium text-red-500 dark:text-red-400"
-                                        >
-                                            [Unverified Poster]
-                                        </span>
                                     </h3>
 
                                     <div class="mb-3 flex items-center space-x-2">
@@ -282,6 +276,7 @@ const formatTimeAgo = (dateString: string): string => {
                                         />
                                     </svg>
                                 </div>
+                                {{job.location}}
                                 <div>
                                     <span
                                         :class="[
