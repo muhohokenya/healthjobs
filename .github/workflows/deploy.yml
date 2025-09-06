@@ -34,7 +34,7 @@ jobs:
           port: 21
           server-dir: /domains/medicareers.co.ke/
 
-      - name: Upload contents via FTP
+      - name: Move assets to public_html directory via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{secrets.FTP_HOST}}
@@ -42,8 +42,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           port: 21
-          server-dir: /domains/medicareers.co.ke/public_html/
           local-dir: public/
-          timeout: 300000
-          log-level: verbose
+          server-dir: /domains/medicareers.co.ke/public_html/
 
