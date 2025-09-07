@@ -12,8 +12,9 @@ import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type User } from '@/types';
 import { CheckCircle as CheckCircleIcon, BadgeIcon, BadgeCheckIcon } from 'lucide-vue-next';
 import { computed, watch } from 'vue';
-import Swal from 'sweetalert2'; // Add this import
-
+import Swal from 'sweetalert2';
+import { QuillEditor } from '@vueup/vue-quill'; // Add this import
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 const page = usePage();
 interface Props {
@@ -161,6 +162,22 @@ const user = page.props.auth.user as User;
                             <InputError class="mt-2" :message="errors.licence_number" />
                         </div>
                     </section>
+
+                    <!-- Description -->
+                    <div>
+                        <label for="about" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            About me <small class="text-red-700">*</small>
+                        </label>
+                        <QuillEditor
+                            content-type="html"
+                            placeholder="Brief professional summary that highlights your strengths, experience, and unique value."
+                            theme="snow"
+                            toolbar="full"
+                            class="bg-white dark:bg-gray-700 rounded-lg"
+                        />
+                    </div>
+
+
                     <!-- contact number -->
                     <div class="mt-6 grid gap-2">
                         <Label for="name" class="text-sm font-semibold text-gray-700">Contact *</Label>
