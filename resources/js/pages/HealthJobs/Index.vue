@@ -97,7 +97,7 @@ const truncateDescription = (description, maxLength = 150) => {
                 </div>
 
                 <div v-if="!props.isProfileComplete" class="mb-6 rounded-md bg-red-100 p-4 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                    ⚠️ Please complete your profile to unlock full job details and apply.
+                    ⚠️ Kindly complete your profile to enhance the credibility of your posts.
                     <Link :href="route('profile.update')" class="ml-3 text-blue-600 underline">Complete Profile</Link>
                 </div>
 
@@ -320,10 +320,10 @@ const truncateDescription = (description, maxLength = 150) => {
                     'w-full inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 focus:ring-2 focus:ring-offset-2',
                     job.user.license_status === 'active'
                         ? 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-md hover:shadow-lg'
-                        : 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-md hover:shadow-lg'
+                        : 'bg-red-400 text-white hover:bg-red-400 focus:ring-red-500 shadow-md hover:shadow-lg'
                 ]"
                             >
-                                <span>{{ job.user.license_status === 'active' ? 'View Details' : 'Proceed with Caution' }}</span>
+                                <span>{{ job.user.license_status === 'active' ? 'View Details' : 'Show more' }}</span>
                                 <svg
                                     class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
                                     fill="none"
