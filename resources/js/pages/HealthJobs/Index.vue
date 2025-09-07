@@ -35,9 +35,6 @@ const formatJobType = (type: string): string => {
 };
 
 
-const formatSalary = (salary: number): string => {
-    return new Intl.NumberFormat('en-US').format(salary);
-};
 
 // Helper function to format time ago
 const formatTimeAgo = (dateString: string): string => {
@@ -245,20 +242,6 @@ const truncateDescription = (description, maxLength = 150) => {
                                     {{ job.location }}
                                 </div>
                             </div>
-
-<!--                            &lt;!&ndash; Salary &ndash;&gt;-->
-<!--                            <div class="mb-4">-->
-<!--                <span-->
-<!--                    :class="[-->
-<!--                        'text-lg font-bold',-->
-<!--                        job.user.license_status === 'active'-->
-<!--                            ? 'text-green-600 dark:text-green-400'-->
-<!--                            : 'text-orange-600 dark:text-orange-400'-->
-<!--                    ]"-->
-<!--                >-->
-<!--                    Ksh {{ formatSalary(job.salary_min) }} - {{ formatSalary(job.salary_max) }}-->
-<!--                </span>-->
-<!--                            </div>-->
                         </div>
 
                         <!-- Content Section - Truncated -->
