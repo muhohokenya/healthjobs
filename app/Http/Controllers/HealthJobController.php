@@ -172,7 +172,7 @@ class HealthJobController extends Controller
         Extract ALL visible information from this job posting image and return ONLY this JSON format (no markdown, no code blocks):
 
         {
-            \"description\": \"<p>We are looking for...</p><h3>What You'll Do</h3><ul><li>Task 1</li></ul><h3>What We Need</h3><ul><li>Requirement 1</li></ul><h3>Additional Information</h3><p>Include any extra details like contact info, application process, company info, etc.</p>\",
+            \"description\": \"<h3>About This Role</h3><p>We are looking for...</p><h3>What You'll Do</h3><ul><li>Task 1</li></ul><h3>What We Need</h3><ul><li>Requirement 1</li></ul><h3>Additional Information</h3><p>Include any extra details like contact info, application process, company info, etc.</p>\",
             \"title\": \"job title from image\",
             \"location\": \"exact location mentioned\",
             \"job_type\": \"full-time or part-time or contract\",
