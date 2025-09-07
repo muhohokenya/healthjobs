@@ -4,21 +4,23 @@
     <AppLayout>
         <template #header>
             <div class="flex justify-between items-center">
-                <h2 class="font-bold text-2xl text-gray-800">
+                <h2 class="font-bold text-xl sm:text-2xl text-gray-800">
                     Dashboard
                 </h2>
-                <span class="text-sm text-gray-500">MVP Demo</span>
+                <span class="text-xs sm:text-sm text-gray-500">MVP Demo</span>
             </div>
         </template>
 
-        <div class="py-8">
-            <div class="max-w-7xl grid mx-auto grid-cols-2 gap-4">
-                <div>
-                    <BarChart />
-                </div>
+        <div class="py-4 sm:py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+                    <div class="w-full">
+                        <BarChart />
+                    </div>
 
-                <div>
-                    <LineChart />
+                    <div class="w-full">
+                        <LineChart />
+                    </div>
                 </div>
             </div>
         </div>
