@@ -246,19 +246,19 @@ const truncateDescription = (description, maxLength = 150) => {
                                 </div>
                             </div>
 
-                            <!-- Salary -->
-                            <div class="mb-4">
-                <span
-                    :class="[
-                        'text-lg font-bold',
-                        job.user.license_status === 'active'
-                            ? 'text-green-600 dark:text-green-400'
-                            : 'text-orange-600 dark:text-orange-400'
-                    ]"
-                >
-                    Ksh {{ formatSalary(job.salary_min) }} - {{ formatSalary(job.salary_max) }}
-                </span>
-                            </div>
+<!--                            &lt;!&ndash; Salary &ndash;&gt;-->
+<!--                            <div class="mb-4">-->
+<!--                <span-->
+<!--                    :class="[-->
+<!--                        'text-lg font-bold',-->
+<!--                        job.user.license_status === 'active'-->
+<!--                            ? 'text-green-600 dark:text-green-400'-->
+<!--                            : 'text-orange-600 dark:text-orange-400'-->
+<!--                    ]"-->
+<!--                >-->
+<!--                    Ksh {{ formatSalary(job.salary_min) }} - {{ formatSalary(job.salary_max) }}-->
+<!--                </span>-->
+<!--                            </div>-->
                         </div>
 
                         <!-- Content Section - Truncated -->
