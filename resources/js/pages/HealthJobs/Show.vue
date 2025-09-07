@@ -78,8 +78,10 @@ const formatSalary = (salary: number): string => {
                         </div>
                         <!-- Actions -->
                         <div  class="flex flex-col sm:flex-row gap-4">
+
+
                             <!-- Interested Form -->
-                            <Form v-if="user.roles[0].name !== 'recruiter'" :action="route('health-jobs.interested')" method="post">
+                            <Form v-if="user.id !== job.user_id" :action="route('health-jobs.interested')" method="post">
                                 <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 font-medium cursor-pointer">
                                     Interested
                                 </button>
