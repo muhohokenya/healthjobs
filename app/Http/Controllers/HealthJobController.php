@@ -169,17 +169,33 @@ class HealthJobController extends Controller
 
         $prompt = "You are posting this job. Write in first person as the employer.
 
-        Extract job info and return ONLY this JSON format (no markdown, no code blocks):
+        Extract ALL visible information from this job posting image and return ONLY this JSON format (no markdown, no code blocks):
 
         {
-            \"description\": \"<h3>About This Role</h3><p>We are looking for...</p><h3>What You'll Do</h3><ul><li>Task 1</li></ul><h3>What We Need</h3><ul><li>Requirement 1</li></ul>\",
-            \"title\": \"job title\",
-            \"location\": \"location\",
-            \"job_type\": \"full-time or part-time\",
+            \"description\": \"<p>We are looking for...</p><h3>What You'll Do</h3><ul><li>Task 1</li></ul><h3>What We Need</h3><ul><li>Requirement 1</li></ul><h3>Additional Information</h3><p>Include any extra details like contact info, application process, company info, etc.</p>\",
+            \"title\": \"job title from image\",
+            \"location\": \"exact location mentioned\",
+            \"job_type\": \"full-time or part-time or contract\",
             \"salary_min\": number,
             \"salary_max\": number,
-            \"qualifications\": [\"requirement 1\", \"requirement 2\"]
+            \"qualifications\": [\"requirement 1\", \"requirement 2\"],
+            \"application_deadline\": \"deadline date if mentioned\",
+            \"contact_email\": \"email if visible\",
+            \"contact_phone\": \"phone if visible\",
+            \"company_name\": \"organization/hospital name\",
+            \"department\": \"specific department if mentioned\",
+            \"experience_required\": \"years of experience mentioned\",
+            \"additional_benefits\": [\"benefit 1\", \"benefit 2\"],
+            \"application_instructions\": \"how to apply information\",
+            \"extra_details\": \"any other information visible in the image that doesn't fit above categories\"
         }
+
+        IMPORTANT:
+        - Include ALL text visible in the image
+        - If application deadline, contact info, or other details are visible, extract them
+        - Put any information that doesn't fit standard categories in 'extra_details'
+        - In description, include a section for additional information found in the image
+        - Use null for missing information, don't guess
 
         Write naturally as if you're the hiring manager. Use 'we', 'our team', 'you'll join us'. Return raw JSON only.";
 
@@ -198,7 +214,6 @@ class HealthJobController extends Controller
             // Try to extract JSON from the response
             $jobData = $this->extractAndParseJson($responseText);
 
-            // If no valid JSON found, create a basic structure with the response as description
             if (!$jobData) {
                 $formattedDescription = $this->formatDescriptionAsHtml($responseText);
                 $jobData = [
@@ -210,13 +225,27 @@ class HealthJobController extends Controller
                     'salary_max' => null,
                     'experience_level' => null,
                     'qualifications' => null,
-                    'is_active' => true
+                    'is_active' => true,
+                    // Add these new fields
+                    'application_deadline' => null,
+                    'contact_email' => null,
+                    'contact_phone' => null,
+                    'company_name' => null,
+                    'department' => null,
+                    'experience_required' => null,
+                    'additional_benefits' => null,
+                    'application_instructions' => null,
+                    'extra_details' => null
                 ];
-            } else {
-                // Ensure we have at least a title and description
+            }else {
+//                / Ensure we have at least a title and description
                 if (empty($jobData['description'])) {
                     $jobData['description'] = $this->formatDescriptionAsHtml($responseText);
                 }
+
+                // Enhance description with extracted extras
+                $jobData['description'] = $this->enhanceDescriptionWithExtras($jobData['description'], $jobData);
+
 
                 if (empty($jobData['title'])) {
                     $jobData['title'] = $this->generateTitleFromDescription($jobData['description']);
@@ -356,6 +385,57 @@ class HealthJobController extends Controller
 
         return (float) $numeric;
     }
+
+    private function enhanceDescriptionWithExtras($description, $jobData)
+    {
+        $extras = [];
+
+        // Collect extra information
+        if (!empty($jobData['application_deadline'])) {
+            $extras[] = "<strong>Application Deadline:</strong> " . htmlspecialchars($jobData['application_deadline']);
+        }
+
+        if (!empty($jobData['contact_email'])) {
+            $extras[] = "<strong>Contact Email:</strong> " . htmlspecialchars($jobData['contact_email']);
+        }
+
+        if (!empty($jobData['contact_phone'])) {
+            $extras[] = "<strong>Contact Phone:</strong> " . htmlspecialchars($jobData['contact_phone']);
+        }
+
+        if (!empty($jobData['company_name'])) {
+            $extras[] = "<strong>Organization:</strong> " . htmlspecialchars($jobData['company_name']);
+        }
+
+        if (!empty($jobData['department'])) {
+            $extras[] = "<strong>Department:</strong> " . htmlspecialchars($jobData['department']);
+        }
+
+        if (!empty($jobData['experience_required'])) {
+            $extras[] = "<strong>Experience Required:</strong> " . htmlspecialchars($jobData['experience_required']);
+        }
+
+        if (!empty($jobData['additional_benefits']) && is_array($jobData['additional_benefits'])) {
+            $benefits = array_map('htmlspecialchars', $jobData['additional_benefits']);
+            $extras[] = "<strong>Benefits:</strong> " . implode(', ', $benefits);
+        }
+
+        if (!empty($jobData['application_instructions'])) {
+            $extras[] = "<strong>How to Apply:</strong> " . htmlspecialchars($jobData['application_instructions']);
+        }
+
+        if (!empty($jobData['extra_details'])) {
+            $extras[] = "<strong>Additional Information:</strong> " . htmlspecialchars($jobData['extra_details']);
+        }
+
+        // If we have extras, add them to the description
+        if (!empty($extras)) {
+            $description .= "<h3>Additional Details</h3><p>" . implode("</p><p>", $extras) . "</p>";
+        }
+
+        return $description;
+    }
+
 
     /**
      * Enhanced title generation that considers healthcare roles
