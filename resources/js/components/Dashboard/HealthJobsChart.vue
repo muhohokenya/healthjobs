@@ -2,7 +2,7 @@
     <div class="bg-white rounded-lg shadow p-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">Health Jobs by Location</h3>
         <div class="h-80">
-            <Line
+            <LineChartJS
                 id="health-jobs-chart"
                 :options="chartOptions"
                 :data="chartData"
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Line } from 'vue-chartjs'
+import { Line as LineChartJS } from 'vue-chartjs'
 import {
     Chart as ChartJS,
     Title,
@@ -38,7 +38,7 @@ interface ChartDataProps {
 
 export default {
     name: 'HealthJobsChart',
-    components: { Line },
+    components: { LineChartJS },
     props: {
         healthJobsData: {
             type: Array as () => HealthJobData[],

@@ -30,18 +30,4 @@ import { Head } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import BarChart from '@/components/Dashboard/BarChart.vue';
 import LineChart from '@/components/Dashboard/LineChart.vue'; // Fixed import
-
-const props = defineProps({
-    stats: Object,
-    recent_jobs: Array,
-    top_facilities: Array,
-});
-
-const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-    });
-};
 </script>

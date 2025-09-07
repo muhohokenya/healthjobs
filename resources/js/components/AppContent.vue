@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { SidebarInset } from '@/components/ui/sidebar';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { useAuth } from '@/utils/auth';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const user = useAuth();

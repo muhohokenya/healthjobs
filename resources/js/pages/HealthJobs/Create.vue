@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Form, useForm } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import { useAuth } from '@/utils/auth';
 import { ref, computed, watch } from 'vue';
 import { sortedCounties } from '@/utils/counties';
