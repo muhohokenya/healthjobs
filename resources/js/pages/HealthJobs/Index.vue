@@ -34,8 +34,6 @@ const formatJobType = (type: string): string => {
         .join(' ');
 };
 
-
-
 // Helper function to format time ago
 const formatTimeAgo = (dateString: string): string => {
     const date = new Date(dateString);
@@ -60,7 +58,6 @@ const formatTimeAgo = (dateString: string): string => {
     const diffInYears = Math.floor(diffInDays / 365);
     return `${diffInYears} year${diffInYears > 1 ? 's' : ''} ago`;
 };
-
 
 // Add this helper function to your script section
 const truncateDescription = (description, maxLength = 150) => {
@@ -170,70 +167,49 @@ const truncateDescription = (description, maxLength = 150) => {
                     </div>
                 </div>
 
-                <!-- Replace the job cards section in your template with this improved version -->
+                <!-- Job cards section with consistent blue theme -->
                 <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     <div
                         v-for="job in props.jobs.data"
                         :key="job.id"
-                        :class="[
-            'group relative flex flex-col overflow-hidden rounded-xl border transition-all duration-300 hover:-translate-y-1',
-            // Licensed user styling (trusted)
-            job.user.license_status === 'active'
-                ? 'border-gray-200 bg-white shadow-md hover:shadow-xl hover:shadow-blue-500/10 dark:border-gray-700 dark:bg-gray-800'
-                // Unlicensed user styling (untrustworthy)
-                : 'border-red-200 bg-red-50/30 shadow-md opacity-90 hover:opacity-100 dark:border-red-900/40 dark:bg-red-950/20'
-        ]"
+                        class="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/10 dark:border-gray-700 dark:bg-gray-800"
                     >
-                        <!-- Trust indicator stripe -->
-                        <div
-                            :class="[
-                'absolute top-0 left-0 right-0 h-1',
-                job.user.license_status === 'active'
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-500'
-                    : 'bg-gradient-to-r from-red-500 to-orange-500'
-            ]"
-                        ></div>
+                        <!-- Blue gradient stripe for all jobs -->
+                        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
 
                         <!-- Header Section -->
                         <div class="p-6 pb-4">
-                            <!-- Time Badge -->
-                            <div class="absolute top-4 right-4">
-                <span
-                    :class="[
-                        'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium',
-                        job.user.license_status === 'active'
-                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
-                            : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300'
-                    ]"
-                >
-                    {{ formatTimeAgo(job.created_at) }}
-                </span>
+                            <!-- Time and License Badge Container -->
+                            <div class="absolute top-4 right-4 flex items-center gap-2">
+                                <!-- Small license warning badge for unlicensed users only -->
+                                <div v-if="job.user.license_status !== 'active'" class="relative group/badge">
+                                    <div class="flex h-5 w-5 items-center justify-center rounded-full bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400">
+                                        <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <!-- Tooltip -->
+                                    <div class="invisible group-hover/badge:visible absolute -top-8 right-0 z-10 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white dark:bg-gray-600">
+                                        Unverified poster
+                                    </div>
+                                </div>
+
+                                <!-- Time Badge -->
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                                    {{ formatTimeAgo(job.created_at) }}
+                                </span>
                             </div>
 
                             <!-- Job Title -->
-                            <h3
-                                :class="[
-                    'text-lg font-bold leading-tight mb-2 pr-20 line-clamp-2',
-                    job.user.license_status === 'active'
-                        ? 'text-gray-900 dark:text-white'
-                        : 'text-gray-700 dark:text-gray-300'
-                ]"
-                            >
+                            <h3 class="text-lg font-bold leading-tight mb-2 pr-20 line-clamp-2 text-gray-900 dark:text-white">
                                 {{ job.title }}
                             </h3>
 
                             <!-- Job Type & Location -->
                             <div class="flex items-center justify-between mb-3">
-                <span
-                    :class="[
-                        'inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium',
-                        job.user.license_status === 'active'
-                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
-                            : 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300'
-                    ]"
-                >
-                    {{ formatJobType(job.job_type) }}
-                </span>
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
+                                    {{ formatJobType(job.job_type) }}
+                                </span>
 
                                 <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
                                     <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -244,17 +220,11 @@ const truncateDescription = (description, maxLength = 150) => {
                             </div>
                         </div>
 
-                        <!-- Content Section - Truncated -->
+                        <!-- Content Section -->
                         <div class="px-6 pb-4 flex-1">
                             <!-- Description Preview -->
                             <div class="mb-4">
-                                <div
-                                    :class="[
-                        'text-sm text-gray-600 dark:text-gray-400 line-clamp-3',
-                        job.user.license_status !== 'active' ? 'opacity-70' : ''
-                    ]"
-                                    v-html="truncateDescription(job.description, 150)"
-                                ></div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3" v-html="truncateDescription(job.description, 150)"></div>
                             </div>
 
                             <!-- Key Qualifications Preview -->
@@ -268,14 +238,7 @@ const truncateDescription = (description, maxLength = 150) => {
                                         :key="index"
                                         class="flex items-start text-xs text-gray-600 dark:text-gray-400"
                                     >
-                                        <div
-                                            :class="[
-                                'w-1.5 h-1.5 rounded-full mt-1.5 mr-2 flex-shrink-0',
-                                job.user.license_status === 'active'
-                                    ? 'bg-blue-500'
-                                    : 'bg-red-500'
-                            ]"
-                                        ></div>
+                                        <div class="w-1.5 h-1.5 rounded-full mt-1.5 mr-2 flex-shrink-0 bg-blue-500"></div>
                                         <span class="line-clamp-1">{{ qualification }}</span>
                                     </li>
                                     <li
@@ -289,24 +252,12 @@ const truncateDescription = (description, maxLength = 150) => {
                         </div>
 
                         <!-- Footer Section -->
-                        <div
-                            :class="[
-                'p-6 pt-4 border-t mt-auto',
-                job.user.license_status === 'active'
-                    ? 'border-gray-100 dark:border-gray-700'
-                    : 'border-red-100 dark:border-red-800'
-            ]"
-                        >
+                        <div class="p-6 pt-4 border-t border-gray-100 dark:border-gray-700 mt-auto">
                             <Link
                                 :href="route('health-jobs.show', job.uuid)"
-                                :class="[
-                    'w-full inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 focus:ring-2 focus:ring-offset-2',
-                    job.user.license_status === 'active'
-                        ? 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-md hover:shadow-lg'
-                        : 'bg-red-400 text-white hover:bg-red-400 focus:ring-red-500 shadow-md hover:shadow-lg'
-                ]"
+                                class="w-full inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 focus:ring-2 focus:ring-offset-2 bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-md hover:shadow-lg"
                             >
-                                <span>{{ job.user.license_status === 'active' ? 'View Details' : 'Show more' }}</span>
+                                <span>View Details</span>
                                 <svg
                                     class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
                                     fill="none"
