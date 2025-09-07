@@ -84,7 +84,7 @@ const truncateDescription = (description, maxLength = 150) => {
 
     <AppLayout>
         <div class="min-h-screen bg-gray-50 py-8 dark:bg-gray-900">
-            <div class="mx-auto max-w-8xl px-4 sm:px-6 lg:px-8">
+            <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-7">
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Health Jobs</h1>
                     <p class="mt-2 text-gray-600 dark:text-gray-300">Find your next healthcare opportunity</p>
@@ -99,7 +99,8 @@ const truncateDescription = (description, maxLength = 150) => {
                     <Link
                         class="flex items-center rounded-md bg-blue-600 px-4 py-2.5 font-medium text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         :href="route('health-jobs.create')"
-                    >Create New Job</Link>
+                        >Create New Job</Link
+                    >
                 </div>
 
                 <div class="mb-6 rounded-lg bg-white p-6 shadow dark:bg-gray-800 dark:shadow-gray-700/25">
@@ -148,21 +149,24 @@ const truncateDescription = (description, maxLength = 150) => {
                                 class="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             >
                                 <option value="">Select Location</option>
-                                <option v-for="location in locations" :value="location.location" v-bind:key="location">{{location.location}}</option>
+                                <option v-for="location in locations" :value="location.location" v-bind:key="location">
+                                    {{ location.location }}
+                                </option>
                             </select>
                         </div>
                         <div class="flex items-end">
                             <button
                                 @click="search"
-                                class="mr-3 w-full rounded-md bg-blue-600 px-4 py-2.5 text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-offset-gray-800 cursor-pointer"
+                                class="mr-3 w-full cursor-pointer rounded-md bg-blue-600 px-4 py-2.5 text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-offset-gray-800"
                             >
                                 Apply Filters
                             </button>
 
                             <Link
-                                class="w-full rounded-md bg-red-400 px-4 py-2.5 text-white transition-colors hover:bg-red-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-offset-gray-800 cursor-pointer"
+                                class="w-full cursor-pointer rounded-md bg-red-400 px-4 py-2.5 text-white transition-colors hover:bg-red-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-offset-gray-800"
                                 :href="route('health-jobs.index')"
-                            >Clear Filters</Link>
+                                >Clear Filters</Link
+                            >
                         </div>
                     </div>
                 </div>
@@ -175,33 +179,40 @@ const truncateDescription = (description, maxLength = 150) => {
                         class="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/10 dark:border-gray-700 dark:bg-gray-800"
                     >
                         <!-- Blue gradient stripe for all jobs -->
-                        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+                        <div class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
 
                         <!-- Header Section -->
                         <div class="p-6 pb-4">
                             <!-- Time and License Badge Container -->
                             <div class="absolute top-4 right-4 flex items-center gap-2">
-
                                 <!-- Time Badge -->
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                                <span
+                                    class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                                >
                                     {{ formatTimeAgo(job.created_at) }}
                                 </span>
                             </div>
 
                             <!-- Job Title -->
-                            <h3 class="text-lg font-bold leading-tight mb-2 pr-20 line-clamp-2 text-gray-900 dark:text-white">
+                            <h3 class="mb-2 line-clamp-2 pr-20 text-lg leading-tight font-bold text-gray-900 dark:text-white">
                                 {{ job.title }}
                             </h3>
 
                             <!-- Job Type & Location -->
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
+                            <div class="mb-3 flex items-center justify-between">
+                                <span
+                                    class="inline-flex items-center rounded-md bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                                >
                                     {{ formatJobType(job.job_type) }}
                                 </span>
 
                                 <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                                    <svg class="mr-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                            clip-rule="evenodd"
+                                        />
                                     </svg>
                                     {{ job.location }}
                                 </div>
@@ -209,30 +220,28 @@ const truncateDescription = (description, maxLength = 150) => {
                         </div>
 
                         <!-- Content Section -->
-                        <div class="px-6 pb-4 flex-1">
+                        <div class="flex-1 px-6 pb-4">
                             <!-- Description Preview -->
                             <div class="mb-4">
-                                <div class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3" v-html="truncateDescription(job.description, 150)"></div>
+                                <div
+                                    class="line-clamp-3 text-sm text-gray-600 dark:text-gray-400"
+                                    v-html="truncateDescription(job.description, 150)"
+                                ></div>
                             </div>
 
                             <!-- Key Qualifications Preview -->
                             <div v-if="job.qualifications && job.qualifications.length > 0" class="mb-4">
-                                <h4 class="text-sm font-semibold mb-2 text-gray-800 dark:text-gray-200">
-                                    Key Requirements:
-                                </h4>
+                                <h4 class="mb-2 text-sm font-semibold text-gray-800 dark:text-gray-200">Key Requirements:</h4>
                                 <ul class="space-y-1">
                                     <li
                                         v-for="(qualification, index) in job.qualifications.slice(0, 2)"
                                         :key="index"
                                         class="flex items-start text-xs text-gray-600 dark:text-gray-400"
                                     >
-                                        <div class="w-1.5 h-1.5 rounded-full mt-1.5 mr-2 flex-shrink-0 bg-blue-500"></div>
+                                        <div class="mt-1.5 mr-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-blue-500"></div>
                                         <span class="line-clamp-1">{{ qualification }}</span>
                                     </li>
-                                    <li
-                                        v-if="job.qualifications.length > 2"
-                                        class="text-xs text-gray-500 dark:text-gray-400 italic"
-                                    >
+                                    <li v-if="job.qualifications.length > 2" class="text-xs text-gray-500 italic dark:text-gray-400">
                                         +{{ job.qualifications.length - 2 }} more requirements
                                     </li>
                                 </ul>
@@ -240,15 +249,15 @@ const truncateDescription = (description, maxLength = 150) => {
                         </div>
 
                         <!-- Footer Section -->
-                        <div class="p-6 pt-4 border-t border-gray-100 dark:border-gray-700 mt-auto lg:grid lg:grid-cols-1 lg:grid-cols-2 lg:grid-cols-2">
+                        <div class="mt-auto border-t border-gray-100 p-6 pt-4 lg:grid lg:grid-cols-1 lg:grid-cols-2 dark:border-gray-700">
                             <div>
                                 <Link
                                     :href="route('health-jobs.show', job.uuid)"
-                                    class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 focus:ring-2 focus:ring-offset-2 border border-gray-300 bg-transparent text-gray-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-blue-600 dark:hover:text-white dark:hover:border-blue-600"
+                                    class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm font-semibold text-gray-700 transition-all duration-200 hover:border-blue-600 hover:bg-blue-600 hover:text-white focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-300 dark:hover:border-blue-600 dark:hover:bg-blue-600 dark:hover:text-white"
                                 >
                                     <span>View Details</span>
                                     <svg
-                                        class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+                                        class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
                                         fill="none"
                                         stroke="currentColor"
                                         viewBox="0 0 24 24"
@@ -259,8 +268,19 @@ const truncateDescription = (description, maxLength = 150) => {
                             </div>
 
                             <!-- Small license warning badge for unlicensed users only -->
-                            <div v-if="job.user.license_status !== 'active'" class="relative group/badge">
-                                <small>Unverified</small>
+                            <div v-if="job.user.license_status !== 'active'" class="flex items-center justify-end">
+                                <span
+                                    class="inline-flex items-center rounded-full border border-amber-200 bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800 dark:border-amber-800/50 dark:bg-amber-900/30 dark:text-amber-300"
+                                >
+                                    <svg class="mr-1 h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                    User Unverified
+                                </span>
                             </div>
                         </div>
                     </div>
