@@ -27,11 +27,11 @@ export default {
     data() {
         return {
             chartData: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
                 datasets: [
                     {
-                        label: 'Sales Data',
-                        data: [40, 20, 12, 39, 10, 40],
+                        label: 'Jobs Data',
+                        data: [40, 20, 12, 39, 10, 40,60,54,67,76,68,78],
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 2,
@@ -46,7 +46,7 @@ export default {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Monthly Sales Chart'
+                        text: 'Monthly Jobs Chart'
                     },
                     legend: {
                         display: true,
