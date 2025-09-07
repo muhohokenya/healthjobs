@@ -2,12 +2,9 @@
 import { SidebarInset } from '@/components/ui/sidebar';
 import { computed, onMounted } from 'vue';
 import { useAuth } from '@/utils/auth';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const user = useAuth();
 
-
-onMounted(() => {
-    console.log(user.notifications.length);
-})
 interface Props {
     variant?: 'header' | 'sidebar';
     class?: string;
