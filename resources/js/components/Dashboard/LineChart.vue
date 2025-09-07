@@ -27,11 +27,14 @@ export default {
     data() {
         return {
             chartData: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September','October','November','December'],
+                labels: ['January', 'February', 'March', 'April', 'May', 'June','July','August','September'],
                 datasets: [
                     {
                         label: 'Jobs Data',
-                        data: [40, 20, 12, 39, 10, 40,60,54,67,76,68,78],
+                        data: [
+                            40, 20, 12, 39,
+                            10, 40,60,54,
+                            67],
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 2,
