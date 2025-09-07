@@ -176,10 +176,15 @@ const truncateDescription = (description, maxLength = 150) => {
                     <div
                         v-for="job in props.jobs.data"
                         :key="job.id"
-                        class="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/10 dark:border-gray-700 dark:bg-gray-800"
+                        class="group relative flex
+                         flex-col overflow-hidden rounded-xl
+                         border border-gray-200 bg-white
+                         shadow-md transition-all duration-300
+                         hover:-translate-y-1 hover:shadow-xl
+                         hover:shadow-blue-500/10 dark:border-gray-700 dark:bg-gray-800"
                     >
                         <!-- Blue gradient stripe for all jobs -->
-                        <div class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+                        <div class="absolute top-0 right-0 left-0 h-1"></div>
 
                         <!-- Header Section -->
                         <div class="p-6 pb-4">
