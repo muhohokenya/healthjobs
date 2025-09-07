@@ -5,11 +5,10 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { LayoutGrid, Users, Settings, FileText, Cog, User } from 'lucide-vue-next';
+import { LayoutGrid, Users, Settings, FileText, Cog, User, Calendar1Icon } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { computed } from 'vue';
 import { useAuth } from '@/utils/auth';
-
 
 const user = useAuth();
 
@@ -24,6 +23,13 @@ const allNavItems = [
         href: '/health-jobs',
         icon: Users,
         requiredPermissions: ['view-job-postings'],
+    },
+    {
+        title: 'Events',
+        href: '#',
+        disabled: true,
+        icon: Calendar1Icon,
+        comingSoon: true,
     },
     {
         title: 'Access Management',
