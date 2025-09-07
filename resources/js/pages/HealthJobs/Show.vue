@@ -84,7 +84,6 @@ const formatSalary = (salary: number): string => {
                                 <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 font-medium cursor-pointer">
                                     Interested
                                 </button>
-
                                 <input type="hidden" name="job"  :value="job.uuid"/>
                             </Form>
 
