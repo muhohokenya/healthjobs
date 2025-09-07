@@ -16,6 +16,7 @@ const props = defineProps({
 const searchForm = reactive({
     search: props.filters.search || '',
     job_type: props.filters.job_type || '',
+    time_filter: props.filters.time_filter || '',
     location: props.filters.location || '',
 });
 
@@ -109,7 +110,7 @@ const truncateDescription = (description, maxLength = 150) => {
 
                 <div class="mb-6 rounded-lg bg-white p-6 shadow dark:bg-gray-800 dark:shadow-gray-700/25">
                     <h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Filter Jobs</h2>
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-5">
                         <div>
                             <label for="search" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Search</label>
                             <input
@@ -120,6 +121,19 @@ const truncateDescription = (description, maxLength = 150) => {
                                 class="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             />
                         </div>
+                        <div>
+                            <label for="time_filter" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">By Time</label>
+                            <select
+                                v-model="searchForm.time_filter"
+                                id="time_filter"
+                                class="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                            >
+                                <option value="">By time</option>
+                                <option value="latest">Latest</option>
+                                <option value="oldest">Oldest</option>
+                            </select>
+                        </div>
+
                         <div>
                             <label for="job_type_filter" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Job Type</label>
                             <select

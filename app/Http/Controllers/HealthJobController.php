@@ -106,6 +106,8 @@ class HealthJobController extends Controller
 
     public function index(Request $request): \Inertia\Response
     {
+
+
         $user = auth()->user();
 
         $isProfileComplete = $user?->isProfileComplete() ?? false;
@@ -120,8 +122,17 @@ class HealthJobController extends Controller
             })
             ->when($request->job_type, fn ($query, $jobType) => $query->where('job_type', $jobType))
             ->when($request->location, fn ($query, $location) => $query->where('location', $location))
-
             ->where('is_active', true)
+            ->when($request->time_filter, function ($query, $time_filter) {
+                if ($time_filter === 'latest') {
+                    $query->orderBy('created_at', 'desc');
+                } elseif ($time_filter === 'oldest') {
+                    $query->orderBy('created_at', 'asc');
+                }
+            }, function ($query) {
+                // Default ordering when no time_filter is provided
+                $query->orderBy('created_at', 'desc');
+            })
 
             ->orderBy('created_at', 'desc')
             ->paginate(12)
