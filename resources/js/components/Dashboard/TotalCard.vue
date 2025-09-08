@@ -9,6 +9,7 @@ interface Props {
 }
 
 // Accept props with default values
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = withDefaults(defineProps<Props>(), {
     label: 'Jobs'
 });
