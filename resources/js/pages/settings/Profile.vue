@@ -69,7 +69,7 @@ const user = page.props.auth.user as User;
 
         <SettingsLayout>
             <div v-if="!page.props.isProfileComplete" class="mb-6 rounded-md bg-red-100 p-4 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                ⚠️ Please finish setting up your profile to unlock full job posting permissions
+                ⚠️ Please finish setting up your profile build more trust with other practiotioners
             </div>
             <div class="flex flex-col space-y-6">
                 <HeadingSmall title="Profile information" description="Update your name and email address">

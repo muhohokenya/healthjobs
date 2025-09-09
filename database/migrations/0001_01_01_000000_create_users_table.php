@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('selected_role')->nullable();
             $table->string('email')->unique();
             $table->string('profession')->nullable();
+            $table->longText('description')->nullable();
             $table->string('contacts')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
