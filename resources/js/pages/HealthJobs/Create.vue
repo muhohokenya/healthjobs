@@ -156,7 +156,7 @@ const getInputClass = (fieldName: string, baseClass: string) => {
                 <div class="mt-12">
                     <div class="mb-6 border-b border-gray-200 pb-4 dark:border-gray-700">
                         <h4 v-if="user?.facility">{{ user?.facility.name }}</h4>
-                        <h4 v-else>No Facility</h4>
+<!--                        <h4 v-else>No Facility</h4>-->
                         <p class="mt-4 text-gray-600 dark:text-gray-300">Upload an image to auto-populate the form, or fill it out manually</p>
                     </div>
 
