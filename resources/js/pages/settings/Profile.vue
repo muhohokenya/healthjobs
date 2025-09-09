@@ -244,3 +244,24 @@ const user = page.props.auth.user as User;
         </SettingsLayout>
     </AppLayout>
 </template>
+<style scoped>
+:deep(.ql-editor) {
+    min-height: 120px;
+    font-size: 14px;
+}
+
+:deep(.ql-toolbar) {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+:deep(.ql-container) {
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+/* Style for QuillEditor with errors */
+:deep(.ql-container.ql-snow) {
+    border-color: inherit;
+}
+</style>
