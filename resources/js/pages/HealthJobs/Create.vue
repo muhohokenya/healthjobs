@@ -70,6 +70,7 @@ async function uploadAndProcess() {
     try {
         // Upload and process image
         await uploadForm.post('/health-jobs/upload', {
+            preserveUrl: true,
             onSuccess: (page) => {
                 // Extract data from the response
                 const responseData = page.props.data;

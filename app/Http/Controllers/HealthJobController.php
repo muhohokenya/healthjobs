@@ -172,7 +172,7 @@ class HealthJobController extends Controller
         Extract ALL visible information from this job posting image and return ONLY this JSON format (no markdown, no code blocks):
 
         {
-            \"description\": \"<h3>About This Role</h3><p>We are looking for...</p><h3>What You'll Do</h3><ul><li>Task 1</li></ul><h3>What We Need</h3><ul><li>Requirement 1</li></ul><h3>Additional Information</h3><p>Include any extra details like contact info, application process, company info, etc.</p>\",
+            \"description\": \"<p>We are looking for...</p><h3>What You'll Do</h3><ul><li>Task 1</li></ul><h3>What We Need</h3><ul><li>Requirement 1</li></ul><h3>Additional Information</h3><p>Include any extra details like contact info, application process, company info, etc.</p>\",
             \"title\": \"job title from image\",
             \"location\": \"exact location mentioned\",
             \"job_type\": \"full-time or part-time or contract\",
@@ -260,7 +260,14 @@ class HealthJobController extends Controller
             }
 
             // Return the same view but with success data instead of redirecting
-            return Inertia::render('HealthJobs/Create', [
+//            return redirect()->route('health-jobs.create')->with([
+//                'success' => true,
+//                'data' => $jobData,
+//                'raw_response' => $responseText
+//            ]);
+
+
+            return  Inertia::render('HealthJobs/Create', [
                 'success' => true,
                 'data' => $jobData,
                 'raw_response' => $responseText // Include raw response for debugging
