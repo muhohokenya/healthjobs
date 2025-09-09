@@ -70,8 +70,8 @@ import { LoaderCircle } from 'lucide-vue-next';
                                         :tabindex="1"
                                     >
                                         <option value="">I want to</option>
-                                        <option value="job-seeker">Find or post medical jobs</option>
-                                        <option value="recruiter">Recruit as a faclity</option>
+                                        <option value="job-seeker">Find or post medical jobs (Individual)</option>
+                                        <option value="recruiter">Register as a faclity (Organisation)</option>
                                     </select>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                                         <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
