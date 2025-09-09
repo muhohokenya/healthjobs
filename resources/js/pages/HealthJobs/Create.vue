@@ -137,6 +137,14 @@ function submitJob() {
 
     jobForm.post('/health-jobs/jobs');
 }
+
+// Helper function to get error class for inputs
+const getInputClass = (fieldName: string, baseClass: string) => {
+    const hasError = jobForm.errors[fieldName];
+    return hasError
+        ? `${baseClass} border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-400 dark:focus:border-red-400 dark:focus:ring-red-400`
+        : baseClass;
+};
 </script>
 
 <template>
@@ -239,8 +247,11 @@ function submitJob() {
                                     id="title"
                                     placeholder="e.g. Registered Nurse"
                                     required
-                                    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                    :class="getInputClass('title', 'w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400')"
                                 />
+                                <div v-if="jobForm.errors.title" class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ jobForm.errors.title }}
+                                </div>
                             </div>
                         </div>
 
@@ -249,14 +260,19 @@ function submitJob() {
                             <label for="description" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 Description <small class="text-red-700">*</small>
                             </label>
-                            <QuillEditor
-                                v-model:content="description"
-                                content-type="html"
-                                placeholder="Describe the job role and responsibilities"
-                                theme="snow"
-                                toolbar="full"
-                                class="bg-white dark:bg-gray-700 rounded-lg"
-                            />
+                            <div :class="jobForm.errors.description ? 'border-red-500 rounded-lg' : ''">
+                                <QuillEditor
+                                    v-model:content="description"
+                                    content-type="html"
+                                    placeholder="Describe the job role and responsibilities"
+                                    theme="snow"
+                                    toolbar="full"
+                                    class="bg-white dark:bg-gray-700 rounded-lg"
+                                />
+                            </div>
+                            <div v-if="jobForm.errors.description" class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                {{ jobForm.errors.description }}
+                            </div>
                         </div>
 
                         <!-- Job Type & Location -->
@@ -269,12 +285,15 @@ function submitJob() {
                                     v-model="jobForm.job_type"
                                     id="job_type"
                                     required
-                                    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                    :class="getInputClass('job_type', 'w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400')"
                                 >
                                     <option value="" disabled>Select Job Type</option>
                                     <option value="full-time">Full-Time</option>
                                     <option value="part-time">Locum</option>
                                 </select>
+                                <div v-if="jobForm.errors.job_type" class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ jobForm.errors.job_type }}
+                                </div>
                             </div>
 
                             <div v-if="!user?.facility">
@@ -285,13 +304,16 @@ function submitJob() {
                                     v-model="jobForm.location"
                                     id="location"
                                     required
-                                    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                    :class="getInputClass('location', 'w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400')"
                                 >
                                     <option value="" disabled>Select location</option>
                                     <option v-for="county in sortedCounties" :key="county.code" :value="county.name">
                                         {{ county.name }}
                                     </option>
                                 </select>
+                                <div v-if="jobForm.errors.location" class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ jobForm.errors.location }}
+                                </div>
                             </div>
                         </div>
 
@@ -306,8 +328,11 @@ function submitJob() {
                                     v-model="jobForm.salary_min"
                                     id="salary_min"
                                     placeholder="e.g. 35000"
-                                    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                    :class="getInputClass('salary_min', 'w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400')"
                                 />
+                                <div v-if="jobForm.errors.salary_min" class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ jobForm.errors.salary_min }}
+                                </div>
                             </div>
                             <div>
                                 <label for="salary_max" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -318,8 +343,11 @@ function submitJob() {
                                     v-model="jobForm.salary_max"
                                     id="salary_max"
                                     placeholder="e.g. 85000"
-                                    class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:ring-blue-400 dark:focus:ring-blue-400"
+                                    :class="getInputClass('salary_max', 'w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400')"
                                 />
+                                <div v-if="jobForm.errors.salary_max" class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ jobForm.errors.salary_max }}
+                                </div>
                             </div>
                         </div>
 
@@ -342,17 +370,26 @@ function submitJob() {
                                 </button>
                             </div>
 
+                            <!-- General qualifications error (for array validation) -->
+                            <div v-if="jobForm.errors.qualifications" class="mb-3 text-sm text-red-600 dark:text-red-400">
+                                {{ jobForm.errors.qualifications }}
+                            </div>
+
                             <div class="space-y-3" v-if="qualifications.length > 0">
-                                <div v-for="(qualification, index) in qualifications" :key="index" class="flex items-center gap-3">
+                                <div v-for="(qualification, index) in qualifications" :key="index" class="flex items-start gap-3">
                                     <div class="flex-1">
                                         <input
                                             v-model="qualifications[index]"
                                             type="text"
                                             :placeholder="`Qualification ${index + 1} (e.g., Bachelor's degree in Nursing)`"
-                                            class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
+                                            :class="getInputClass(`qualifications.${index}`, 'w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400')"
                                         />
+                                        <!-- Individual qualification error -->
+                                        <div v-if="jobForm.errors[`qualifications.${index}`]" class="mt-1 text-sm text-red-600 dark:text-red-400">
+                                            {{ jobForm.errors[`qualifications.${index}`] }}
+                                        </div>
                                     </div>
-                                    <div class="flex items-center gap-1">
+                                    <div class="flex items-center gap-1 pt-3">
                                         <button
                                             type="button"
                                             @click="addQualification"
@@ -394,6 +431,9 @@ function submitJob() {
                             <label for="is_active" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                                 Job is Active
                             </label>
+                            <div v-if="jobForm.errors.is_active" class="text-sm text-red-600 dark:text-red-400">
+                                {{ jobForm.errors.is_active }}
+                            </div>
                         </div>
 
                         <!-- Submit -->
@@ -428,5 +468,10 @@ function submitJob() {
 :deep(.ql-container) {
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
+}
+
+/* Style for QuillEditor with errors */
+:deep(.ql-container.ql-snow) {
+    border-color: inherit;
 }
 </style>
