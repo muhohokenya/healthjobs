@@ -33,11 +33,6 @@ const formatSalary = (salary: number): string => {
                                 <p class="text-blue-100 mb-1">{{ job.company }}</p>
                                 <p class="text-blue-200">📍 {{ job.location }}</p>
                             </div>
-                            <div class="text-right">
-                <span class="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
-                  {{ formatJobType(job.job_type) }}
-                </span>
-                            </div>
                         </div>
                     </div>
 
