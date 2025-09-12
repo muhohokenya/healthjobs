@@ -21,9 +21,9 @@
                     <div>
                         <TotalCard :count="stats.total_facilities" label="Total Facilities" class="text-sm text-red-500 bg-orange-100" link="#" />
                     </div>
-                    <div>
-                        <TotalCard  :count="stats.total_users" label="All Users" class="text-sm text-red-500 bg-blue-200" link="#" />
-                    </div>
+<!--                    <div>-->
+<!--                        <TotalCard  :count="stats.total_users" label="All Users" class="text-sm text-red-500 bg-blue-200" link="#" />-->
+<!--                    </div>-->
                     <div>
                         <TotalCard  :count="stats.total_locums" label="Total Locums" class="text-sm text-red-500 bg-purple-100" link="#" />
                     </div>
