@@ -169,7 +169,6 @@ const description = ref(user.description || '');
                             v-model:content="description"
                             placeholder="Brief professional summary that highlights your strengths, experience, and unique value."
                             theme="snow"
-                            v-html="user.description"
                             toolbar="full"
                             class="rounded-lg bg-white dark:bg-gray-700"
                         />
