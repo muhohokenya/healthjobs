@@ -31,6 +31,7 @@ class User extends Authenticatable
         'selected_role',
         'licence_number',
         'contacts',
+        'description',
         'profession',
         'email_verified_at',
     ];

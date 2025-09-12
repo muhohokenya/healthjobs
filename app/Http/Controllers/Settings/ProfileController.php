@@ -41,9 +41,6 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-
-//        dd($request->all());
-
         $user = $request->user();
         $user->fill($request->validated());
 

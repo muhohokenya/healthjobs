@@ -11,10 +11,10 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type User } from '@/types';
 import { CheckCircle as CheckCircleIcon, BadgeIcon, BadgeCheckIcon } from 'lucide-vue-next';
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import Swal from 'sweetalert2';
 import { QuillEditor } from '@vueup/vue-quill'; // Add this import
-import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 const page = usePage();
 interface Props {
@@ -58,14 +58,15 @@ const breadcrumbItems: BreadcrumbItem[] = [
     },
 ];
 
-
 const user = page.props.auth.user as User;
+
+// Create a reactive reference for the description
+const description = ref(user.description || '');
 </script>
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
         <Head title="Profile settings" />
-
 
         <SettingsLayout>
             <div v-if="!page.props.isProfileComplete" class="mb-6 rounded-md bg-red-100 p-4 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
@@ -75,9 +76,6 @@ const user = page.props.auth.user as User;
                 <HeadingSmall title="Profile information" description="Update your name and email address">
                     <CheckCircleIcon class="h-5 w-5 text-red-800" />text-gray-800
                 </HeadingSmall>
-
-
-
 
                 <Form method="patch" :action="route('profile.update')" class="space-y-6" v-slot="{ errors, processing, recentlySuccessful }">
                     <div class="grid gap-2">
@@ -99,22 +97,21 @@ const user = page.props.auth.user as User;
                         <div class="">
                             <label for="profession" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Speciality *</label>
                             <select
-
                                 name="profession"
                                 id="profession"
                                 class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400"
                                 :required="!user.licence_status"
                             >
                                 <option value="">I am a</option>
-                                <option value="clinician">Clinician <b>(COC)</b></option>
-                                <option value="pharmacist">Pharmacist <b>(PBB)</b></option>
-                                <option value="pharm_tech">Pharmtech <b>(PBB)</b></option>
-                                <option value="nurse">Nurse <b>(NCK)</b></option>
-                                <option value="lab_technician">Medical Lab technician</option>
+                                <option value="clinician" :selected="user.profession === 'clinician'">Clinician <b>(COC)</b></option>
+                                <option value="pharmacist" :selected="user.profession === 'pharmacist'">Pharmacist <b>(PBB)</b></option>
+                                <option value="pharm_tech" :selected="user.profession === 'pharm_tech'">Pharmtech <b>(PBB)</b></option>
+                                <option value="nurse" :selected="user.profession === 'nurse'">Nurse <b>(NCK)</b></option>
+                                <option value="lab_technician" :selected="user.profession === 'lab_technician'">Medical Lab technician</option>
                             </select>
                             <InputError class="mt-2" :message="errors.profession" />
 
-<!--                            B01389-->
+                            <!--                            B01389-->
                         </div>
 
                         <div class="mt-6 grid gap-2">
@@ -125,7 +122,7 @@ const user = page.props.auth.user as User;
                                     id="licence"
                                     class="mt-1 block w-full"
                                     name="licence"
-                                    :default-value=user.licence_number
+                                    :default-value="user.licence_number"
                                     autocomplete="licence"
                                     :placeholder="license_pattern"
                                 />
@@ -144,7 +141,6 @@ const user = page.props.auth.user as User;
                         </div>
                     </section>
                     <section v-if="user.roles[0].name === 'recruiter'">
-
                         <!-- Licence -->
                         <div>
                             <Label for="name" class="text-sm font-semibold text-gray-700">Facility License</Label>
@@ -170,13 +166,16 @@ const user = page.props.auth.user as User;
                         </label>
                         <QuillEditor
                             content-type="html"
+                            v-model:content="description"
                             placeholder="Brief professional summary that highlights your strengths, experience, and unique value."
                             theme="snow"
+                            v-html="user.description"
                             toolbar="full"
-                            class="bg-white dark:bg-gray-700 rounded-lg"
+                            class="rounded-lg bg-white dark:bg-gray-700"
                         />
+                        <!-- Hidden input to submit the description with the form -->
+                        <input type="hidden" name="description" :value="description" />
                     </div>
-
 
                     <!-- contact number -->
                     <div class="mt-6 grid gap-2">

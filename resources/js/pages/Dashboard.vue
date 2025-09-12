@@ -14,7 +14,7 @@
         <div class="py-4 sm:py-8">
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
                         <TotalCard :count="stats.total_jobs" label="Available Positions" class="text-sm text-red-500 bg-green-100" link="/health-jobs" />
                     </div>

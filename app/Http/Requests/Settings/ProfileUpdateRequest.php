@@ -40,6 +40,10 @@ class ProfileUpdateRequest extends FormRequest
                 'regex:/^(\+254|0)(7|1)[0-9]{8}$/',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'description'=>[
+                'nullable',
+            ]
+            ,
             'email' => [
                 'required',
                 'string',
