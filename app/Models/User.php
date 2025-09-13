@@ -40,10 +40,13 @@ class User extends Authenticatable
     /**
      * Get the user's first name.
      */
+    // Option 2: Return empty string when null
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => 'http://healthjobs.test/'.$value ,
+            get: fn (?string $value) => $value
+                ? 'http://healthjobs.test/'.$value
+                : '',
         );
     }
 
