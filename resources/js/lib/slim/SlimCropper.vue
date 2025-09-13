@@ -1,56 +1,80 @@
 <template>
     <div class="slim circle">
-        <slot></slot>
+        <img v-if="initialImage" :src="initialImage" alt="Profile Image"/>
+        <input type="file" name="slim[]" required/>
     </div>
 </template>
 
 <script setup lang="ts">
 import Slim from './slim.module.js';
-import { ref, onMounted, onBeforeUnmount, defineProps, nextTick } from 'vue';
+import { onMounted, onBeforeUnmount, defineProps, nextTick, watch } from 'vue';
 
-// Define props to accept `ratio` and `size` from the parent
+// Define props to accept configuration from the parent
 const props = defineProps({
     ratio: {
         type: String,
-        default: '1:1',  // Default ratio
+        default: '1:1',
     },
     size: {
         type: String,
-        default: '240,240',  // Default size
+        default: '240,240',
+    },
+    initialImage: {
+        type: String,
+        default: null, // Accept initial image URL
+    },
+    service: {
+        type: String,
+        default: 'async.php',
+    },
+    fetcher: {
+        type: String,
+        default: 'fetch.php',
+    },
+    maxFileSize: {
+        type: String,
+        default: '2',
     },
 });
 
 // Initialize SlimCropper instance
 let instance = null;
 
-const cropperOptions = ref({
-    initialImage: 'https://placeholder.pics/svg/300',  // Example image
-    ratio: props.ratio,  // Use the `ratio` prop from parent
-    minWidth: 100,  // Minimum crop width
-    minHeight: 100,  // Minimum crop height
-    label: 'Drop your avatar here',  // Data label
-    fetcher: 'fetch.php',  // Data fetcher URL
-    size: props.size,  // Use the `size` prop from parent
-    ratioValue: props.ratio,  // Data ratio (could be used if necessary)
-});
+const initializeSlim = () => {
+    const container = document.querySelector('.slim');
+    if (container && !instance) {
+        const options = {
+            ratio: props.ratio,
+            size: props.size,
+            service: props.service,
+            fetcher: props.fetcher,
+            maxFileSize: props.maxFileSize,
+            label: 'Drop your image here or click to browse',
+        };
+
+        // Add data attributes to the container
+        container.setAttribute('data-ratio', props.ratio);
+        container.setAttribute('data-size', props.size);
+        container.setAttribute('data-service', props.service);
+        container.setAttribute('data-fetcher', props.fetcher);
+        container.setAttribute('data-max-file-size', props.maxFileSize);
+
+        instance = new Slim(container, options);
+    }
+};
 
 onMounted(() => {
     nextTick(() => {
-        const container = document.querySelector('.slim');
-        if (container) {
-            // Ensure the image loads successfully before initializing SlimCropper
-            const image = new Image();
-            image.onload = () => {
-                instance = new Slim(container, cropperOptions.value);
-            };
-            image.onerror = (err) => {
-                console.error('Image failed to load', err);
-            };
-            image.src = cropperOptions.value.initialImage;
-        } else {
-            console.error("SlimCropper container element not found!");
-        }
+        initializeSlim();
     });
+});
+
+// Watch for changes in initialImage prop
+watch(() => props.initialImage, (newImage) => {
+    if (newImage && instance) {
+        // Update the image in the existing instance
+        instance.load(newImage);
+    }
 });
 
 onBeforeUnmount(() => {
@@ -63,13 +87,17 @@ onBeforeUnmount(() => {
 <style lang="css">
 @import './slim.min.css';
 
-/* Circle Styling */
 .slim {
-    border-radius: 50%;  /* Ensure the container is a circle */
-    overflow: hidden;    /* Hide the overflow so the cropper fits perfectly within the circle */
+    border-radius: 50%;
+    overflow: hidden;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
 }
 
 .slim img {
-    object-fit: cover;  /* Ensure the image is cropped to fit the circle */
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 </style>

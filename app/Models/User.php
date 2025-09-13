@@ -34,17 +34,18 @@ class User extends Authenticatable
         'description',
         'profession',
         'email_verified_at',
+        'avatar'
     ];
 
     /**
      * Get the user's first name.
      */
-//    protected function name(): Attribute
-//    {
-//        return Attribute::make(
-//            get: fn (string $value) => ucwords(strtolower($value)),
-//        );
-//    }
+    protected function avatar(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => 'http://healthjobs.test/'.$value ,
+        );
+    }
 
     /**
      * The attributes that should be hidden for serialization.

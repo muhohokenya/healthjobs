@@ -70,9 +70,10 @@ import SlimCropper from './../../lib/slim/SlimCropper.vue'; // Adjust the path t
 
 // Define the options for the cropper
 const cropperOptions = ref({
-    initialImage: 'https://via.placeholder.com/300',  // Example image
+    initialImage: '',  // Example image
     ratio: '1:1', // Correct format for ratio
     size: '640,640',
+
 });
 
 </script>
@@ -108,7 +109,10 @@ const cropperOptions = ref({
                         <div class="flex justify-start">
                             <div class="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
                                 <slim-cropper
-                                    :options="cropperOptions"
+                                    :ratio="cropperOptions.ratio"
+                                    :size="cropperOptions.size"
+                                    :initial-image="user.avatar"
+                                    max-file-size="5"
                                     class="w-full h-full"
                                 />
                             </div>

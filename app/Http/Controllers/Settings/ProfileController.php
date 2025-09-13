@@ -36,15 +36,25 @@ class ProfileController extends Controller
         ]);
     }
 
+    #[NoReturn]
+    public function updateAvatar(Request $request): Response
+    {
+        dd($request->all());
+
+    }
+
     /**
      * Update the user's profile information.
      */
     #[NoReturn]
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        $user = $request->user();
+        $avatarPath = null;
+
         // Handle optional Slim image payload safely
         $slimPayload = $request->input('slim');
-        if (is_array($slimPayload) && isset($slimPayload[0]) && ! empty($slimPayload[0])) {
+        if (is_array($slimPayload) && ! empty($slimPayload[0])) {
             $decodedData = json_decode($slimPayload[0], true);
 
             if (is_array($decodedData) && isset($decodedData['output']['image'])) {
@@ -56,10 +66,19 @@ class ProfileController extends Controller
                     $binaryData = base64_decode($base64Data, true);
 
                     if ($binaryData !== false) {
-                        $filename = 'uploads/'.uniqid('', true).'.jpg';
+                        // Delete old avatar if it exists
+                        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+                            Storage::disk('public')->delete($user->avatar);
+                        }
+
+                        // Generate filename with user ID for better organization
+                        $filename = 'avatars/user_' . $user->id . '_' . uniqid('', true) . '.jpg';
                         Storage::disk('public')->put($filename, $binaryData);
 
-                        // Store the file path instead of file contents
+                        // Store the file path for the avatar
+                        $avatarPath = $filename;
+
+                        // Store additional data if needed elsewhere
                         $decodedData['output']['data'] = $filename;
                         $decodedData['output']['url'] = Storage::url($filename);
                     }
@@ -79,8 +98,13 @@ class ProfileController extends Controller
             }
         }
 
-        $user = $request->user();
+        // Fill user data with validated request data
         $user->fill($request->validated());
+
+        // Set the avatar path if an image was uploaded
+        if ($avatarPath) {
+            $user->avatar = $avatarPath;
+        }
 
         if ($user->isDirty(['email', 'contacts'])) {
             $user->email_verified_at = null;
