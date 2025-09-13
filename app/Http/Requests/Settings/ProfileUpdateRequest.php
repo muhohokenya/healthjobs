@@ -42,8 +42,10 @@ class ProfileUpdateRequest extends FormRequest
             ],
             'description'=>[
                 'nullable',
-            ]
-            ,
+            ],
+            'slim'=>[
+                'nullable',
+            ],
             'email' => [
                 'required',
                 'string',

@@ -20,7 +20,7 @@ const props = defineProps({
     },
 });
 
-// Initialize Slim instance
+// Initialize SlimCropper instance
 let instance = null;
 
 const cropperOptions = ref({
@@ -38,7 +38,7 @@ onMounted(() => {
     nextTick(() => {
         const container = document.querySelector('.slim');
         if (container) {
-            // Ensure the image loads successfully before initializing Slim
+            // Ensure the image loads successfully before initializing SlimCropper
             const image = new Image();
             image.onload = () => {
                 instance = new Slim(container, cropperOptions.value);
@@ -48,7 +48,7 @@ onMounted(() => {
             };
             image.src = cropperOptions.value.initialImage;
         } else {
-            console.error("Slim container element not found!");
+            console.error("SlimCropper container element not found!");
         }
     });
 });

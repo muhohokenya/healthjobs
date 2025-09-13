@@ -1,5 +1,5 @@
 /*
- * Slim v4.19.0 - Image Cropping Made Easy
+ * SlimCropper v4.19.0 - Image Cropping Made Easy
  * Copyright (c) 2018 Rik Schennink - http://slimimagecropper.com
  */
 /* eslint-disable */
@@ -885,7 +885,7 @@ var transformProperty = 'transform';
 var styles = window.getComputedStyle(document.documentElement, '');
 var vendorPrefix = (Array.prototype.slice
   .call(styles)
-  .join('') 
+  .join('')
   .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
 )[1];
 if(vendorPrefix === 'webkit')
@@ -1287,7 +1287,7 @@ options.endState = end;
 return options;
 };
 
-var polyFillrAF = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) { return setTimeout(callback, 1000 / 60); }; 
+var polyFillrAF = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) { return setTimeout(callback, 1000 / 60); };
 
 var queueTick = function(func) {
 if(tickRequests.length === 0)
@@ -2014,7 +2014,7 @@ return {
 };
 };
 // ------------------
-// -- StateTweener -- 
+// -- StateTweener --
 // -------------------
 
 var createStateTweener = function(startState, endState, resultState) {
@@ -2114,7 +2114,7 @@ return {
 };
 
 // ------------------------
-// -- ValueFeederTweener -- 
+// -- ValueFeederTweener --
 // ------------------------
 
 var createValueFeederTweener = function(valueFeeder, startState, endState, resultState) {
@@ -2579,7 +2579,7 @@ var toCamelCase = function toCamelCase(str) {
 };
 
 var getElementAttributes = function getElementAttributes(el) {
-    // is a for loop on purpose as this should still function when Slim not supported
+    // is a for loop on purpose as this should still function when SlimCropper not supported
     var result = [];
     var attributes = Array.prototype.slice.call(el.attributes);
     var l = attributes.length;
@@ -5834,7 +5834,7 @@ var Slim = function () {
         }
 
         // methods
-        // Test if this Slim object has been bound to the given element
+        // Test if this SlimCropper object has been bound to the given element
 
     }, {
         key: 'isAttachedTo',
@@ -6193,7 +6193,7 @@ var Slim = function () {
 
             // done initialising now, else is only called after image load
             var done = function done() {
-                // we call this async so the constructor of Slim has returned before the onInit is called, allowing clean immidiate destroy
+                // we call this async so the constructor of SlimCropper has returned before the onInit is called, allowing clean immidiate destroy
                 var timer = setTimeout(function () {
                     _this13._options.didInit.apply(_this13, [_this13.data, _this13]);
                 }, 0);
@@ -7629,7 +7629,7 @@ var Slim = function () {
 
                 var onSuccess = function onSuccess(obj) {
                     var timer = setTimeout(function () {
-                        // it's possible that Slim has been destroyed in the mean time.
+                        // it's possible that SlimCropper has been destroyed in the mean time.
                         if (_this25._isBeingDestroyed) {
                             return;
                         }
@@ -8133,7 +8133,7 @@ var Slim = function () {
                 _this31._originalElement.setAttribute(attribute.name, attribute.value);
             });
 
-            // now destroyed this counter so the total Slim count can be lowered
+            // now destroyed this counter so the total SlimCropper count can be lowered
             SlimCount = Math.max(0, SlimCount - 1);
 
             // if slim count has reached 0 it's time to clean up the popover
@@ -8355,7 +8355,7 @@ var Slim = function () {
 }();
 
 /**
- * Slim Static Methods
+ * SlimCropper Static Methods
  */
 
 
