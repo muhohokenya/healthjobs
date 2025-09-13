@@ -75,7 +75,10 @@ class ProfileController extends Controller
 
                         // Generate filename with user ID for better organization
                         $filename = 'avatars/user_' . $user->id . '_' . uniqid('', true) . '.jpg';
-                        Storage::disk('public')->put($filename, $binaryData);
+//                        Storage::disk('public')->put($filename, $binaryData);
+
+                        Storage::disk('public')->put($filename, $binaryData, ['visibility' => 'public']);
+
 
                         // Store the file path for the avatar
                         $avatarPath = $filename;
