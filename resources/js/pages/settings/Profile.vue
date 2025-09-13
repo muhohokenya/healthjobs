@@ -20,12 +20,12 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 
 const page = usePage();
-// interface Props {
-//     mustVerifyEmail: boolean;
-//     status?: string;
-//     flash: object;
-//     isProfileComplete: boolean;
-// }
+interface Props {
+    mustVerifyEmail: boolean;
+    status?: string;
+    flash: object;
+    isProfileComplete: boolean;
+}
 
 const message = computed(() => page.props.flash.flashMessage);
 

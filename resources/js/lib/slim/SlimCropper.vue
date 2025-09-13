@@ -1,13 +1,13 @@
 <template>
     <div class="slim circle">
-        <img v-if="initialImage" :src="initialImage" alt="Profile Image"/>
-        <input type="file" name="slim[]" required/>
+        <img v-if="initialImage" :src="initialImage" alt="Profile Image" />
+        <input type="file" name="slim[]" />
     </div>
 </template>
 
 <script setup lang="ts">
 import Slim from './slim.module.js';
-import { onMounted, onBeforeUnmount, defineProps, nextTick, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount, defineProps, nextTick, watch } from 'vue';
 
 // Define props to accept configuration from the parent
 const props = defineProps({
@@ -25,7 +25,7 @@ const props = defineProps({
     },
     service: {
         type: String,
-        default: 'async.php',
+        default: '/settings/update-profile',
     },
     fetcher: {
         type: String,
@@ -46,8 +46,6 @@ const initializeSlim = () => {
         const options = {
             ratio: props.ratio,
             size: props.size,
-            service: props.service,
-            fetcher: props.fetcher,
             maxFileSize: props.maxFileSize,
             label: 'Drop your image here or click to browse',
         };

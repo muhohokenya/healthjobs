@@ -49,6 +49,8 @@ class ProfileController extends Controller
     #[NoReturn]
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+
+
         $user = $request->user();
         $avatarPath = null;
 
