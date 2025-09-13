@@ -16,6 +16,9 @@ import Swal from 'sweetalert2';
 import { QuillEditor } from '@vueup/vue-quill'; // Add this import
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
+
+
+
 const page = usePage();
 interface Props {
     mustVerifyEmail: boolean;
@@ -26,7 +29,7 @@ interface Props {
 
 const message = computed(() => page.props.flash.flashMessage);
 
-defineProps<Props>();
+
 // const message = "test"
 
 // Watch for changes in the message
@@ -62,6 +65,16 @@ const user = page.props.auth.user as User;
 
 // Create a reactive reference for the description
 const description = ref(user.description || '');
+
+import SlimCropper from './../../lib/slim/SlimCropper.vue'; // Adjust the path to where SlimCropper.vue is stored
+
+// Define the options for the cropper
+const cropperOptions = ref({
+    initialImage: 'https://via.placeholder.com/300',  // Example image
+    ratio: '1:1', // Correct format for ratio
+    size: '640,640',
+});
+
 </script>
 
 <template>
@@ -77,7 +90,37 @@ const description = ref(user.description || '');
                     <CheckCircleIcon class="h-5 w-5 text-red-800" />text-gray-800
                 </HeadingSmall>
 
+
+
+
                 <Form method="patch" :action="route('profile.update')" class="space-y-6" v-slot="{ errors, processing, recentlySuccessful }">
+
+
+                    <!-- Replace your existing slim-cropper section with this styled version -->
+
+                    <!-- Profile Picture Upload Section -->
+                    <div class="mb-6">
+                        <Label class="mb-3 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Profile Picture
+                        </Label>
+
+                        <!-- Container for the cropper with responsive sizing -->
+                        <div class="flex justify-start">
+                            <div class="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
+                                <slim-cropper
+                                    :options="cropperOptions"
+                                    class="w-full h-full"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Helper text -->
+                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            Recommended: Square image, at least 200x200px. Max file size: 5MB.
+                        </p>
+                    </div>
+
+
                     <div class="grid gap-2">
                         <Label for="name">Name</Label>
                         <Input
@@ -103,11 +146,21 @@ const description = ref(user.description || '');
                                 :required="!user.licence_status"
                             >
                                 <option value="">I am a</option>
-                                <option value="clinician" :selected="user.profession === 'clinician'">Clinician <b>(COC)</b></option>
-                                <option value="pharmacist" :selected="user.profession === 'pharmacist'">Pharmacist <b>(PBB)</b></option>
-                                <option value="pharm_tech" :selected="user.profession === 'pharm_tech'">Pharmtech <b>(PBB)</b></option>
-                                <option value="nurse" :selected="user.profession === 'nurse'">Nurse <b>(NCK)</b></option>
-                                <option value="lab_technician" :selected="user.profession === 'lab_technician'">Medical Lab technician</option>
+                                <option value="clinician" :selected="user.profession === 'clinician'">
+                                    Clinician (COC)
+                                </option>
+                                <option value="pharmacist" :selected="user.profession === 'pharmacist'">
+                                    Pharmacist (PBB)
+                                </option>
+                                <option value="pharm_tech" :selected="user.profession === 'pharm_tech'">
+                                    Pharmtech (PBB)
+                                </option>
+                                <option value="nurse" :selected="user.profession === 'nurse'">
+                                    Nurse (NCK)
+                                </option>
+                                <option value="lab_technician" :selected="user.profession === 'lab_technician'">
+                                    Medical Lab technician
+                                </option>
                             </select>
                             <InputError class="mt-2" :message="errors.profession" />
 
