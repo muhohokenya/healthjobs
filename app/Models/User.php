@@ -43,9 +43,10 @@ class User extends Authenticatable
     // Option 2: Return empty string when null
     protected function avatar(): Attribute
     {
+        $domain = env('APP_DOMAIN');
         return Attribute::make(
             get: fn (?string $value) => $value
-                ? 'http://healthjobs.test/'.$value
+                ? $domain.$value
                 : '',
         );
     }
