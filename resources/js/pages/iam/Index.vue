@@ -63,7 +63,7 @@ const formatRoleName = (roleName: string) => {
 
                 <Link class="flex items-center rounded-md bg-blue-600 px-4 py-2.5
                          font-medium text-white transition hover:bg-blue-700 focus:ring-2
-                         focus:ring-blue-400 focus:outline-none" :href="route('iam.roles.map')">Create New User</Link>
+                         focus:ring-blue-400 focus:outline-none" :href="route('iam.create')">Create New User</Link>
             </div>
                 <!-- Users Table -->
                 <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
@@ -110,7 +110,7 @@ const formatRoleName = (roleName: string) => {
                                         <div class="flex-shrink-0">
                                             <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                                                     <span class="text-white font-semibold text-sm">
-                                                        {{ user.name.charAt(0).toUpperCase() }}
+                                                        {{ user.name }}
                                                     </span>
                                             </div>
                                         </div>

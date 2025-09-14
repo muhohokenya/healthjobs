@@ -272,8 +272,9 @@ const truncateDescription = (description, maxLength = 150) => {
                                 </Link>
                             </div>
 
+
                             <!-- Small license warning badge for unlicensed users only -->
-                            <div v-if="job.user.license_status !== 'active'" class="flex items-center justify-end">
+                            <div v-if="job.user !== null && job.user.license_status !== 'active'" class="flex items-center justify-end">
                                 <span
                                     class="inline-flex items-center rounded-full border border-amber-200 bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800 dark:border-amber-800/50 dark:bg-amber-900/30 dark:text-amber-300"
                                 >

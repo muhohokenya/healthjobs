@@ -11,8 +11,8 @@ const props = defineProps({
     errors:Object,
 })
 const form = useForm({
-    name: 'Jeremy',
-    email: 'muhohodev@gmail.com',
+    name: '',
+    email: '',
     description: '',
     location: '',
     job_type: '',
