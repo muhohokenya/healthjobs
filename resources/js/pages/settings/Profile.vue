@@ -87,7 +87,7 @@ const cropperOptions = ref({
                 ⚠️ Please finish setting up your profile build more trust with other practiotioners
             </div>
             <div class="flex flex-col space-y-6">
-                <HeadingSmall title="Profile information" description="Update your name and email address">
+                <HeadingSmall title="Profile information" description="Update your profile">
                     <CheckCircleIcon class="h-5 w-5 text-red-800" />text-gray-800
                 </HeadingSmall>
 
