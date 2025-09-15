@@ -14,9 +14,37 @@ use Illuminate\Support\Str;
 
 class RolesAndPermissionsController extends Controller
 {
-    public function index(){
+    public function index()
+    {
+        $users = User::with('roles.permissions')
+            ->leftJoin('sessions', function ($join) {
+                $join->on('users.id', '=', 'sessions.user_id')
+                    ->whereRaw('sessions.last_activity = (
+                     SELECT MAX(last_activity)
+                     FROM sessions s2
+                     WHERE s2.user_id = users.id
+                 )');
+            })
+            ->select([
+                'users.*',
+                'sessions.last_activity'
+            ])
+            ->get()
+            ->map(function ($user) {
+                $user->last_seen = $user->last_activity
+                    ? \Carbon\Carbon::createFromTimestamp($user->last_activity)->diffForHumans()
+                    : 'Never';
+
+                $user->is_online = $user->last_activity && \Carbon\Carbon::createFromTimestamp($user->last_activity)->diffInMinutes(now()) < 5;
+
+                // Remove the raw timestamp from the response
+                unset($user->last_activity);
+
+                return $user;
+            });
+
         return Inertia::render('iam/Index', [
-            'users' => User::with('roles.permissions')->get(),
+            'users' => $users,
         ]);
     }
 

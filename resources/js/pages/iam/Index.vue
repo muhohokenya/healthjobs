@@ -41,6 +41,13 @@ const formatRoleName = (roleName: string) => {
         word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ');
 };
+
+const getInitials = (fullName: string) => {
+    return fullName
+        .split(' ')
+        .map(name => name.charAt(0).toUpperCase())
+        .join('');
+};
 </script>
 
 <template>
@@ -93,6 +100,10 @@ const formatRoleName = (roleName: string) => {
                                     Created
                                 </th>
 
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Last seen
+                                </th>
+
                                 <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Actions
                                 </th>
@@ -109,8 +120,8 @@ const formatRoleName = (roleName: string) => {
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0">
                                             <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                                                    <span class="text-white font-semibold text-sm">
-                                                        {{ user.name }}
+                                                    <span v-if="user.name" class="text-white font-semibold text-sm">
+                                                        {{ getInitials(user.name) }}
                                                     </span>
                                             </div>
                                         </div>
@@ -175,6 +186,11 @@ const formatRoleName = (roleName: string) => {
                                 <!-- Created Date -->
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                     <div>{{ formatDate(user.created_at) }}</div>
+                                </td>
+
+                                <!-- Last seen Date -->
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                    <div>{{ user.last_seen }}</div>
                                 </td>
 
 
