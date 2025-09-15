@@ -73,6 +73,7 @@ const cropperOptions = ref({
     initialImage: '',  // Example image
     ratio: '1:1', // Correct format for ratio
     size: '640,640',
+    edit: false,
 
 });
 
@@ -111,17 +112,18 @@ const cropperOptions = ref({
                                 <slim-cropper
                                     :ratio="cropperOptions.ratio"
                                     :size="cropperOptions.size"
+                                    :edit="cropperOptions.edit"
                                     :initial-image="user.avatar"
                                     max-file-size="5"
                                     class="w-full h-full"
                                 />
+                                <!-- Helper text -->
+                                <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                    Recommended: Square image, at least 200x200px. Max file size: 5MB.
+                                </p>
                             </div>
                         </div>
 
-                        <!-- Helper text -->
-                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                            Recommended: Square image, at least 200x200px. Max file size: 5MB.
-                        </p>
                     </div>
 
 

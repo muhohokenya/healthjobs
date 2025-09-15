@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import Slim from './slim.module.js';
-import { ref, onMounted, onBeforeUnmount, defineProps, nextTick, watch } from 'vue';
+import { onMounted, onBeforeUnmount, defineProps, nextTick, watch } from 'vue';
 
 // Define props to accept configuration from the parent
 const props = defineProps({
@@ -26,6 +26,10 @@ const props = defineProps({
     service: {
         type: String,
         default: '/settings/update-profile',
+    },
+    edit: {
+        type: Boolean,
+        default: false,
     },
     fetcher: {
         type: String,
@@ -54,6 +58,7 @@ const initializeSlim = () => {
         container.setAttribute('data-ratio', props.ratio);
         container.setAttribute('data-size', props.size);
         container.setAttribute('data-service', props.service);
+        container.setAttribute('data-edit', String(props.edit));
         container.setAttribute('data-fetcher', props.fetcher);
         container.setAttribute('data-max-file-size', props.maxFileSize);
 

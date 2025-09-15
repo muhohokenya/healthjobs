@@ -19,6 +19,9 @@ const page = usePage();
                     <Link :href="item.href">
                         <component :is="item.icon" />
                         <span>{{ item.title }}</span>
+                        <span v-if="item.comingSoon" class="text-xs italic text-muted-foreground ml-2">
+                          Coming soon
+                        </span>
                     </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>
