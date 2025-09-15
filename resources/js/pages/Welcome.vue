@@ -189,8 +189,9 @@ const closeMobileMenu = (): void => {
                     </h1>
 
                     <p class="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                        Connect with verified hospitals and clinics nationwide. We showcase roles from vetted employers and
-                        prioritise candidates whose professional licenses are <span class="font-semibold text-emerald-700">confirmed active</span>.
+                        We bridge the gap between healthcare institutions,
+                        pharmaceutical companies, and research organizations by connecting
+                        them with qualified professionals to address the increasing demand for skilled personnel in these fields. <span class="font-semibold text-emerald-700">confirmed active</span>.
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
