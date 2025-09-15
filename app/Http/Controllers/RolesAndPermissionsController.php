@@ -37,7 +37,7 @@ class RolesAndPermissionsController extends Controller
                     ? \Carbon\Carbon::createFromTimestamp($user->last_activity)->diffForHumans()
                     : 'Never';
 
-                $user->is_online = $user->last_activity && \Carbon\Carbon::createFromTimestamp($user->last_activity)->diffInMinutes(now()) < 60;
+                $user->is_online = $user->last_activity && \Carbon\Carbon::createFromTimestamp($user->last_activity)->diffInDays(now()) < 5;
 
                 unset($user->last_activity);
 

@@ -270,7 +270,7 @@ const closeMobileMenu = (): void => {
                                     class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
                                 />
                                 <div>
-                                    <div class="text-xs sm:text-sm font-semibold text-gray-900">Dr. Wanjiru</div>
+                                    <div class="text-xs sm:text-sm font-semibold text-gray-900">Dr. Tom Odhiambo</div>
                                     <div class="text-xs text-gray-500">Hired in Nairobi 🥳</div>
                                 </div>
                             </div>
