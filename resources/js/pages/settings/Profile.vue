@@ -299,7 +299,8 @@ const cropperOptions = ref({
                 </Form>
             </div>
 
-            <DeleteUser />
+
+            <DeleteUser class="py-10 border-t border-gray-100"/>
         </SettingsLayout>
     </AppLayout>
 </template>
