@@ -20,15 +20,17 @@ class RolesAndPermissionsController extends Controller
             ->leftJoin('sessions', function ($join) {
                 $join->on('users.id', '=', 'sessions.user_id')
                     ->whereRaw('sessions.last_activity = (
-                     SELECT MAX(last_activity)
-                     FROM sessions s2
-                     WHERE s2.user_id = users.id
-                 )');
+                 SELECT MAX(last_activity)
+                 FROM sessions s2
+                 WHERE s2.user_id = users.id
+             )');
             })
             ->select([
                 'users.*',
                 'sessions.last_activity'
             ])
+            ->orderBy('sessions.last_activity', 'desc') // Add this line
+            ->orderBy('users.id') // Secondary sort for users with no sessions
             ->get()
             ->map(function ($user) {
                 $user->last_seen = $user->last_activity
@@ -37,7 +39,6 @@ class RolesAndPermissionsController extends Controller
 
                 $user->is_online = $user->last_activity && \Carbon\Carbon::createFromTimestamp($user->last_activity)->diffInMinutes(now()) < 60;
 
-                // Remove the raw timestamp from the response
                 unset($user->last_activity);
 
                 return $user;
