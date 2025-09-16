@@ -181,7 +181,7 @@ const truncateDescription = (description, maxLength = 150) => {
                          border border-gray-200 bg-white
                          shadow-md transition-all duration-300
                          hover:-translate-y-1 hover:shadow-xl
-                         hover:shadow-blue-500/10 dark:border-gray-700 dark:bg-gray-800"
+                         hover:shadow-blue-500/10 dark:border-gray-900 dark:bg-gray-800"
                     >
                         <!-- Blue gradient stripe for all jobs -->
                         <div class="absolute top-0 right-0 left-0 h-1"></div>

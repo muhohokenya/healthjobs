@@ -14,11 +14,48 @@ const uploadForm = useForm({
     image: null,
 });
 
+const listOfCadres = [
+    {
+        "cadre_name": "Medical Officer (Physician)"
+    },
+    {
+        "cadre_name": "Registered Nurse"
+    },
+    {
+        "cadre_name": "Nurse Practitioner"
+    },
+    {
+        "cadre_name": "Medical Technician/Technologist"
+    },
+    {
+        "cadre_name": "EMT / Paramedic"
+    },
+    {
+        "cadre_name": "Medical Logistics Officer"
+    },
+    {
+        "cadre_name": "Medical Administration Personnel"
+    },
+    {
+        "cadre_name": "Dental Officer"
+    },
+    {
+        "cadre_name": "Preventive Medicine Officer"
+    },
+    {
+        "cadre_name": "Medical Instructor/Trainer"
+    },
+    {
+        "cadre_name": "Psychological Health Specialist"
+    }
+];
+
 // Main job form
 const jobForm = useForm({
     title: '',
     description: '',
     job_type: '',
+    cadre: '',
     location: '',
     salary_min: null,
     salary_max: null,
@@ -251,6 +288,26 @@ const getInputClass = (fieldName: string, baseClass: string) => {
                                 />
                                 <div v-if="jobForm.errors.title" class="mt-2 text-sm text-red-600 dark:text-red-400">
                                     {{ jobForm.errors.title }}
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="cadre" class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Cadre <small class="text-red-700">*</small>
+                                </label>
+                                <select
+                                    v-model="jobForm.cadre"
+                                    id="cadre"
+                                    required
+                                    :class="getInputClass('cadre', 'w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:ring-blue-400')"
+                                >
+                                    <option disabled>Select Cadre</option>
+                                    <option v-for="cadre in listOfCadres"  :key="cadre.cadre_name" :value="cadre.cadre_name">
+                                        {{cadre.cadre_name}}
+                                    </option>
+                                </select>
+                                <div v-if="jobForm.errors.cadre" class="mt-2 text-sm text-red-600 dark:text-red-400">
+                                    {{ jobForm.errors.cadre }}
                                 </div>
                             </div>
                         </div>

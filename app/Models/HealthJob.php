@@ -79,6 +79,7 @@ class HealthJob extends Model
         'is_active',
         'user_id',
         'facility_id',
+        'cadre',
     ];
 
     protected $casts = [

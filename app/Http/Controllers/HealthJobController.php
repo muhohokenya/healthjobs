@@ -8,8 +8,10 @@ use App\Models\HealthJob;
 use App\Models\User;
 use App\Notifications\JobInterestNotification;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -20,9 +22,22 @@ use OpenAI\Exceptions\ApiException;
 use Gemini\Data\Blob;
 use Gemini\Enums\MimeType;
 use Gemini\Laravel\Facades\Gemini;
-
+use Twilio\Rest\Client;
 class HealthJobController extends Controller
 {
+    protected $accountSid;
+    protected $authToken;
+    protected $twilioNumber;
+    protected $twilioClient;
+
+    public function __construct()
+    {
+        $this->accountSid = env('ACCOUNT_SID');
+        $this->authToken = env('AUTH_TOKEN');
+        $this->twilioNumber = env('TWILIO_NUMBER');
+        $this->twilioClient = new Client($this->accountSid, $this->authToken);
+    }
+
     public function checkLicence(Request $request)
     {
         $validated = $request->validate([
@@ -582,6 +597,47 @@ class HealthJobController extends Controller
         return Inertia::render('HealthJobs/Show', [
             'job' => $healthJob,
         ]);
+    }
+
+
+    public function test()
+    {
+        return response('OK', 200);
+    }
+    public function sendWhatsApp(Request $request)
+    {
+        $validatedData = $request->validate([
+            'phone' => 'required|string',
+            'message' => 'required|string',
+        ]);
+
+        $accountSid = env('ACCOUNT_SID');
+        $authToken = env('AUTH_TOKEN');
+        $twilioWhatsAppNumber = 'whatsapp:' . env('TWILIO_NUMBER');
+
+        // Format phone number for WhatsApp
+        $phone = 'whatsapp:' . $validatedData['phone'];
+
+        try {
+            $client = new Client($accountSid, $authToken);
+
+            $client->messages->create(
+                $phone,
+                [
+                    'from' => $twilioWhatsAppNumber,
+                    'body' => $validatedData['message']
+                ]
+            );
+
+            Log::info($twilioWhatsAppNumber);
+
+            return response()->json([
+                'message' => 'Message sent successfully.',
+            ],status: 200);
+
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Failed to send WhatsApp message.']);
+        }
     }
 
     public function interested(Request $request)

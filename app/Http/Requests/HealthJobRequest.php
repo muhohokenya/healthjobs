@@ -54,6 +54,9 @@ class HealthJobRequest extends FormRequest
                 'max:9999999.99',
                 'gte:salary_min', // salary_max must be greater than or equal to salary_min
             ],
+            'cadre' => [
+                'required'
+            ],
             'location' => [
                 'required'
             ],

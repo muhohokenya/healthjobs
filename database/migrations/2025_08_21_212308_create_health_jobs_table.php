@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreignId('facility_id')->nullable()->constrained()->nullOnDelete();
             $table->text('description');
             $table->text('location')->nullable();
-            $table->string('job_type'); // full-time, locum
+            $table->string('job_type')->nullable(); // full-time, locum
+            $table->string('cadre')->nullable();
             $table->decimal('salary_min', 10, 2)->nullable();
             $table->decimal('salary_max', 10, 2)->nullable();
             $table->string('experience_level')->nullable(); // entry, mid, senior
