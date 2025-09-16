@@ -576,6 +576,7 @@ class HealthJobController extends Controller
         $healthJob = HealthJob::query()
             ->where('uuid', $id)
             ->orWhere('id', $id)
+            ->with('interestedUsers')
             ->firstOrFail();
 
         return Inertia::render('HealthJobs/Show', [
@@ -587,6 +588,32 @@ class HealthJobController extends Controller
     {
         $job = HealthJob::query()->where('uuid', $request->job)->with('user')->firstOrFail();
 
-        $job->user->notify(new JobInterestNotification($request->user(), $job));
+
+        // Try to create interest record
+        $interest = $job->interests()->firstOrCreate([
+            'user_id' => $request->user()->id
+        ]);
+
+
+        // Only send notification if this is a new interest
+        if ($interest->wasRecentlyCreated) {
+            $job->user->notify(new JobInterestNotification($request->user(), $job));
+
+            // Optional: Return success response
+            return response()->json([
+                'message' => 'Interest registered successfully',
+                'already_interested' => false
+            ]);
+        }
+
+        // Optional: Return response indicating user was already interested
+        $response = [
+            'message' => 'You are already interested in this job',
+            'already_interested' => true
+        ];
+
+        return redirect(route('health-jobs.show',$request->job),303)->with([
+            'flashMessage' => $response['message'] ,
+        ]);
     }
 }

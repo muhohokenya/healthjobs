@@ -2,6 +2,7 @@
 import { Head, Link, Form } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { useAuth } from '@/utils/auth';
+import { User } from '@/types';
 
 
 const user = useAuth();
@@ -11,6 +12,26 @@ const formatJobType = (type: string): string => {
     if (!type) return 'Not specified';
     return type.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
+
+function canClick(user: User,job: any) {
+    console.log(user.jobInterests);
+    //user.id != job.user_id
+    return false
+}
+
+function canShowInterest(user: User, job: any): boolean {
+    // User cannot show interest in their own job
+    if (user.id === job.user_id) {
+        return false;
+    }
+
+    // User cannot show interest if they already have
+    const alreadyInterested = user.jobInterests.some(
+        (interest: any) => interest.health_job_id === job.id
+    );
+
+    return !alreadyInterested;
+}
 
 
 const formatSalary = (salary: number): string => {
@@ -25,6 +46,37 @@ const formatSalary = (salary: number): string => {
         <div class="min-h-screen bg-gray-50 py-8">
             <div class="max-w-4xl px-4 sm:px-6 lg:px-8">
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+
+                    <!-- Error Banner -->
+                    <div v-if="$page.props.flash.flashMessage" class="mb-6">
+                        <div
+                            class="rounded-md border border-red-300 bg-red-50 p-4 text-red-800 shadow-sm dark:border-red-700 dark:bg-red-900 dark:text-red-200"
+                        >
+                            <div class="flex items-center">
+                                <!-- Error Icon -->
+                                <svg
+                                    class="h-5 w-5 text-red-500 dark:text-red-300"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.662 1.732-3L13.732 4c-.77-1.338-2.694-1.338-3.464 0L3.34 16c-.77 1.338.192 3 1.732 3z"
+                                    />
+                                </svg>
+
+                                <!-- Message -->
+                                <span class="ml-2 font-medium">
+                {{ $page.props.flash.flashMessage }}
+            </span>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Header -->
                     <div class="bg-blue-600 text-white p-6">
                         <div class="flex justify-between items-start">
@@ -74,13 +126,17 @@ const formatSalary = (salary: number): string => {
                         <!-- Actions -->
                         <div  class="flex flex-col sm:flex-row gap-4">
 
+
+
                             <!-- Interested Form -->
-                            <Form v-if="user.id != job.user_id" :action="route('health-jobs.interested')" method="post">
+                            <Form v-if="canShowInterest(user,job)"  :action="route('health-jobs.interested')" method="post">
                                 <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 font-medium cursor-pointer">
                                     Interested
                                 </button>
                                 <input type="hidden" name="job"  :value="job.uuid"/>
                             </Form>
+
+
 
 
 

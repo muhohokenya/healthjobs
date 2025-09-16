@@ -53,6 +53,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all job interests for this user
+     */
+    public function jobInterests()
+    {
+        return $this->hasMany(JobInterest::class);
+    }
+
+    /**
+     * Get all jobs this user is interested in
+     */
+    public function interestedJobs()
+    {
+        return $this->belongsToMany(HealthJob::class, 'job_interests');
+    }
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>

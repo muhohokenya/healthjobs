@@ -53,6 +53,7 @@ class HandleInertiaRequests extends Middleware
                     'roles' => $request->user()->roles()->get(['id', 'name']),
                     'permissions' => $request->user()->getAllPermissions(['id', 'name']),
                     'isProfileComplete' => $request->user()->isProfileComplete(),
+                    'jobInterests' => $request->user()->jobInterests,
                 ] : null,
             ],
             'ziggy' => [

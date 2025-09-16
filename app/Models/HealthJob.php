@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class HealthJob extends Model
@@ -21,6 +23,30 @@ class HealthJob extends Model
         });
     }
 
+    /**
+     * Get all interests for this job
+     */
+    public function interests(): HasMany
+    {
+        return $this->hasMany(JobInterest::class);
+    }
+
+    /**
+     * Get all users interested in this job
+     */
+    public function interestedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'job_interests');
+    }
+
+    /**
+     * Check if a specific user is interested in this job
+     */
+    public function isInterestedBy(User $user): bool
+    {
+        return $this->interests()->where('user_id', $user->id)->exists();
+    }
+
     // In your HealthJob model
     public function facility(): BelongsTo
     {
@@ -28,10 +54,9 @@ class HealthJob extends Model
     }
 
     // App\Models\HealthJob.php
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
-        // 'user_id' should be the FK column in your health_jobs table
+        return $this->belongsTo(User::class);
     }
 
     protected function jobType(): Attribute

@@ -41,6 +41,7 @@ export interface User {
     permissions: string[];
     notifications: string[];
     roles: string[];
+    jobInterests: string[];
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;
