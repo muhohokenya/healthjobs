@@ -13,11 +13,6 @@ const formatJobType = (type: string): string => {
     return type.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 };
 
-function canClick(user: User,job: any) {
-    console.log(user.jobInterests);
-    //user.id != job.user_id
-    return false
-}
 
 function canShowInterest(user: User, job: any): boolean {
     // User cannot show interest in their own job
@@ -57,7 +52,6 @@ const formatSalary = (salary: number): string => {
                                 <svg
                                     class="h-5 w-5 text-red-500 dark:text-red-300"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
                                 >
