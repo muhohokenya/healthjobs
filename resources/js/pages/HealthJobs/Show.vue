@@ -38,9 +38,9 @@ const formatSalary = (salary: number): string => {
 <template>
     <Head :title="job.title" />
     <AppLayout>
-        <div class="min-h-screen bg-gray-50 py-8">
+        <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
             <div class="max-w-4xl px-4 sm:px-6 lg:px-8">
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
 
                     <!-- Error Banner -->
                     <div v-if="$page.props.flash.flashMessage" class="mb-6">
@@ -72,12 +72,12 @@ const formatSalary = (salary: number): string => {
                     </div>
 
                     <!-- Header -->
-                    <div class="bg-blue-600 text-white p-6">
+                    <div class="bg-blue-600 dark:bg-blue-700 text-white p-6">
                         <div class="flex justify-between items-start">
                             <div>
                                 <h1 class="text-2xl font-bold mb-2">{{ job.title }}</h1>
-                                <p class="text-blue-100 mb-1">{{ job.company }}</p>
-                                <p class="text-blue-200">📍 {{ job.location }}</p>
+                                <p class="text-blue-100 dark:text-blue-200 mb-1">{{ job.company }}</p>
+                                <p class="text-blue-200 dark:text-blue-300">📍 {{ job.location }}</p>
                             </div>
                         </div>
                     </div>
@@ -86,15 +86,15 @@ const formatSalary = (salary: number): string => {
                     <div class="p-6">
                         <!-- Salary and Details -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                            <div class="text-center p-4 bg-green-50 rounded-lg">
-                                <h3 class="text-sm font-medium text-gray-500 mb-1">Salary Range</h3>
-                                <p class="text-lg font-semibold text-green-600">
+                            <div class="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Salary Range</h3>
+                                <p class="text-lg font-semibold text-green-600 dark:text-green-400">
                                     Ksh: {{ formatSalary(job.salary_min) }} - {{ formatSalary(job.salary_max) }}
                                 </p>
                             </div>
-                            <div class="text-center p-4 bg-blue-50 rounded-lg">
-                                <h3 class="text-sm font-medium text-gray-500 mb-1">Job Type</h3>
-                                <p class="text-lg font-semibold text-blue-600">
+                            <div class="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Job Type</h3>
+                                <p class="text-lg font-semibold text-blue-600 dark:text-blue-400">
                                     {{ formatJobType(job.job_type) }}
                                 </p>
                             </div>
@@ -102,41 +102,35 @@ const formatSalary = (salary: number): string => {
 
                         <!-- Description -->
                         <div class="mb-8">
-                            <h2 class="text-xl font-semibold text-gray-900 mb-4">Job Description</h2>
-                            <div class="prose max-w-none text-gray-700">
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Job Description</h2>
+                            <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
                                 <span v-html="job.description"></span>
                             </div>
                         </div>
 
                         <!-- Requirements -->
                         <div class="mb-8" v-if="job.requirements && job.requirements.length">
-                            <h2 class="text-xl font-semibold text-gray-900 mb-4">Requirements</h2>
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Requirements</h2>
                             <ul class="list-disc pl-6 space-y-2">
-                                <li v-for="requirement in job.requirements" :key="requirement" class="text-gray-700">
+                                <li v-for="requirement in job.requirements" :key="requirement" class="text-gray-700 dark:text-gray-300">
                                     {{ requirement }}
                                 </li>
                             </ul>
                         </div>
                         <!-- Actions -->
-                        <div  class="flex flex-col sm:flex-row gap-4">
-
-
+                        <div class="flex flex-col sm:flex-row gap-4">
 
                             <!-- Interested Form -->
-                            <Form v-if="canShowInterest(user,job)"  :action="route('health-jobs.interested')" method="post">
-                                <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 font-medium cursor-pointer">
+                            <Form v-if="canShowInterest(user,job)" :action="route('health-jobs.interested')" method="post">
+                                <button type="submit" class="bg-blue-600 dark:bg-blue-700 text-white px-6 py-3 rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 font-medium cursor-pointer transition-colors">
                                     Interested
                                 </button>
-                                <input type="hidden" name="job"  :value="job.uuid"/>
+                                <input type="hidden" name="job" :value="job.uuid"/>
                             </Form>
-
-
-
-
 
                             <Link
                                 :href="route('health-jobs.index')"
-                                class="border border-gray-300 text-gray-700 px-6 py-3 rounded-md hover:bg-gray-50 font-medium text-center"
+                                class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 px-6 py-3 rounded-md hover:bg-gray-50 dark:hover:bg-gray-600 font-medium text-center transition-colors"
                             >
                                 ← Back to Jobs
                             </Link>
