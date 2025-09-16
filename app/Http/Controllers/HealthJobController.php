@@ -586,6 +586,7 @@ class HealthJobController extends Controller
         ], 201);
     }
 
+
     public function show($id)
     {
         $healthJob = HealthJob::query()
