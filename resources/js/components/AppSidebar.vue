@@ -5,7 +5,23 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { LayoutGrid, Users, Settings, FileText, Cog, User, Calendar1Icon, UsersRoundIcon } from 'lucide-vue-next';
+import {
+    LayoutGrid,
+    Users,
+    Settings,
+    FileText,
+    Cog,
+    User,
+    Calendar1Icon,
+    UsersRoundIcon,
+    BuildingIcon,
+    Building,
+    HouseIcon,
+    SettingsIcon,
+    ShieldIcon,
+    ShieldAlertIcon,
+    StethoscopeIcon,
+} from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { computed } from 'vue';
 import { useAuth } from '@/utils/auth';
@@ -21,7 +37,7 @@ const allNavItems = [
     {
         title: 'Jobs',
         href: '/health-jobs',
-        icon: Users,
+        icon: StethoscopeIcon,
         requiredPermissions: ['view-job-postings'],
     },
     {
@@ -40,13 +56,13 @@ const allNavItems = [
     {
         title: 'Roles',
         href: '/iam/roles',
-        icon: User,
+        icon: ShieldAlertIcon,
         requiredRoles: ['super-admin'],
     },
     {
         title: 'Manage Facility',
         href: '/facilities',
-        icon: User,
+        icon: HouseIcon,
         requiredRoles: ['super-admin'],
     },
     {
