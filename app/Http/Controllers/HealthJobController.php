@@ -594,23 +594,21 @@ class HealthJobController extends Controller
             'user_id' => $request->user()->id
         ]);
 
+        $response = [
+            'message' => 'You are already interested in this job',
+            'already_interested' => true
+        ];
+
 
         // Only send notification if this is a new interest
         if ($interest->wasRecentlyCreated) {
             $job->user->notify(new JobInterestNotification($request->user(), $job));
 
-            // Optional: Return success response
-            return response()->json([
-                'message' => 'Interest registered successfully',
-                'already_interested' => false
+            return redirect(route('health-jobs.show',$request->job),303)->with([
+                'flashMessage' => $response['message'] ,
             ]);
-        }
 
-        // Optional: Return response indicating user was already interested
-        $response = [
-            'message' => 'You are already interested in this job',
-            'already_interested' => true
-        ];
+        }
 
         return redirect(route('health-jobs.show',$request->job),303)->with([
             'flashMessage' => $response['message'] ,
