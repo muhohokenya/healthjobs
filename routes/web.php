@@ -45,7 +45,7 @@ Route::middleware(['auth', 'roles:super-admin'])->group(function () {
         });
 });
 
-Route::post('send', [HealthJobController::class, 'sendWhatsApp'])->name('app-whats-send');
+
 Route::get('test', [HealthJobController::class, 'test'])->name('test');
 
 

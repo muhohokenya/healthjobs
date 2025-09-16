@@ -605,41 +605,6 @@ class HealthJobController extends Controller
     {
         return response('OK', 200);
     }
-    public function sendWhatsApp(Request $request)
-    {
-        $validatedData = $request->validate([
-            'phone' => 'required|string',
-            'message' => 'required|string',
-        ]);
-
-        $accountSid = env('ACCOUNT_SID');
-        $authToken = env('AUTH_TOKEN');
-        $twilioWhatsAppNumber = 'whatsapp:' . env('TWILIO_NUMBER');
-
-        // Format phone number for WhatsApp
-        $phone = 'whatsapp:' . $validatedData['phone'];
-
-        try {
-            $client = new Client($accountSid, $authToken);
-
-            $client->messages->create(
-                $phone,
-                [
-                    'from' => $twilioWhatsAppNumber,
-                    'body' => $validatedData['message']
-                ]
-            );
-
-            Log::info($twilioWhatsAppNumber);
-
-            return response()->json([
-                'message' => 'Message sent successfully.',
-            ],status: 200);
-
-        } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Failed to send WhatsApp message.']);
-        }
-    }
 
     public function interested(Request $request)
     {
