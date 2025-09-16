@@ -22,21 +22,12 @@ use OpenAI\Exceptions\ApiException;
 use Gemini\Data\Blob;
 use Gemini\Enums\MimeType;
 use Gemini\Laravel\Facades\Gemini;
-use Twilio\Rest\Client;
+
 class HealthJobController extends Controller
 {
-    protected $accountSid;
-    protected $authToken;
-    protected $twilioNumber;
-    protected $twilioClient;
 
-    public function __construct()
-    {
-        $this->accountSid = env('ACCOUNT_SID');
-        $this->authToken = env('AUTH_TOKEN');
-        $this->twilioNumber = env('TWILIO_NUMBER');
-        $this->twilioClient = new Client($this->accountSid, $this->authToken);
-    }
+
+
 
     public function checkLicence(Request $request)
     {
