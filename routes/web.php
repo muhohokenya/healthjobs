@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::get('/', [\App\Http\Controllers\welcomeController::class, 'index'])->name('home');
 
-
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -41,9 +40,7 @@ Route::middleware(['auth', 'roles:super-admin'])->group(function () {
         });
 });
 
-
 Route::get('test', [HealthJobController::class, 'test'])->name('test');
-
 
 Route::middleware(['auth'])->group(function () {
     Route::controller(HealthJobController::class)
@@ -59,7 +56,15 @@ Route::middleware(['auth'])->group(function () {
         });
 });
 
-
+Route::middleware(['auth'])->group(function () {
+    Route::controller(\App\Http\Controllers\EventsController::class)
+        ->prefix('events')
+        ->name('events.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('events.create');
+        });
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::controller(\App\Http\Controllers\Settings\ProfileController::class)
@@ -69,8 +74,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/profiles', 'index')->name('medics.profiles');
         });
 });
-
-
 
 Route::middleware(['auth', 'roles:super-admin'])->group(function () {
     Route::controller(RolesAndPermissionsController::class)

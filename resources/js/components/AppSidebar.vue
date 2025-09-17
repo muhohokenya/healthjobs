@@ -49,10 +49,10 @@ const allNavItems = [
     },
     {
         title: 'Events',
-        href: '#',
+        href: '/events',
         disabled: true,
         icon: Calendar1Icon,
-        comingSoon: true,
+        requiredPermissions: ['view-job-postings'],
     },
     {
         title: 'Users',
