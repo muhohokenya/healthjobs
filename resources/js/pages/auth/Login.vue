@@ -40,9 +40,15 @@ defineProps<{
                             />
                         </svg>
                     </div>
-                    <span class="font-extrabold text-2xl bg-gradient-to-r from-emerald-700 via-red-600 to-black bg-clip-text text-transparent">
+                    <TextLink
+                        :href="route('home')"
+                        class="ml-1 font-semibold text-red-600 transition-colors hover:text-emerald-700 hover:underline"
+                        :tabindex="6"
+                    >
+                        <span class="font-extrabold text-2xl bg-gradient-to-r from-emerald-700 via-red-600 to-black bg-clip-text text-transparent">
                         MediCareers Kenya
                     </span>
+                    </TextLink>
                 </div>
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">Karibu Tena</h1>
                 <p class="text-gray-600">Enter your credentials to access your medical career dashboard</p>
@@ -137,7 +143,8 @@ defineProps<{
                     <div class="text-center pt-4 border-t border-gray-200">
                         <p class="text-gray-600">
                             Don't have an account?
-                            <TextLink :href="route('register')" :tabindex="5" class="text-emerald-600 hover:text-emerald-700 font-semibold hover:underline transition-colors ml-1">
+                            <TextLink :href="route('register')" :tabindex="5"
+                                      class="text-red-600 hover:text-emerald-700 font-semibold hover:underline transition-colors ml-1">
                                 Join MediCareers Kenya
                             </TextLink>
                         </p>

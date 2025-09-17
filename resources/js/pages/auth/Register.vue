@@ -34,9 +34,18 @@ import { LoaderCircle } from 'lucide-vue-next';
                             />
                         </svg>
                     </div>
-                    <span class="font-extrabold text-2xl bg-gradient-to-r from-emerald-700 via-red-600 to-black bg-clip-text text-transparent">
+
+                    <TextLink
+                    :href="route('home')"
+                    class="ml-1 font-semibold text-red-600 transition-colors hover:text-emerald-700 hover:underline"
+                    :tabindex="6"
+                    >
+                        <span class="font-extrabold text-2xl bg-gradient-to-r from-emerald-700 via-red-600 to-black bg-clip-text text-transparent">
                         MediCareers Kenya
                     </span>
+                    </TextLink>
+
+
                 </div>
                 <h1 class="mb-2 text-3xl font-bold text-gray-900">Karibu MediCareers</h1>
                 <p class="text-gray-600">Create your medical professional profile and discover opportunities across Kenya's 47 counties</p>
@@ -200,7 +209,7 @@ import { LoaderCircle } from 'lucide-vue-next';
                             Already have an account?
                             <TextLink
                                 :href="route('login')"
-                                class="ml-1 font-semibold text-emerald-600 transition-colors hover:text-emerald-700 hover:underline"
+                                class="ml-1 font-semibold text-red-600 transition-colors hover:text-emerald-700 hover:underline"
                                 :tabindex="6"
                             >
                                 Sign in to your dashboard
