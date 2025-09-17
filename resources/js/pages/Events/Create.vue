@@ -3,8 +3,6 @@ import { Head, useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import AppLayout from '@/layouts/AppLayout.vue';
 
-defineProps<{}>()
-
 const form = useForm({
     title: '',
     description: '',
@@ -51,7 +49,7 @@ const submit = () => {
         <Head title="Create Event" />
 
         <div class="min-h-screen bg-gray-50 py-8">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl px-4 sm:px-6 lg:px-8">
                 <!-- Header -->
                 <div class="mb-8">
                     <h1 class="text-3xl font-bold text-gray-900 mb-2">Create New Event</h1>
