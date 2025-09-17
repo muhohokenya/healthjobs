@@ -136,8 +136,16 @@ const formatLicenseStatus = (status: string) => {
                                         <span class="text-lg font-bold">{{ getInitials(profile.name) }}</span>
                                     </div>
 
+
                                     <!-- Online indicator -->
-                                    <div class="absolute bottom-1 right-1 h-6 w-6 rounded-full border-2 border-white bg-emerald-500 shadow-lg"></div>
+                                    <div class="absolute bottom-1 right-1 h-6 w-6 rounded-full border-2 border-white"
+                                         :class="{
+                                                'bg-emerald-500': profile.is_online,
+                                                'bg-gray-400': !profile.is_online
+                                            }"
+                                         :title="profile.is_online ? 'Online' : 'Offline'">
+                                    </div>
+
                                 </div>
                             </div>
 

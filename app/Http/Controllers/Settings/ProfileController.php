@@ -23,11 +23,45 @@ class ProfileController extends Controller
         private readonly LicenseVerificationService $verificationService
     ) {}
 
-    public function index(): Response{
+    public function index(): Response
+    {
+        $profiles = User::with(['roles.permissions']) // Eager load roles and permissions
+        ->leftJoin('sessions', function ($join) {
+            $join->on('users.id', '=', 'sessions.user_id')
+                ->whereRaw('sessions.last_activity = (
+                    SELECT MAX(last_activity)
+                    FROM sessions s2
+                    WHERE s2.user_id = users.id
+                )');
+        })
+            ->where('users.selected_role', '=', 'job-seeker')
+            ->select([
+                'users.*',
+                'sessions.last_activity'
+            ])
+            ->orderBy('sessions.last_activity', 'desc') // Optional: Order by session activity
+            ->orderBy('users.id') // Order by user id if needed
+            ->get()
+            ->map(function ($user) {
+                // Calculate last_seen in seconds
+                $user->last_seen = $user->last_activity
+                    ? \Carbon\Carbon::createFromTimestamp($user->last_activity)->diffInSeconds(now())
+                    : 'Never';
+
+                // Determine if user is online based on last activity (within 5 days)
+                $user->is_online = $user->last_activity && \Carbon\Carbon::createFromTimestamp($user->last_activity)->diffInDays(now()) < 5;
+
+                // Remove raw last_activity field to avoid duplication
+                unset($user->last_activity);
+
+                return $user;
+            });
+
         return Inertia::render('medics/profiles', [
-            'profiles'=>User::query()->where('users.selected_role' , '=','job-seeker')->get()
+            'profiles' => $profiles,
         ]);
     }
+
 
     /**
      * Show the user's profile settings page.
