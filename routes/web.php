@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::get('/', [\App\Http\Controllers\welcomeController::class, 'index'])->name('home');
 
-// // Public routes
-// Route::controller(WelcomeController::class)->group(function () {
-//    Route::get('/', 'index')->name('welcome');
-// })
 
 // Authenticated routes
 Route::middleware(['auth'])->group(function () {
@@ -62,6 +58,19 @@ Route::middleware(['auth'])->group(function () {
             Route::post('interested', 'interested')->name('interested');
         });
 });
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::controller(\App\Http\Controllers\Settings\ProfileController::class)
+        ->prefix('medics')
+        ->name('medics.')
+        ->group(function () {
+            Route::get('/profiles', 'index')->name('medics.profiles');
+        });
+});
+
+
 
 Route::middleware(['auth', 'roles:super-admin'])->group(function () {
     Route::controller(RolesAndPermissionsController::class)

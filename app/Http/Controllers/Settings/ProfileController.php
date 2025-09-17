@@ -6,6 +6,7 @@ use App\Events\FacilityVerifiedEvent;
 use App\ExternalLibraries\Cropper\Slim;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Models\User;
 use App\Services\LicenseVerificationService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -21,6 +22,12 @@ class ProfileController extends Controller
     public function __construct(
         private readonly LicenseVerificationService $verificationService
     ) {}
+
+    public function index(): Response{
+        return Inertia::render('medics/profiles', [
+            'profiles'=>User::query()->where('users.selected_role' , '=','job-seeker')->get()
+        ]);
+    }
 
     /**
      * Show the user's profile settings page.

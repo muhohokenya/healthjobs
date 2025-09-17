@@ -21,6 +21,7 @@ import {
     ShieldIcon,
     ShieldAlertIcon,
     StethoscopeIcon,
+    CircleUserIcon,
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { computed } from 'vue';
@@ -38,6 +39,12 @@ const allNavItems = [
         title: 'Jobs',
         href: '/health-jobs',
         icon: StethoscopeIcon,
+        requiredPermissions: ['view-job-postings'],
+    },
+    {
+        title: 'Profiles',
+        href: '/medics/profiles',
+        icon: CircleUserIcon,
         requiredPermissions: ['view-job-postings'],
     },
     {
