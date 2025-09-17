@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3'
-import { ref } from 'vue'
 import AppLayout from '@/layouts/AppLayout.vue'
-import FireworksComponent from '@/components/FireworksComponent.vue' // Adjust path as needed
 
 const props = defineProps({
     events: Array
 });
-
-// Fireworks component reference
-const fireworksRef = ref()
 
 // Format date function
 const formatDate = (dateString: string) => {
@@ -37,12 +32,6 @@ const truncateText = (text: string | null | undefined, maxLength: number = 150) 
     return text.slice(0, maxLength) + '...';
 };
 
-// Function to manually trigger fireworks (for testing or special occasions)
-const celebrateEvent = () => {
-    if (fireworksRef.value) {
-        fireworksRef.value.triggerFireworks()
-    }
-}
 </script>
 
 <template>

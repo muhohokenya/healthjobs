@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Form, Head, Link, usePage } from '@inertiajs/vue3';
+import { Form, Head, usePage } from '@inertiajs/vue3';
 
 import DeleteUser from '@/components/DeleteUser.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';

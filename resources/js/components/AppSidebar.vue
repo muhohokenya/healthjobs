@@ -7,18 +7,11 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import {
     LayoutGrid,
-    Users,
     Settings,
     FileText,
-    Cog,
-    User,
     Calendar1Icon,
     UsersRoundIcon,
-    BuildingIcon,
-    Building,
     HouseIcon,
-    SettingsIcon,
-    ShieldIcon,
     ShieldAlertIcon,
     StethoscopeIcon,
     CircleUserIcon,

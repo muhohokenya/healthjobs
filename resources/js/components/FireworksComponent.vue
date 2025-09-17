@@ -74,8 +74,8 @@ const showWelcome = ref(false)
 const fireworks = ref<Firework[]>([])
 const fireworksContainer = ref<HTMLElement>()
 
-let animationFrameId: number | null = null
-let timeoutIds: NodeJS.Timeout[] = []
+const animationFrameId: number | null = null
+const timeoutIds: NodeJS.Timeout[] = []
 
 const colors = [
     '#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b',
@@ -92,7 +92,7 @@ const isFirstVisit = () => {
     return false
 }
 
-const createParticles = (centerX: number, centerY: number): Particle[] => {
+const createParticles = (): Particle[] => {
     const particles: Particle[] = []
     const particleCount = 12 + Math.floor(Math.random() * 8)
 
@@ -123,7 +123,7 @@ const createFirework = (x?: number, y?: number): Firework => {
         id: Date.now() + Math.random(),
         x: x || Math.random() * containerWidth,
         y: y || Math.random() * (containerHeight * 0.6) + containerHeight * 0.2,
-        particles: createParticles(0, 0)
+        particles: createParticles()
     }
 }
 
