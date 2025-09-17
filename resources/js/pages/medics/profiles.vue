@@ -11,7 +11,11 @@ const props = defineProps({
 
 // Helper function to get initials for placeholder
 const getInitials = (name: string) => {
+    if (!name || name.trim() === '') {
+        return 'MP'; // Default: Medical Professional
+    }
     return name
+        .trim()
         .split(' ')
         .map(word => word.charAt(0))
         .join('')
@@ -21,6 +25,9 @@ const getInitials = (name: string) => {
 
 // Helper function to format profession
 const formatProfession = (profession: string) => {
+    if (!profession || profession.trim() === '') {
+        return 'Healthcare Provider';
+    }
     return profession.charAt(0).toUpperCase() + profession.slice(1);
 };
 
@@ -58,15 +65,10 @@ const formatLicenseStatus = (status: string) => {
 
 <template>
     <AppLayout>
-
-
+        <Head title="Medical Professionals" />
 
         <div class="min-h-screen bg-gray-50 py-8 dark:bg-gray-900">
-
-            <Head title="Medical Professionals" />
-
             <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-
                 <!-- Header Section -->
                 <div class="mb-8">
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Medical Professionals</h1>
@@ -107,7 +109,7 @@ const formatLicenseStatus = (status: string) => {
                                     <div v-if="profile.avatar" class="h-24 w-24 overflow-hidden rounded-full border-4 border-white shadow-lg">
                                         <img
                                             :src="profile.avatar"
-                                            :alt="profile.name"
+                                            :alt="profile.name || 'Medical Professional'"
                                             class="h-full w-full object-cover"
                                             @error="$event.target.style.display = 'none'; $event.target.nextElementSibling.style.display = 'flex'"
                                         />
@@ -129,8 +131,8 @@ const formatLicenseStatus = (status: string) => {
 
                             <!-- Name and Profession -->
                             <div class="mt-4 text-center text-white">
-                                <h3 class="text-xl font-bold">{{ profile.name }}</h3>
-                                <p class="text-blue-100">{{ formatProfession(profile.profession) }}</p>
+                                <h3 class="text-xl font-bold">{{ profile.name || 'Medical Professional' }}</h3>
+                                <p class="text-blue-100">{{ formatProfession(profile.profession || 'Healthcare Provider') }}</p>
                             </div>
                         </div>
 
@@ -179,7 +181,7 @@ const formatLicenseStatus = (status: string) => {
                             <div class="flex items-center justify-between">
                                 <!-- View Profile Button -->
                                 <Link
-                                    href='#'
+                                    :href="`/profiles/${profile.id}`"
                                     class="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:from-blue-700 hover:to-purple-700 hover:shadow-lg focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                                 >
                                     <span>View Profile</span>
