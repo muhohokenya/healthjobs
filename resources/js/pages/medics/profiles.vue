@@ -9,6 +9,11 @@ const props = defineProps({
     isProfileComplete: Boolean,
 });
 
+const maskedLicenseNumber = (licenseNumber: string) => {
+    if (!licenseNumber) return '';
+    return licenseNumber.slice(0, 3) + '****';
+};
+
 // Helper function to get initials for placeholder
 const getInitials = (name: string) => {
     if (!name || name.trim() === '') {
@@ -168,7 +173,7 @@ const formatLicenseStatus = (status: string) => {
                                     <svg class="mr-1 h-3 w-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2H6zm1 2a1 1 0 000 2h6a1 1 0 100-2H7zm6 7a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm-3 3a1 1 0 100 2h.01a1 1 0 100-2H10z" clip-rule="evenodd" />
                                     </svg>
-                                    <span>License: {{ profile.licence_number }}</span>
+                                    <span>License: {{ maskedLicenseNumber(profile.licence_number) }}</span>
                                 </div>
                                 <div v-if="profile.licence_number_expiry" class="mt-1 text-xs text-slate-500 dark:text-slate-500">
                                     Expires: {{ new Date(profile.licence_number_expiry).toLocaleDateString() }}
