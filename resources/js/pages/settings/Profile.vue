@@ -231,6 +231,7 @@ const cropperOptions = ref({
                             toolbar="full"
                             class="rounded-lg bg-white dark:bg-gray-700"
                         />
+                        <InputError class="mt-2" :message="errors.description" />
                         <!-- Hidden input to submit the description with the form -->
                         <input type="hidden" name="description" :value="description" />
                     </div>

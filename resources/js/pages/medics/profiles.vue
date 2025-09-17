@@ -170,9 +170,8 @@ const formatLicenseStatus = (status: string) => {
                             <!-- Description -->
                             <div v-if="profile.description" class="mb-4">
                                 <h4 class="mb-2 text-sm font-semibold text-slate-800 dark:text-slate-200">About:</h4>
-                                <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                                    {{ truncateText(stripHtml(profile.description), 150) }}
-                                </p>
+
+                                <div v-html="profile.description"></div>
                             </div>
 
                             <!-- No description placeholder -->
