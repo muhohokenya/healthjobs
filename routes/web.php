@@ -66,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('events.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('events.create');
         });
 });
 
