@@ -52,18 +52,10 @@ const formatProfession = (profession: string) => {
 };
 
 // Helper function to strip HTML tags from description
-const stripHtml = (html: string) => {
-    if (!html) return '';
-    const tmp = document.createElement('div');
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || '';
-};
+
 
 // Helper function to truncate text
-const truncateText = (text: string, maxLength: number) => {
-    if (!text || text.length <= maxLength) return text;
-    return text.slice(0, maxLength) + '...';
-};
+
 
 // Helper function to get license status color
 const getLicenseStatusColor = (status: string) => {
