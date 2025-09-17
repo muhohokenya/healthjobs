@@ -39,8 +39,8 @@ class ProfileController extends Controller
                 'users.*',
                 'sessions.last_activity'
             ])
-            ->orderBy('sessions.last_activity', 'desc') // Optional: Order by session activity
-            ->orderBy('users.id') // Order by user id if needed
+//            ->orderBy('sessions.last_activity', 'desc') // Optional: Order by session activity
+//            ->orderBy('users.id') // Order by user id if needed
             ->get()
             ->map(function ($user) {
                 // Calculate last_seen in seconds
