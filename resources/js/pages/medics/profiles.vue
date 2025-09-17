@@ -83,7 +83,7 @@ const formatLicenseStatus = (status: string) => {
                         class="group relative flex flex-col overflow-hidden rounded-2xl border border-white/60 bg-white/70 backdrop-blur-sm shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 dark:border-slate-700/50 dark:bg-slate-800/80"
                     >
                         <!-- Header with gradient background -->
-                        <div class="relative bg-gradient-to-br bg-gray-500 px-6 py-8">
+                        <div class="relative bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 px-6 py-8">
                             <!-- License Status Badge -->
                             <div class="absolute top-4 right-4">
                         <span
