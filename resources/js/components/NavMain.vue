@@ -22,6 +22,10 @@ const page = usePage();
                         <span v-if="item.comingSoon" class="text-xs italic text-muted-foreground ml-2">
                           Coming soon
                         </span>
+
+                        <span v-if="item.launchingSoon" class="text-xs italic text-muted-foreground ml-2">
+                          launching  soon
+                        </span>
                     </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>
