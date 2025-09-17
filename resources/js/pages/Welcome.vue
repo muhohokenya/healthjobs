@@ -301,6 +301,25 @@ const closeMobileMenu = (): void => {
         </div>
     </section>
 
+    <!-- New Segment: Need a Nurse for Professional Health Care -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 bg-gradient-to-r from-green-400 to-blue-500 text-white rounded-xl shadow-xl">
+        <div class="text-center">
+            <h2 class="text-3xl sm:text-4xl font-semibold leading-tight mb-4">
+                Looking for a Professional Nurse?
+            </h2>
+            <p class="text-lg sm:text-xl mb-6 max-w-3xl mx-auto text-gray-100">
+                Whether it's for routine care or specialized services, we have a pool of verified and highly trained nurses available to provide professional healthcare tailored to your needs.
+            </p>
+            <button
+                @click="navigateToRegister"
+                class="bg-white text-emerald-700 px-8 py-4 rounded-full font-semibold text-lg shadow-md hover:bg-emerald-100 hover:scale-105 transition-transform duration-300"
+            >
+                Connect with a Nurse Today
+            </button>
+        </div>
+    </div>
+
+
     <!-- Hello / Mission Section -->
     <section id="about" class="relative bg-white py-16 sm:py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

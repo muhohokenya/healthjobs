@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3'
-import AppLayout from '@/layouts/AppLayout.vue';
+import { ref } from 'vue'
+import AppLayout from '@/layouts/AppLayout.vue'
+import FireworksComponent from '@/components/FireworksComponent.vue' // Adjust path as needed
 
 const props = defineProps({
     events: Array
 });
+
+// Fireworks component reference
+const fireworksRef = ref()
 
 // Format date function
 const formatDate = (dateString: string) => {
@@ -31,11 +36,21 @@ const truncateText = (text: string | null | undefined, maxLength: number = 150) 
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + '...';
 };
+
+// Function to manually trigger fireworks (for testing or special occasions)
+const celebrateEvent = () => {
+    if (fireworksRef.value) {
+        fireworksRef.value.triggerFireworks()
+    }
+}
 </script>
 
 <template>
     <AppLayout>
         <Head title="Events" />
+
+        <!-- Fireworks Component -->
+<!--        <FireworksComponent ref="fireworksRef" />-->
 
         <div class="min-h-screen bg-gray-50 py-8">
             <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -48,7 +63,14 @@ const truncateText = (text: string | null | undefined, maxLength: number = 150) 
                         </div>
 
                         <!-- Create Event Button -->
-                        <div class="flex justify-center md:justify-end">
+                        <div class="flex justify-center md:justify-end space-x-4">
+                            <!-- Debug: Manual Fireworks Button (remove in production) -->
+<!--                            <button-->
+<!--                                @click="celebrateEvent"-->
+<!--                                class="inline-flex items-center px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-sm">-->
+<!--                                🎆 Celebrate-->
+<!--                            </button>-->
+
                             <a href="/events/create"
                                class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +140,7 @@ const truncateText = (text: string | null | undefined, maxLength: number = 150) 
                             <div class="flex items-center space-x-4 mb-4 text-sm text-gray-600">
                                 <div class="flex items-center space-x-1">
                                     <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z"></path>
                                     </svg>
                                     <span>{{ formatDate(event.start_date) }}</span>
                                 </div>
@@ -174,7 +196,7 @@ const truncateText = (text: string | null | undefined, maxLength: number = 150) 
                 <div v-if="!props.events || props.events.length === 0" class="text-center py-16">
                     <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
                         <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
                     </div>
                     <h3 class="text-xl font-medium text-gray-900 mb-2">No events found</h3>
