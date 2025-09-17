@@ -42,7 +42,7 @@ class ProfileUpdateRequest extends FormRequest
             ],
             'description'=>[
                 'nullable',
-                'max:255',
+                'max:300',
             ],
             'slim'=>[
                 'nullable',
