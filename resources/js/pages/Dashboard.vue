@@ -13,7 +13,12 @@
 
         <div class="py-4 sm:py-8">
 
+
+
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+
+
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div>
                         <TotalCard :count="stats.total_jobs" label="Available Positions" class="text-sm text-red-500 bg-green-100" link="/health-jobs" />
@@ -52,6 +57,7 @@ import BarChart from '@/components/Dashboard/BarChart.vue';
 import LineChart from '@/components/Dashboard/LineChart.vue';
 import TotalCard from '@/components/Dashboard/TotalCard.vue';
 import {useAuth} from '@/utils/auth';
+import ProfileMessage from '@/components/profileMessage.vue';
 const user = useAuth();
 // Define props to match what your controller sends
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

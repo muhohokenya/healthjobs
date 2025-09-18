@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
+import ProfileMessage from '@/components/profileMessage.vue';
 
 const props = defineProps({
     profiles: Object,
@@ -81,6 +82,7 @@ const formatLicenseStatus = (status: string) => {
             class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/20 py-8 dark:from-slate-900 dark:via-slate-900 dark:to-indigo-950/20"
         >
             <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                <profile-message></profile-message>
                 <!-- Header Section -->
                 <div class="mb-8">
                     <h1
