@@ -1,13 +1,22 @@
 <template>
-    <div class="slim circle">
-        <img v-if="initialImage" :src="initialImage" alt="Profile Image" />
+    <div
+        class="slim circle"
+        :style="containerStyles"
+        :class="containerClass"
+    >
+        <img
+            v-if="initialImage"
+            :src="initialImage"
+            alt="Profile Image"
+            :style="imageStyles"
+        />
         <input type="file" name="slim[]" />
     </div>
 </template>
 
 <script setup lang="ts">
 import Slim from './slim.module.js';
-import { onMounted, onBeforeUnmount, defineProps, nextTick, watch } from 'vue';
+import { onMounted, onBeforeUnmount, defineProps, nextTick, watch, computed } from 'vue';
 
 // Define props to accept configuration from the parent
 const props = defineProps({
@@ -21,7 +30,7 @@ const props = defineProps({
     },
     initialImage: {
         type: String,
-        default: null, // Accept initial image URL
+        default: null,
     },
     service: {
         type: String,
@@ -36,10 +45,85 @@ const props = defineProps({
         default: 'fetch.php',
     },
     maxFileSize: {
-        type: String,
+        type: [String, Number],
         default: '2',
     },
+    // Style props for container
+    containerWidth: {
+        type: String,
+        default: '240px',
+    },
+    containerHeight: {
+        type: String,
+        default: '240px',
+    },
+    containerOverflow: {
+        type: String,
+        default: 'hidden',
+    },
+    containerMargin: {
+        type: String,
+        default: '0 auto',
+    },
+    containerBorderRadius: {
+        type: String,
+        default: '0',
+    },
+    containerBorder: {
+        type: String,
+        default: 'none',
+    },
+    containerBoxShadow: {
+        type: String,
+        default: 'none',
+    },
+    // Style props for image
+    imageObjectFit: {
+        type: String,
+        default: 'cover',
+    },
+    imageWidth: {
+        type: String,
+        default: '100%',
+    },
+    imageHeight: {
+        type: String,
+        default: '100%',
+    },
+    // Alternative: Accept style objects directly
+    containerStyle: {
+        type: Object,
+        default: () => ({}),
+    },
+    imageStyle: {
+        type: Object,
+        default: () => ({}),
+    },
+    // CSS class props
+    containerClass: {
+        type: [String, Array, Object],
+        default: '',
+    },
 });
+
+// Computed styles that merge default styles with props
+const containerStyles = computed(() => ({
+    overflow: props.containerOverflow,
+    width: props.containerWidth,
+    height: props.containerHeight,
+    margin: props.containerMargin,
+    borderRadius: props.containerBorderRadius,
+    border: props.containerBorder,
+    boxShadow: props.containerBoxShadow,
+    ...props.containerStyle, // Allow override with style object
+}));
+
+const imageStyles = computed(() => ({
+    objectFit: props.imageObjectFit,
+    width: props.imageWidth,
+    height: props.imageHeight,
+    ...props.imageStyle, // Allow override with style object
+}));
 
 // Initialize SlimCropper instance
 let instance = null;
@@ -60,7 +144,7 @@ const initializeSlim = () => {
         container.setAttribute('data-service', props.service);
         container.setAttribute('data-edit', String(props.edit));
         container.setAttribute('data-fetcher', props.fetcher);
-        container.setAttribute('data-max-file-size', props.maxFileSize);
+        container.setAttribute('data-max-file-size', String(props.maxFileSize));
 
         instance = new Slim(container, options);
     }
@@ -75,7 +159,6 @@ onMounted(() => {
 // Watch for changes in initialImage prop
 watch(() => props.initialImage, (newImage) => {
     if (newImage && instance) {
-        // Update the image in the existing instance
         instance.load(newImage);
     }
 });
@@ -90,17 +173,8 @@ onBeforeUnmount(() => {
 <style lang="css">
 @import './slim.min.css';
 
+/* Base styles - can be overridden by props */
 .slim {
-    border-radius: 50%;
-    overflow: hidden;
-    width: 200px;
-    height: 200px;
-    margin: 0 auto;
-}
-
-.slim img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
+    position: relative;
 }
 </style>
