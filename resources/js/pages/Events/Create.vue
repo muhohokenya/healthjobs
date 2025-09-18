@@ -27,22 +27,22 @@ const cropperStyles = {
 };
 
 // Alternative: Define as style objects
-const containerStyleObject = {
-    overflow: 'hidden',
-    width: '500px',
-    height: '500px',
-    margin: '',
-    borderRadius: '8px',
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-    border: '2px dashed #e5e7eb',
-    transition: 'border-color 0.2s ease',
-};
+// const containerStyleObject = {
+//     overflow: 'hidden',
+//     width: '500px',
+//     height: '500px',
+//     margin: '',
+//     borderRadius: '8px',
+//     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+//     border: '2px dashed #e5e7eb',
+//     transition: 'border-color 0.2s ease',
+// };
 
-const imageStyleObject = {
-    objectFit: 'cover',
-    width: '100%',
-    height: '100%',
-};
+// const imageStyleObject = {
+//     objectFit: 'cover',
+//     width: '100%',
+//     height: '100%',
+// };
 
 // Form data
 const formData = ref({
