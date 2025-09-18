@@ -4,9 +4,6 @@ import TextLink from '@/components/TextLink.vue';
 
 const cancelMessage = ref(false);
 
-const handleCancel = () => {
-    cancelMessage.value = true;
-};
 </script>
 
 <template>
