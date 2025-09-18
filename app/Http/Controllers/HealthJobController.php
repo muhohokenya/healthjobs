@@ -582,7 +582,6 @@ class HealthJobController extends Controller
     {
         $healthJob = HealthJob::query()
             ->where('uuid', $id)
-            ->orWhere('id', $id)
             ->with('interestedUsers')
             ->firstOrFail();
 
