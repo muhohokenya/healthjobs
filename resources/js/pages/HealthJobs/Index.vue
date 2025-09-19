@@ -113,10 +113,6 @@ const getPageUrl = (page: number) => {
     <AppLayout>
         <div class="min-h-screen bg-gray-50 py-8 dark:bg-gray-900">
             <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="mb-7">
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Health Jobs</h1>
-                    <p class="mt-2 text-gray-600 dark:text-gray-300">Find your next healthcare opportunity</p>
-                </div>
 
                 <div v-if="!props.isProfileComplete" class="mb-6 rounded-md bg-red-100 p-4 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                     ⚠️ Kindly complete your profile to enhance the credibility of your posts.
