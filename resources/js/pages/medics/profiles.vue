@@ -170,7 +170,7 @@ const formatLicenseStatus = (status: string) => {
                             <div v-if="profile.description" class="mb-4">
 <!--                                <h4 class="mb-2 text-sm font-semibold text-slate-800 dark:text-slate-200">About:</h4>-->
 
-                                <div v-html="profile.description"></div>
+                                <div class="text-slate-500 dark:text-slate-500" v-html="profile.description"></div>
                             </div>
 
                             <!-- No description placeholder -->
