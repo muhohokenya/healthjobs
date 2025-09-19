@@ -148,7 +148,6 @@ const formatLicenseStatus = (status: string) => {
 
                                 </div>
                             </div>
-
                             <!-- Name and Profession -->
                             <div class="mt-4 text-center text-white">
                                 <h3 class="text-xl font-bold drop-shadow-sm">{{ profile.name || 'Medical Professional' }}</h3>
