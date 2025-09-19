@@ -580,10 +580,17 @@ class HealthJobController extends Controller
 
     public function show($id)
     {
+        // Allow lookup by UUID (preferred) or by primary key ID to support routes/tests using either.
         $healthJob = HealthJob::query()
-            ->where('uuid', $id)
             ->with('interestedUsers')
-            ->firstOrFail();
+            ->where('uuid', $id)
+            ->first();
+
+        if ($healthJob === null) {
+            $healthJob = HealthJob::query()
+                ->with('interestedUsers')
+                ->findOrFail($id);
+        }
 
         return Inertia::render('HealthJobs/Show', [
             'job' => $healthJob,

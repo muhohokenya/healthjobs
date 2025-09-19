@@ -77,6 +77,34 @@ const truncateDescription = (description, maxLength = 150) => {
 
     return finalText + '...';
 };
+
+// Pagination helper functions
+const getPageRange = () => {
+    const current = props.jobs.current_page;
+    const last = props.jobs.last_page;
+    const range = [];
+
+    // Show max 5 page numbers
+    let start = Math.max(1, current - 2);
+    let end = Math.min(last, start + 4);
+
+    // Adjust start if we're near the end
+    if (end - start < 4) {
+        start = Math.max(1, end - 4);
+    }
+
+    for (let i = start; i <= end; i++) {
+        range.push(i);
+    }
+
+    return range;
+};
+
+const getPageUrl = (page: number) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('page', page.toString());
+    return url.toString();
+};
 </script>
 
 <template>
@@ -99,7 +127,7 @@ const truncateDescription = (description, maxLength = 150) => {
                     <Link
                         class="flex items-center rounded-md bg-blue-600 px-4 py-2.5 font-medium text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
                         :href="route('health-jobs.create')"
-                        >Create New Job</Link
+                    >Create New Job</Link
                     >
                 </div>
 
@@ -165,7 +193,7 @@ const truncateDescription = (description, maxLength = 150) => {
                             <Link
                                 class="w-full cursor-pointer rounded-md bg-red-400 px-4 py-2.5 text-white transition-colors hover:bg-red-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-offset-gray-800"
                                 :href="route('health-jobs.index')"
-                                >Clear Filters</Link
+                            >Clear Filters</Link
                             >
                         </div>
                     </div>
@@ -272,7 +300,6 @@ const truncateDescription = (description, maxLength = 150) => {
                                 </Link>
                             </div>
 
-
                             <!-- Small license warning badge for unlicensed users only -->
                             <div v-if="job.user !== null && job.user.license_status !== 'active'" class="flex items-center justify-end">
                                 <span
@@ -288,6 +315,111 @@ const truncateDescription = (description, maxLength = 150) => {
                                     User Unverified
                                 </span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination Section -->
+                <div v-if="props.jobs.last_page > 1" class="mt-8 flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 dark:border-gray-700 dark:bg-gray-800">
+                    <div class="flex flex-1 justify-between sm:hidden">
+                        <!-- Mobile pagination -->
+                        <Link
+                            v-if="props.jobs.prev_page_url"
+                            :href="props.jobs.prev_page_url"
+                            class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                            preserve-state
+                        >
+                            Previous
+                        </Link>
+                        <span v-else class="relative inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium text-gray-400 dark:border-gray-600 dark:bg-gray-700">
+                            Previous
+                        </span>
+
+                        <Link
+                            v-if="props.jobs.next_page_url"
+                            :href="props.jobs.next_page_url"
+                            class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                            preserve-state
+                        >
+                            Next
+                        </Link>
+                        <span v-else class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium text-gray-400 dark:border-gray-600 dark:bg-gray-700">
+                            Next
+                        </span>
+                    </div>
+
+                    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300">
+                                Showing
+                                <span class="font-medium">{{ props.jobs.from || 0 }}</span>
+                                to
+                                <span class="font-medium">{{ props.jobs.to || 0 }}</span>
+                                of
+                                <span class="font-medium">{{ props.jobs.total || 0 }}</span>
+                                results
+                            </p>
+                        </div>
+                        <div>
+                            <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                                <!-- Previous page button -->
+                                <Link
+                                    v-if="props.jobs.prev_page_url"
+                                    :href="props.jobs.prev_page_url"
+                                    class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:ring-gray-600 dark:hover:bg-gray-700"
+                                    preserve-state
+                                >
+                                    <span class="sr-only">Previous</span>
+                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                                    </svg>
+                                </Link>
+                                <span v-else class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-300 ring-1 ring-inset ring-gray-300 dark:text-gray-600 dark:ring-gray-600">
+                                    <span class="sr-only">Previous</span>
+                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+
+                                <!-- Page numbers -->
+                                <template v-for="page in getPageRange()" :key="page">
+                                    <Link
+                                        v-if="page === props.jobs.current_page"
+                                        :href="getPageUrl(page)"
+                                        class="relative z-10 inline-flex items-center bg-blue-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                                        preserve-state
+                                    >
+                                        {{ page }}
+                                    </Link>
+                                    <Link
+                                        v-else
+                                        :href="getPageUrl(page)"
+                                        class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:text-gray-300 dark:ring-gray-600 dark:hover:bg-gray-700"
+                                        preserve-state
+                                    >
+                                        {{ page }}
+                                    </Link>
+                                </template>
+
+                                <!-- Next page button -->
+                                <Link
+                                    v-if="props.jobs.next_page_url"
+                                    :href="props.jobs.next_page_url"
+                                    class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 dark:ring-gray-600 dark:hover:bg-gray-700"
+                                    preserve-state
+                                >
+                                    <span class="sr-only">Next</span>
+                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                                    </svg>
+                                </Link>
+                                <span v-else class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-300 ring-1 ring-inset ring-gray-300 dark:text-gray-600 dark:ring-gray-600">
+                                    <span class="sr-only">Next</span>
+                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                                    </svg>
+                                </span>
+                            </nav>
                         </div>
                     </div>
                 </div>
