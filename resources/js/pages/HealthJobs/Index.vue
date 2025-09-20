@@ -3,6 +3,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { useAuth } from '@/utils/auth';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { reactive } from 'vue';
+import { PlusIcon } from 'lucide-vue-next';
 
 const user = useAuth();
 
@@ -119,17 +120,12 @@ const getPageUrl = (page: number) => {
                     <Link :href="route('profile.update')" class="ml-3 text-blue-600 underline">Complete Profile</Link>
                 </div>
 
-                <div v-if="user.hasPermission('create-job-postings')" class="mb-6 flex justify-end">
-                    <Link
-                        class="flex items-center rounded-md bg-blue-600 px-4 py-2.5 font-medium text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        :href="route('health-jobs.create')"
-                    >Create New Job</Link
-                    >
-                </div>
+
 
                 <div class="mb-6 rounded-lg bg-white p-6 shadow dark:bg-gray-800 dark:shadow-gray-700/25">
                     <h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Filter Jobs</h2>
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-5">
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-6">
+<!--                        Col 1  -->
                         <div>
                             <label for="search" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Search</label>
                             <input
@@ -140,6 +136,7 @@ const getPageUrl = (page: number) => {
                                 class="w-full rounded-md border border-gray-300 bg-white px-4 py-2.5 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-400 dark:focus:ring-blue-400"
                             />
                         </div>
+
                         <div>
                             <label for="time_filter" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">By Time</label>
                             <select
@@ -183,14 +180,27 @@ const getPageUrl = (page: number) => {
                                 @click="search"
                                 class="mr-3 w-full cursor-pointer rounded-md bg-blue-600 px-4 py-2.5 text-white transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-offset-gray-800"
                             >
-                                Apply Filters
+                                Apply
                             </button>
 
                             <Link
                                 class="w-full cursor-pointer rounded-md bg-red-400 px-4 py-2.5 text-white transition-colors hover:bg-red-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-offset-gray-800"
                                 :href="route('health-jobs.index')"
-                            >Clear Filters</Link
-                            >
+                            >Clear
+                            </Link>
+
+<!--                            <div  class="mb-6 flex justify-end">-->
+
+<!--                                -->
+<!--                            </div>-->
+                        </div>
+
+                        <div>
+                            <Link v-if="user.hasPermission('create-job-postings')"
+                                class="flex text-center items-center rounded-md bg-blue-600 px-4 py-2.5 font-medium text-white transition hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 focus:outline-none mt-6"
+                                :href="route('health-jobs.create')"
+                            > <PlusIcon></PlusIcon> New Job
+                            </Link>
                         </div>
                     </div>
                 </div>
