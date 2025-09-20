@@ -88,7 +88,7 @@ const formatLicenseStatus = (status: string) => {
                 </div>
 
                 <!-- Profiles Grid -->
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                     <div
                         v-for="profile in props.profiles"
                         :key="profile.id"
