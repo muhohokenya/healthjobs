@@ -111,26 +111,22 @@ const getInitials = (fullName: string) => {
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
                             <tr
-                                v-for="user in users"
+                                v-for="(user, index) in users"
                                 :key="user.id"
                                 class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+
+
+
                             >
                                 <!-- User Info -->
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0">
-                                            <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                                                    <span v-if="user.name" class="text-white font-semibold text-sm">
-                                                        {{ getInitials(user.name) }}
-                                                    </span>
-                                            </div>
+                                            {{index+=1}}
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900 dark:text-white">
                                                 {{ user.name }}
-                                            </div>
-                                            <div class="text-sm text-gray-500 dark:text-gray-400">
-                                                ID: {{ user.id }}
                                             </div>
                                         </div>
                                     </div>
