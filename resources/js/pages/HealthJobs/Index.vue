@@ -301,6 +301,7 @@ const getPageUrl = (page: number) => {
                                 <span
                                     class="inline-flex items-center rounded-full border border-amber-200 bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800 dark:border-amber-800/50 dark:bg-amber-900/30 dark:text-amber-300"
                                 >
+
                                     <svg class="mr-1 h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                                         <path
                                             fill-rule="evenodd"
@@ -311,6 +312,10 @@ const getPageUrl = (page: number) => {
                                     User Unverified
                                 </span>
                             </div>
+                        </div>
+
+                        <div v-if="user.roles[0].name === 'super-admin'"  class="mt-auto border-t border-gray-100 p-6 pt-4 lg:grid lg:grid-cols-1 lg:grid-cols-2 dark:border-gray-700">
+                            <small>Posted By : {{job.user.email}}</small>
                         </div>
                     </div>
                 </div>
