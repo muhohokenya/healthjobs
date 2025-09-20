@@ -311,6 +311,12 @@ const getPageUrl = (page: number) => {
                                     User Unverified
                                 </span>
                             </div>
+
+
+                        </div>
+
+                        <div v-if="user.roles[0].name === 'super-admin'"  class="mt-auto border-t border-gray-100 p-6 pt-4 lg:grid lg:grid-cols-1 lg:grid-cols-2 dark:border-gray-700">
+                            <small>Posted By : {{job.user.email}}</small>
                         </div>
                     </div>
                 </div>
