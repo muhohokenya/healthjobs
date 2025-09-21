@@ -57,7 +57,6 @@ import BarChart from '@/components/Dashboard/BarChart.vue';
 import LineChart from '@/components/Dashboard/LineChart.vue';
 import TotalCard from '@/components/Dashboard/TotalCard.vue';
 import {useAuth} from '@/utils/auth';
-import ProfileMessage from '@/components/profileMessage.vue';
 const user = useAuth();
 // Define props to match what your controller sends
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

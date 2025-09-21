@@ -87,7 +87,7 @@ const getPageRange = () => {
 
     // Show max 5 page numbers
     let start = Math.max(1, current - 2);
-    let end = Math.min(last, start + 4);
+    const end = Math.min(last, start + 4);
 
     // Adjust start if we're near the end
     if (end - start < 4) {

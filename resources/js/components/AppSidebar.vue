@@ -15,7 +15,6 @@ import {
     ShieldAlertIcon,
     StethoscopeIcon,
     CircleUserIcon,
-    ArrowRightToLineIcon,
     PencilIcon,
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
