@@ -59,6 +59,17 @@ Route::middleware(['auth'])->group(function () {
         });
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::controller(\App\Http\Controllers\FeedbackController::class)
+        ->prefix('feedback')
+        ->name('feedback.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('feedback.create');
+            Route::post('/store', 'store')->name('feedback.store');
+        });
+});
+
 
 Route::middleware(['auth'])->group(function () {
     Route::controller(\App\Http\Controllers\EventsController::class)
@@ -67,6 +78,7 @@ Route::middleware(['auth'])->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/create', 'create')->name('events.create');
+            Route::post('/store', 'store')->name('events.store');
         });
 });
 

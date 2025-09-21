@@ -15,6 +15,8 @@ import {
     ShieldAlertIcon,
     StethoscopeIcon,
     CircleUserIcon,
+    ArrowRightToLineIcon,
+    PencilIcon,
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { computed } from 'vue';
@@ -46,6 +48,14 @@ const allNavItems = [
         disabled: true,
         icon: Calendar1Icon,
         launchingSoon: true,
+        requiredPermissions: ['view-job-postings'],
+    },
+
+    {
+        title: 'Feedback',
+        href: '/feedback',
+        disabled: true,
+        icon: PencilIcon,
         requiredPermissions: ['view-job-postings'],
     },
     {

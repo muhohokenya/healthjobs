@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import AppLayout from '@/layouts/AppLayout.vue';
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import SlimCropper from './../../lib/slim/SlimCropper.vue';
+import { Form, Head, usePage } from '@inertiajs/vue3';
 
+
+const page = usePage();
+
+onMounted(() => {
+    console.log(page);
+})
 // Define the options for the cropper
 const cropperOptions = ref({
     initialImage: '',
@@ -68,7 +74,9 @@ const formData = ref({
                 </div>
 
                 <!-- Form -->
-                <Form :data="formData" method="post" action="/events" preserve-scroll class="bg-white shadow-xl rounded-lg overflow-hidden">
+                <Form method="post" :action="route('events.events.store')" preserve-scroll class="bg-white shadow-xl rounded-lg overflow-hidden"
+                      v-slot="{processing }"
+                >
                     <div class="px-8 py-6">
                         <!-- Event Image Upload -->
                         <div class="mb-8">
@@ -210,7 +218,7 @@ const formData = ref({
                             </a>
 
                             <!-- Submit Button -->
-                            <button type="submit"
+                            <button :disabled="processing" type="submit"
                                     class="inline-flex justify-center items-center px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl disabled:shadow-none transition-all duration-300 transform hover:scale-105 disabled:scale-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                 Create Event
                             </button>
