@@ -13,7 +13,8 @@ const formatDate = (dateString: string) => {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
+        day: 'numeric',
+        timeZone: 'Africa/Nairobi'
     });
 };
 
@@ -22,7 +23,8 @@ const formatTime = (dateString: string) => {
     return date.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
-        hour12: true
+        hour12: true,
+        timeZone: 'Africa/Nairobi'
     });
 };
 
@@ -140,10 +142,14 @@ const getFullImageUrl = (imagePath: string) => {
                                         {{ event?.start_date ? new Date(event.start_date).getDate() : '?' }}
                                     </div>
                                     <div class="text-xs font-semibold text-slate-600 uppercase tracking-wide">
-                                        {{ event?.start_date ? new Date(event.start_date).toLocaleDateString('en-US', { month: 'short' }) : 'TBD' }}
+                                        {{ event?.start_date ? new Date(event.start_date).toLocaleDateString('en-US', {
+                                        month: 'short',
+                                        timeZone: 'Africa/Nairobi'
+                                    }) : 'TBD' }}
                                     </div>
                                 </div>
                             </div>
+
 
                             <!-- Status badge -->
                             <div class="absolute top-4 right-4">
@@ -173,7 +179,7 @@ const getFullImageUrl = (imagePath: string) => {
                                         </svg>
                                     </div>
                                     <div class="min-w-0 flex-1">
-                                        <p class="text-sm font-medium text-slate-900">{{ formatDate(event.start_date) }}</p>
+                                        <p class="text-sm font-medium text-slate-900">{{ formatDate(event?.start_date) }}</p>
                                     </div>
                                 </div>
 
