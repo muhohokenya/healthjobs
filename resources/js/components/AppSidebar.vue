@@ -46,7 +46,6 @@ const allNavItems = [
         href: '/events',
         disabled: true,
         icon: Calendar1Icon,
-        launchingSoon: true,
         requiredPermissions: ['view-job-postings'],
     },
 
