@@ -16,37 +16,40 @@ const uploadForm = useForm({
 
 const listOfCadres = [
     {
-        "cadre_name": "Medical Officer (Physician)"
+        "cadre_name": "Clinical Officer"
     },
     {
-        "cadre_name": "Registered Nurse"
+        "cadre_name": "Nurse"
     },
     {
-        "cadre_name": "Nurse Practitioner"
+        "cadre_name": "Pharmacist"
     },
     {
-        "cadre_name": "Medical Technician/Technologist"
+        "cadre_name": "Dentist"
     },
     {
-        "cadre_name": "EMT / Paramedic"
+        "cadre_name": "Lab Technician"
     },
     {
-        "cadre_name": "Medical Logistics Officer"
+        "cadre_name": "Para Medics"
     },
     {
-        "cadre_name": "Medical Administration Personnel"
+        "cadre_name": "Nutritionist & Dietetics Officer"
     },
     {
-        "cadre_name": "Dental Officer"
+        "cadre_name": "Public Health Officer"
     },
     {
-        "cadre_name": "Preventive Medicine Officer"
+        "cadre_name": "Health Record Officer"
     },
     {
-        "cadre_name": "Medical Instructor/Trainer"
+        "cadre_name": "Bio Chemist Social Worker"
     },
     {
-        "cadre_name": "Psychological Health Specialist"
+        "cadre_name": "Community Health Officer"
+    },
+    {
+        "cadre_name": "Radiology"
     }
 ];
 
