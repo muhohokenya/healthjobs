@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div v-if="user.roles[0].name ==='super-admin'" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                     <div class="w-full">
                         <BarChart />
