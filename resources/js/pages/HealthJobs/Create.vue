@@ -16,6 +16,9 @@ const uploadForm = useForm({
 
 const listOfCadres = [
     {
+        "cadre_name": "Doctor"
+    },
+    {
         "cadre_name": "Clinical Officer"
     },
     {
